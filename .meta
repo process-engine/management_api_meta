@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "management_api_contracts": "git@github.com:process-engine/management_api_contracts.git",
+    "management_api_client": "git@github.com:process-engine/management_api_client.git",
+    "management_api_core": "git@github.com:process-engine/management_api_core.git",
+    "management_api_http": "git@github.com:process-engine/management_api_http.git",
+  }
+}

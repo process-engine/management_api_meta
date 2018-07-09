@@ -1,0 +1,15 @@
+{
+  "name": "@process-engine/management_api_meta",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "minstall --trust-local-modules ."
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "meta-npm": "0.0.18",
+    "minstall": "^3.3.1-pre3"
+  }
+}
