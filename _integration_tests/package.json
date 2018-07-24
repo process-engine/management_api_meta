@@ -12,8 +12,8 @@
   ],
   "scripts": {
     "start": "cross-env NODE_ENV=test CONFIG_PATH=config node index.js",
-    "test-internal": "cross-env NODE_ENV=test CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=internal mocha test/**/*.js --exit",
-    "test-external": "cross-env NODE_ENV=test CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=external mocha test/**/*.js --exit",
+    "test-internal": "cross-env NODE_ENV=test CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=internal mocha -t 15000 test/**/*.js --exit",
+    "test-external": "cross-env NODE_ENV=test CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=external mocha -t 15000 test/**/*.js --exit",
     "test": "npm run test-internal && npm run test-external",
     "build": "gulp build"
   },
@@ -21,7 +21,9 @@
     "@essential-projects/bootstrapper": "^3.0.0",
     "@essential-projects/bootstrapper_node": "^3.0.0",
     "@essential-projects/event_aggregator": "^3.0.0",
+    "@essential-projects/http_extension": "^4.0.0",
     "@essential-projects/services": "^2.0.2",
+    "@process-engine/consumer_api_core": "^0.17.0",
     "@process-engine/flow_node_instance.repository.sequelize": "^1.0.1",
     "@process-engine/iam": "feature~update_ioc_registrations",
     "@process-engine/management_api_client": "^0.3.0",
