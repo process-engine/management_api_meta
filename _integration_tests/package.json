@@ -1,0 +1,60 @@
+{
+  "name": "@process-engine/management_api_meta_integration_tests",
+  "publishConfig": {
+    "registry": "https://www.npmjs.com"
+  },
+  "version": "1.0.0",
+  "description": "integration tests",
+  "license": "MIT",
+  "main": "index.js",
+  "files": [
+    "tests"
+  ],
+  "scripts": {
+    "start": "cross-env NODE_ENV=test CONFIG_PATH=config node index.js",
+    "test-internal": "cross-env NODE_ENV=test CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=internal mocha -t 15000 test/**/*.js --exit",
+    "test-external": "cross-env NODE_ENV=test CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=external mocha -t 15000 test/**/*.js --exit",
+    "test": "npm run test-internal && npm run test-external",
+    "build": "gulp build"
+  },
+  "dependencies": {
+    "@essential-projects/bootstrapper": "^3.0.0",
+    "@essential-projects/bootstrapper_node": "^3.0.0",
+    "@essential-projects/event_aggregator": "^3.0.0",
+    "@essential-projects/http_extension": "^4.0.0",
+    "@essential-projects/services": "^2.0.2",
+    "@process-engine/consumer_api_core": "^0.17.0",
+    "@process-engine/flow_node_instance.repository.sequelize": "^1.0.1",
+    "@process-engine/iam": "^1.0.0",
+    "@process-engine/management_api_client": "^0.3.0",
+    "@process-engine/management_api_contracts": "^0.4.0",
+    "@process-engine/management_api_core": "^0.4.0",
+    "@process-engine/management_api_http": "^0.3.0",
+    "@process-engine/process_engine_contracts": "^15.0.0",
+    "@process-engine/process_engine": "^14.0.0",
+    "@process-engine/process_model.repository.sequelize": "^2.0.0",
+    "@process-engine/timers.repository.sequelize": "^1.0.0",
+    "addict-ioc": "^2.3.7",
+    "bluebird": "^3.5.1",
+    "gulptraum-typescript": "^1.5.0",
+    "lodash": "^4.17.5",
+    "loggerhythm": "^3.0.0",
+    "mocha": "^5.0.0",
+    "mocha-jenkins-reporter": "^0.3.12",
+    "should": "^13.1.3",
+    "supertest": "^3.0.0",
+    "tsconfig": "^7.0.0",
+    "typescript": "^2.8.1",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "cross-env": "^5.1.4",
+    "eslint": "^4.19.1",
+    "eslint-config-5minds": "^0.2.0",
+    "eslint-plugin-import": "^2.11.0",
+    "gulp": "^3.9.1",
+    "gulptraum": "^2.2.2",
+    "wtfnode": "^0.6.0",
+    "@essential-projects/tslint-config": "^1.0.0"
+  }
+}
