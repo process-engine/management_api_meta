@@ -12,8 +12,9 @@
   ],
   "scripts": {
     "start": "cross-env NODE_ENV=test CONFIG_PATH=config node index.js",
-    "test": "cross-env NODE_ENV=test CONFIG_PATH=config mocha -t 15000 test/*.js --exit",
-    "test-debug": "cross-env NODE_ENV=test CONFIG_PATH=config mocha --inspect-brk test/*.js --exit",
+    "test-internal": "cross-env NODE_ENV=test CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=internal mocha test/**/*.js --exit",
+    "test-external": "cross-env NODE_ENV=test CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=external mocha test/**/*.js --exit",
+    "test": "npm run test-internal && npm run test-external",
     "build": "gulp build"
   },
   "dependencies": {
@@ -21,10 +22,12 @@
     "@essential-projects/bootstrapper_node": "^3.0.0",
     "@essential-projects/event_aggregator": "^3.0.0",
     "@essential-projects/services": "^2.0.2",
-    "@process-engine/management_api_contracts": "feature~update_ioc_registrations",
-    "@process-engine/management_api_core": "feature~update_ioc_registrations",
     "@process-engine/flow_node_instance.repository.sequelize": "^1.0.1",
     "@process-engine/iam": "feature~update_ioc_registrations",
+    "@process-engine/management_api_client": "^0.3.0",
+    "@process-engine/management_api_contracts": "feature~provide_process_as_xml",
+    "@process-engine/management_api_core": "feature~provide_process_as_xml",
+    "@process-engine/management_api_http": "^0.3.0",
     "@process-engine/process_engine_contracts": "feature~provide_process_as_xml",
     "@process-engine/process_engine": "feature~provide_process_as_xml",
     "@process-engine/process_model.repository.sequelize": "feature~provide_process_as_xml",
