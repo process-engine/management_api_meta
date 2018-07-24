@@ -7,40 +7,22 @@ const path = require('path');
 const iocModuleNames = [
   '@essential-projects/bootstrapper',
   '@essential-projects/bootstrapper_node',
-  '@essential-projects/caching',
-  '@essential-projects/core',
-  '@essential-projects/data_model',
-  '@essential-projects/data_model_contracts',
-  '@essential-projects/datasource_adapter_base',
-  '@essential-projects/datasource_adapter_postgres',
-  '@essential-projects/datastore',
-  '@essential-projects/datastore_http',
-  '@essential-projects/datastore_messagebus',
   '@essential-projects/event_aggregator',
-  '@essential-projects/feature',
   '@essential-projects/http_extension',
-  '@essential-projects/http_integration_testing',
-  '@essential-projects/iam',
-  '@essential-projects/iam_http',
-  '@essential-projects/invocation',
-  '@essential-projects/messagebus',
-  '@essential-projects/messagebus_http',
-  '@essential-projects/messagebus_adapter_faye',
-  '@essential-projects/metadata',
-  '@essential-projects/security_service',
   '@essential-projects/services',
-  '@essential-projects/routing',
-  '@essential-projects/timing',
-  '@essential-projects/validation',
-  '@process-engine/consumer_api_core',
+  '@process-engine/consumer_api_core', // Required by the process engine's UserTask handler
+  '@process-engine/flow_node_instance.repository.sequelize',
+  '@process-engine/iam',
+  '@process-engine/management_api_core',
+  '@process-engine/management_api_http',
   '@process-engine/process_engine',
-  '@process-engine/process_engine_http',
-  '@process-engine/process_repository',
+  '@process-engine/process_model.repository.sequelize',
+  '@process-engine/timers.repository.sequelize',
   '.',
 ];
 
 const iocModules = iocModuleNames.map((moduleName) => {
-  return require(`${moduleName}/ioc_module`);
+  return require(`${moduleName}/ioc_module`); //eslint-disable-line
 });
 
 let container;
