@@ -6,15 +6,12 @@ const {
   InternalAccessor,
 } = require('@process-engine/management_api_client');
 
-const {IamServiceMock, ProcessDelayer} = require('./dist/commonjs/index');
+const {IamServiceMock} = require('./dist/commonjs/index');
 
 const registerInContainer = (container) => {
 
   // This removes the necessity for having a running IdentityServer during testing.
   container.register('IamService', IamServiceMock);
-
-  // TODO: This can be removed, as soon as the process engine supports intermediate timer events.
-  container.register('ProcessDelayer', ProcessDelayer);
 
   const accessManagementApiInternally = process.env.MANAGEMENT_API_ACCESS_TYPE === 'internal';
 

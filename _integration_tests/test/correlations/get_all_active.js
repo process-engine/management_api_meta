@@ -8,6 +8,7 @@ describe('Management API:   GET  ->  /correlations/active', () => {
 
   let testFixtureProvider;
 
+  let correlationId;
   const processModelId = 'time_delayed_sample';
 
   before(async () => {
@@ -16,7 +17,13 @@ describe('Management API:   GET  ->  /correlations/active', () => {
 
     await testFixtureProvider.importProcessFiles([processModelId]);
 
-    await testFixtureProvider.managementApiClientService.startProcessInstance(testFixtureProvider.context, processModelId, 'StartEvent_1', {});
+    const result = await testFixtureProvider
+      .managementApiClientService
+      .startProcessInstance(testFixtureProvider.context, processModelId, 'StartEvent_1', {});
+
+    correlationId = result.correlationId;
+
+    await waitForProcessToReachFirstFlowNode();
   });
 
   after(async () => {
@@ -52,5 +59,38 @@ describe('Management API:   GET  ->  /correlations/active', () => {
       should(error.message).be.match(expectedErrorMessage);
     }
   });
+
+  /**
+   * Periodically checks if a given correlation exists. After a specific number of retries has been exceeded, an error is thrown.
+   * This is to help avoid any timing errors that may occur because of the immediate resolving after starting the process instance.
+   */
+  async function waitForProcessToReachFirstFlowNode() {
+
+    const maxNumberOfRetries = 10;
+    const delayBetweenRetriesInMs = 500;
+
+    const flowNodeInstanceService = await testFixtureProvider.resolveAsync('FlowNodeInstanceService');
+
+    for (let i = 0; i < maxNumberOfRetries; i++) {
+
+      await wait(delayBetweenRetriesInMs);
+
+      const flowNodeInstances = await flowNodeInstanceService.queryByCorrelation(testFixtureProvider.executionContextFacade, correlationId);
+
+      if (flowNodeInstances && flowNodeInstances.length >= 1) {
+        return;
+      }
+    }
+
+    throw new Error(`No process instance within correlation '${correlationId}' found! The process instance like failed to start!`);
+  }
+
+  async function wait(timeInMs) {
+    await new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve();
+      }, timeInMs);
+    });
+  }
 
 });
