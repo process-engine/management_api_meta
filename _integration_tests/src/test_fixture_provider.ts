@@ -17,7 +17,8 @@ const iocModuleNames: Array<string> = [
   '@essential-projects/event_aggregator',
   '@essential-projects/http_extension',
   '@essential-projects/services',
-  '@process-engine/consumer_api_core', // Required by the process engine's UserTask handler
+  '@process-engine/consumer_api_core',
+  '@process-engine/deployment_api_core',
   '@process-engine/flow_node_instance.repository.sequelize',
   '@process-engine/iam',
   '@process-engine/management_api_core',
