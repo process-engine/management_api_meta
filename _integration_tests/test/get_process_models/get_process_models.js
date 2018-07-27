@@ -33,7 +33,7 @@ describe('Management API:   GET  ->  /processModels', () => {
     should(processModelList.processModels.length).be.greaterThan(0);
 
     processModelList.processModels.forEach((processModel) => {
-      should(processModel).have.property('key');
+      should(processModel).have.property('id');
       should(processModel).have.property('xml');
       should(processModel).have.property('startEvents');
       should(processModel).have.property('endEvents');
