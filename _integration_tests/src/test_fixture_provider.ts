@@ -5,9 +5,11 @@ import {InvocationContainer} from 'addict-ioc';
 import {Logger} from 'loggerhythm';
 
 import {AppBootstrapper} from '@essential-projects/bootstrapper_node';
+import {IIdentity} from '@essential-projects/iam_contracts';
 
 import {DeploymentContext, IDeploymentApiService} from '@process-engine/deployment_api_contracts';
 import {IManagementApiService, ManagementContext} from '@process-engine/management_api_contracts';
+import {ExecutionContext, IExecutionContextFacade, IExecutionContextFacadeFactory} from '@process-engine/process_engine_contracts';
 
 const logger: Logger = Logger.createLogger('test:bootstrapper');
 
@@ -87,6 +89,20 @@ export class TestFixtureProvider {
     const processModelAsXml: string = fs.readFileSync(processModelPath, 'utf-8');
 
     return processModelAsXml;
+  }
+
+  public async createExecutionContextFacadeForContext(context: DeploymentContext): Promise<IExecutionContextFacade> {
+
+    const identity: IIdentity = {
+      token: context.identity,
+    };
+
+    const executionContext: ExecutionContext = new ExecutionContext(identity);
+
+    const executionContextFacadeFactory: IExecutionContextFacadeFactory =
+      await this.resolveAsync<IExecutionContextFacadeFactory>('ExecutionContextFacadeFactory');
+
+    return executionContextFacadeFactory.create(executionContext);
   }
 
   private async _initializeBootstrapper(): Promise<void> {
