@@ -152,7 +152,14 @@ pipeline {
 
         cleanup_workspace();
 
-        cleanup_docker();
+        // Ignore any failures during docker clean up.
+        // 'docker image prune --force' fails if
+        // two builds run simultaneously.
+        try {
+          cleanup_docker();
+        } catch (Exception error) {
+          echo "Failed to cleanup docker $error";
+        }
       }
     }
   }
