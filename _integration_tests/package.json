@@ -31,7 +31,7 @@
     "@process-engine/management_api_contracts": "feature~process_definitions_instead_of_process_model",
     "@process-engine/management_api_core": "feature~process_definitions_instead_of_process_model",
     "@process-engine/management_api_http": "feature~process_definitions_instead_of_process_model",
-    "@process-engine/process_engine_contracts": "^19.0.0",
+    "@process-engine/process_engine_contracts": "feature~process_definitions_instead_of_process_model",
     "@process-engine/process_engine": "feature~fix_xml_validation",
     "@process-engine/process_model.repository.sequelize": "^2.1.2",
     "@process-engine/timers.repository.sequelize": "^1.0.2",
