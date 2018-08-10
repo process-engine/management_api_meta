@@ -26,9 +26,9 @@ describe('Management API:   POST  ->  /process_models/:process_model_id/update',
     await testFixtureProvider.tearDown();
   });
 
-  it('should successfully import the process model, if it does not yet exist and overwriteExisting is set to false', async () => {
+  it('should successfully import the process definitions, if it does not yet exist and overwriteExisting is set to false', async () => {
 
-    // This is to ensure that any existing process models will not falsify the results.
+    // This is to ensure that any existing process definitions will not falsify the results.
     const uniqueImportName = uuid.v4();
 
     const importPayload = {
@@ -36,7 +36,7 @@ describe('Management API:   POST  ->  /process_models/:process_model_id/update',
       overwriteExisting: true,
     };
 
-    await testFixtureProvider.managementApiClientService.updateProcessModelById(testFixtureProvider.context, uniqueImportName, importPayload);
+    await testFixtureProvider.managementApiClientService.updateProcessDefinitionsByName(testFixtureProvider.context, uniqueImportName, importPayload);
 
     await assertThatImportWasSuccessful();
   });
