@@ -36,7 +36,7 @@ describe('Management API:   POST  ->  /process_models/:process_model_id/update',
       overwriteExisting: true,
     };
 
-    await testFixtureProvider.managementApiClientService.updateProcessDefinitionsById(testFixtureProvider.context, uniqueImportName, importPayload);
+    await testFixtureProvider.managementApiClientService.updateProcessDefinitionsByName(testFixtureProvider.context, uniqueImportName, importPayload);
 
     await assertThatImportWasSuccessful();
   });
