@@ -11,10 +11,13 @@
     "tests"
   ],
   "scripts": {
-    "start": "cross-env NODE_ENV=test CONFIG_PATH=config node index.js",
-    "test-internal": "cross-env NODE_ENV=test CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=internal mocha -t 15000 test/**/*.js --exit",
-    "test-external": "cross-env NODE_ENV=test CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=external mocha -t 15000 test/**/*.js --exit",
-    "test": "npm run test-internal && npm run test-external",
+    "start": "cross-env NODE_ENV=sqlite CONFIG_PATH=config node index.js",
+    "test-internal-sqlite": "cross-env NODE_ENV=sqlite CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=internal mocha -t 15000 test/**/*.js --exit",
+    "test-external-sqlite": "cross-env NODE_ENV=sqlite CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=external mocha -t 15000 test/**/*.js --exit",
+    "test-internal-postgres": "cross-env NODE_ENV=postgres CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=internal mocha -t 15000 test/**/*.js --exit",
+    "test-external-postgres": "cross-env NODE_ENV=postgres CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=external mocha -t 15000 test/**/*.js --exit",
+    "test": "npm run test-internal-sqlite && npm run test-external-sqlite",
+    "test-postgres": "npm run test-internal-postgres && npm run test-external-postgres",
     "build": "gulp build"
   },
   "dependencies": {
