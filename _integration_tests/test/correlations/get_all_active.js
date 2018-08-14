@@ -9,7 +9,7 @@ describe('Management API:   GET  ->  /correlations/active', () => {
   let testFixtureProvider;
 
   let correlationId;
-  const processModelId = 'time_delayed_sample';
+  const processModelId = 'usertask_sample';
 
   before(async () => {
     testFixtureProvider = new TestFixtureProvider();
