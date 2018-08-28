@@ -80,7 +80,7 @@ describe('Management API:   GET  ->  /correlations/active', () => {
 
       await wait(delayBetweenRetriesInMs);
 
-      const flowNodeInstances = await flowNodeInstanceService.queryByCorrelation(testFixtureProvider.executionContextFacade, correlationId);
+      const flowNodeInstances = await flowNodeInstanceService.queryByCorrelation(correlationId);
 
       if (flowNodeInstances && flowNodeInstances.length >= 1) {
         return;
