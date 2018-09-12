@@ -21,6 +21,7 @@ const iocModuleNames: Array<string> = [
   '@essential-projects/services',
   '@essential-projects/timing',
   '@process-engine/consumer_api_core',
+  '@process-engine/correlations.repository.sequelize',
   '@process-engine/deployment_api_core',
   '@process-engine/flow_node_instance.repository.sequelize',
   '@process-engine/iam',
