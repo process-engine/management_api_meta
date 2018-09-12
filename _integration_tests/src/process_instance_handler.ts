@@ -46,7 +46,7 @@ export class ProcessInstanceHandler {
 
   public async waitForProcessInstanceToReachUserTask(correlationId: string): Promise<void> {
 
-    const maxNumberOfRetries: number = 10;
+    const maxNumberOfRetries: number = 30;
     const delayBetweenRetriesInMs: number = 500;
 
     const flowNodeInstanceService: IFlowNodeInstanceService =
