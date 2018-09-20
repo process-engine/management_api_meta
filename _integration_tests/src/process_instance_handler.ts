@@ -46,7 +46,7 @@ export class ProcessInstanceHandler {
 
   public async waitForProcessInstanceToReachUserTask(correlationId: string): Promise<void> {
 
-    const maxNumberOfRetries: number = 10;
+    const maxNumberOfRetries: number = 30;
     const delayBetweenRetriesInMs: number = 500;
 
     const flowNodeInstanceService: IFlowNodeInstanceService =
@@ -64,7 +64,7 @@ export class ProcessInstanceHandler {
       }
     }
 
-    throw new Error(`No process instance within correlation '${correlationId}' found! The process instance like failed to start!`);
+    throw new Error(`No process instance within correlation '${correlationId}' found! The process instance likely failed to start!`);
   }
 
   public async wait(delayTimeInMs: number): Promise<void> {

@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "meta exec \"npm run build\" --exclude management_api_meta",
     "postinstall": "minstall --trust-local-modules ."
   },
   "author": "",

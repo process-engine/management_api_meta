@@ -10,14 +10,25 @@ const iocModuleNames = [
   '@essential-projects/event_aggregator',
   '@essential-projects/http_extension',
   '@essential-projects/services',
-  '@process-engine/consumer_api_core', // Required by the process engine's UserTask handler
+  '@essential-projects/timing',
+  '@process-engine/consumer_api_core',
+  '@process-engine/correlations.repository.sequelize',
+  '@process-engine/deployment_api_core',
   '@process-engine/flow_node_instance.repository.sequelize',
   '@process-engine/iam',
+  '@process-engine/kpi_api_core',
+  '@process-engine/kpi_api_http',
+  '@process-engine/logging_api_core',
+  '@process-engine/logging_api_http',
   '@process-engine/management_api_core',
   '@process-engine/management_api_http',
+  '@process-engine/metrics_api_core',
+  '@process-engine/metrics_api_http',
   '@process-engine/process_engine_core',
   '@process-engine/process_model.repository.sequelize',
   '@process-engine/timers.repository.sequelize',
+  '@process-engine/token_history_api_core',
+
   '.',
 ];
 
