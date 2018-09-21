@@ -19,7 +19,7 @@ describe('Management API:   GET  ->  /correlations/active', () => {
 
     const result = await testFixtureProvider
       .managementApiClientService
-      .startProcessInstance(testFixtureProvider.context, processModelId, 'StartEvent_1', {});
+      .startProcessInstance(testFixtureProvider.identity, processModelId, 'StartEvent_1', {});
 
     correlationId = result.correlationId;
 
@@ -34,7 +34,7 @@ describe('Management API:   GET  ->  /correlations/active', () => {
 
     const correlations = await testFixtureProvider
       .managementApiClientService
-      .getAllActiveCorrelations(testFixtureProvider.context);
+      .getAllActiveCorrelations(testFixtureProvider.identity);
 
     should(correlations).be.instanceOf(Array);
     should(correlations.length).be.greaterThan(0);
@@ -49,7 +49,7 @@ describe('Management API:   GET  ->  /correlations/active', () => {
     try {
       const processModelList = await testFixtureProvider
         .managementApiClientService
-        .getAllActiveCorrelations({});
+        .getAllActiveCorrelations();
 
       should.fail(processModelList, undefined, 'This request should have failed!');
     } catch (error) {

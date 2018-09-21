@@ -39,7 +39,7 @@ describe('Management API:   GET  ->  /correlations/:correlation_id/process_model
 
     const result = await testFixtureProvider
       .managementApiClientService
-      .startProcessInstance(testFixtureProvider.context, processModelId, startEventId, payload, returnOn);
+      .startProcessInstance(testFixtureProvider.identity, processModelId, startEventId, payload, returnOn);
 
     should(result).have.property('correlationId');
     should(result.correlationId).be.equal(payload.correlationId);
@@ -49,19 +49,19 @@ describe('Management API:   GET  ->  /correlations/:correlation_id/process_model
 
   it('should return a Correlations ProcessModel through the management api', async () => {
 
-    const processModel = await testFixtureProvider
+    const processModels = await testFixtureProvider
       .managementApiClientService
-      .getProcessModelForCorrelation(testFixtureProvider.context, correlationId);
+      .getProcessModelForCorrelation(testFixtureProvider.identity, correlationId);
 
-    should(processModel.id).be.equal('generic_sample');
-    should(processModel).have.property('xml');
+    should(processModels.id).be.equal('generic_sample');
+    should(processModels).have.property('xml');
   });
 
   it('should fail to retrieve the ProcessModel, if the given Correlation does not exist', async () => {
     try {
       const processModelList = await testFixtureProvider
         .managementApiClientService
-        .getProcessModelForCorrelation(testFixtureProvider.context);
+        .getProcessModelForCorrelation(testFixtureProvider.identity);
 
       should.fail(processModelList, undefined, 'This request should have failed!');
     } catch (error) {
@@ -76,7 +76,7 @@ describe('Management API:   GET  ->  /correlations/:correlation_id/process_model
     try {
       const processModelList = await testFixtureProvider
         .managementApiClientService
-        .getProcessModelForCorrelation({}, correlationId);
+        .getProcessModelForCorrelation(undefined, correlationId);
 
       should.fail(processModelList, undefined, 'This request should have failed!');
     } catch (error) {

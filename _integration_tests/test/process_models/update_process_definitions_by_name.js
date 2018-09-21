@@ -36,14 +36,16 @@ describe('Management API:   POST  ->  /process_models/:process_model_id/update',
       overwriteExisting: true,
     };
 
-    await testFixtureProvider.managementApiClientService.updateProcessDefinitionsByName(testFixtureProvider.context, uniqueImportName, importPayload);
+    await testFixtureProvider
+      .managementApiClientService
+      .updateProcessDefinitionsByName(testFixtureProvider.identity, uniqueImportName, importPayload);
 
     await assertThatImportWasSuccessful();
   });
 
   async function assertThatImportWasSuccessful() {
 
-    const executionContextFacade = await testFixtureProvider.createExecutionContextFacadeForContext(testFixtureProvider.context);
+    const executionContextFacade = await testFixtureProvider.getExecutionContextFacade();
 
     const processModelService = await testFixtureProvider.resolveAsync('ProcessModelService');
 

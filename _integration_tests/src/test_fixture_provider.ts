@@ -7,8 +7,8 @@ import {Logger} from 'loggerhythm';
 import {AppBootstrapper} from '@essential-projects/bootstrapper_node';
 import {IIdentity} from '@essential-projects/iam_contracts';
 
-import {DeploymentContext, IDeploymentApiService} from '@process-engine/deployment_api_contracts';
-import {IManagementApiService, ManagementContext} from '@process-engine/management_api_contracts';
+import {IDeploymentApi} from '@process-engine/deployment_api_contracts';
+import {IManagementApiService} from '@process-engine/management_api_contracts';
 import {ExecutionContext, IExecutionContextFacade, IExecutionContextFacadeFactory} from '@process-engine/process_engine_contracts';
 
 const logger: Logger = Logger.createLogger('test:bootstrapper');
@@ -48,18 +48,18 @@ const iocModules: Array<any> = iocModuleNames.map((moduleName: string): any => {
 
 export class TestFixtureProvider {
   private httpBootstrapper: AppBootstrapper;
-  private _deploymentApiService: IDeploymentApiService;
+  private _deploymentApiService: IDeploymentApi;
   private _managementApiClientService: IManagementApiService;
 
   private container: InvocationContainer;
 
-  private _managementContext: ManagementContext = undefined;
+  private _identity: IIdentity;
 
-  public get context(): ManagementContext {
-    return this._managementContext;
+  public get identity(): IIdentity {
+    return this._identity;
   }
 
-  private get deploymentApiService(): IDeploymentApiService {
+  private get deploymentApiService(): IDeploymentApi {
     return this._deploymentApiService;
   }
 
@@ -70,7 +70,7 @@ export class TestFixtureProvider {
   public async initializeAndStart(): Promise<void> {
     await this._initializeBootstrapper();
     await this.httpBootstrapper.start();
-    this._createMockContext();
+    this._createMockIdentity();
     this._managementApiClientService = await this.resolveAsync<IManagementApiService>('ManagementApiClientService');
   }
 
@@ -85,7 +85,7 @@ export class TestFixtureProvider {
 
   public async importProcessFiles(processFileNames: Array<string>): Promise<void> {
 
-    this._deploymentApiService = await this.resolveAsync<IDeploymentApiService>('DeploymentApiService');
+    this._deploymentApiService = await this.resolveAsync<IDeploymentApi>('DeploymentApiService');
 
     for (const processFileName of processFileNames) {
       await this._registerProcess(processFileName);
@@ -102,13 +102,9 @@ export class TestFixtureProvider {
     return processModelAsXml;
   }
 
-  public async createExecutionContextFacadeForContext(context: DeploymentContext): Promise<IExecutionContextFacade> {
+  public async getExecutionContextFacade(): Promise<IExecutionContextFacade> {
 
-    const identity: IIdentity = {
-      token: context.identity,
-    };
-
-    const executionContext: ExecutionContext = new ExecutionContext(identity);
+    const executionContext: ExecutionContext = new ExecutionContext(this.identity);
 
     const executionContextFacadeFactory: IExecutionContextFacadeFactory =
       await this.resolveAsync<IExecutionContextFacadeFactory>('ExecutionContextFacadeFactory');
@@ -141,11 +137,11 @@ export class TestFixtureProvider {
     }
   }
 
-  private _createMockContext(): void {
+  private _createMockIdentity(): void {
     // Note: Since the iam service is mocked, it doesn't matter what kind of token is used here.
     // It only matters that one is present.
-    this._managementContext = <ManagementContext> {
-      identity: 'randomtoken',
+    this._identity = <IIdentity> {
+      token: 'defaultUser',
     };
   }
 
@@ -154,13 +150,9 @@ export class TestFixtureProvider {
     const bpmnDirectoryPath: string = this._getBpmnDirectoryPath();
     const processFilePath: string = path.join(bpmnDirectoryPath, `${processFileName}.bpmn`);
 
-    const deploymentContext: DeploymentContext = {
-      identity: 'randomtoken',
-    };
-
     const processName: string = path.parse(processFileName).name;
 
-    await this.deploymentApiService.importBpmnFromFile(deploymentContext, processFilePath, processName, true);
+    await this.deploymentApiService.importBpmnFromFile(this.identity, processFilePath, processName, true);
   }
 
   /**
