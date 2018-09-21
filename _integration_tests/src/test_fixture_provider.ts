@@ -8,7 +8,7 @@ import {AppBootstrapper} from '@essential-projects/bootstrapper_node';
 import {IIdentity} from '@essential-projects/iam_contracts';
 
 import {IDeploymentApi} from '@process-engine/deployment_api_contracts';
-import {IManagementApiService} from '@process-engine/management_api_contracts';
+import {IManagementApi} from '@process-engine/management_api_contracts';
 import {ExecutionContext, IExecutionContextFacade, IExecutionContextFacadeFactory} from '@process-engine/process_engine_contracts';
 
 const logger: Logger = Logger.createLogger('test:bootstrapper');
@@ -49,7 +49,7 @@ const iocModules: Array<any> = iocModuleNames.map((moduleName: string): any => {
 export class TestFixtureProvider {
   private httpBootstrapper: AppBootstrapper;
   private _deploymentApiService: IDeploymentApi;
-  private _managementApiClientService: IManagementApiService;
+  private _managementApiClientService: IManagementApi;
 
   private container: InvocationContainer;
 
@@ -63,7 +63,7 @@ export class TestFixtureProvider {
     return this._deploymentApiService;
   }
 
-  public get managementApiClientService(): IManagementApiService {
+  public get managementApiClientService(): IManagementApi {
     return this._managementApiClientService;
   }
 
@@ -71,7 +71,7 @@ export class TestFixtureProvider {
     await this._initializeBootstrapper();
     await this.httpBootstrapper.start();
     this._createMockIdentity();
-    this._managementApiClientService = await this.resolveAsync<IManagementApiService>('ManagementApiClientService');
+    this._managementApiClientService = await this.resolveAsync<IManagementApi>('ManagementApiClientService');
   }
 
   public async tearDown(): Promise<void> {
