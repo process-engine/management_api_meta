@@ -25,7 +25,7 @@ describe('Management API:   GET  ->  /processModels', () => {
 
     const processModelList = await testFixtureProvider
       .managementApiClientService
-      .getProcessModels(testFixtureProvider.context);
+      .getProcessModels(testFixtureProvider.identity);
 
     should(processModelList).have.property('processModels');
 
@@ -46,7 +46,7 @@ describe('Management API:   GET  ->  /processModels', () => {
     try {
       const processModelList = await testFixtureProvider
         .managementApiClientService
-        .getProcessModels({});
+        .getProcessModels(undefined);
 
       should.fail(processModelList, undefined, 'This request should have failed!');
     } catch (error) {

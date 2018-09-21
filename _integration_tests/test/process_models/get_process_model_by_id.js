@@ -25,7 +25,7 @@ describe('Management API:   GET  ->  /process_models/:process_model_id', () => {
 
     const processModel = await testFixtureProvider
       .managementApiClientService
-      .getProcessModelById(testFixtureProvider.context, processModelId);
+      .getProcessModelById(testFixtureProvider.identity, processModelId);
 
     should(processModel).have.property('id');
     should(processModel).have.property('xml');
@@ -40,7 +40,7 @@ describe('Management API:   GET  ->  /process_models/:process_model_id', () => {
     try {
       const processModel = await testFixtureProvider
         .managementApiClientService
-        .getProcessModelById({}, processModelId);
+        .getProcessModelById(undefined, processModelId);
 
       should.fail(processModel, undefined, 'This request should have failed!');
     } catch (error) {
@@ -58,7 +58,7 @@ describe('Management API:   GET  ->  /process_models/:process_model_id', () => {
     try {
       const processModel = await testFixtureProvider
         .managementApiClientService
-        .getProcessModelById(testFixtureProvider.context, invalidProcessModelId);
+        .getProcessModelById(testFixtureProvider.identity, invalidProcessModelId);
 
       should.fail(processModel, undefined, 'This request should have failed!');
     } catch (error) {
