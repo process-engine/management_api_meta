@@ -9,7 +9,6 @@ import {IIdentity} from '@essential-projects/iam_contracts';
 
 import {IDeploymentApi} from '@process-engine/deployment_api_contracts';
 import {IManagementApi} from '@process-engine/management_api_contracts';
-import {ExecutionContext, IExecutionContextFacade, IExecutionContextFacadeFactory} from '@process-engine/process_engine_contracts';
 
 const logger: Logger = Logger.createLogger('test:bootstrapper');
 
@@ -100,16 +99,6 @@ export class TestFixtureProvider {
     const processModelAsXml: string = fs.readFileSync(processModelPath, 'utf-8');
 
     return processModelAsXml;
-  }
-
-  public async getExecutionContextFacade(): Promise<IExecutionContextFacade> {
-
-    const executionContext: ExecutionContext = new ExecutionContext(this.identity);
-
-    const executionContextFacadeFactory: IExecutionContextFacadeFactory =
-      await this.resolveAsync<IExecutionContextFacadeFactory>('ExecutionContextFacadeFactory');
-
-    return executionContextFacadeFactory.create(executionContext);
   }
 
   private async _initializeBootstrapper(): Promise<void> {
