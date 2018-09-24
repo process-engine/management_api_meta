@@ -3,7 +3,7 @@
 const should = require('should');
 const uuid = require('uuid');
 
-const TestFixtureProvider = require('../../dist/commonjs/test_fixture_provider').TestFixtureProvider;
+const TestFixtureProvider = require('../../dist/commonjs').TestFixtureProvider;
 
 // NOTE:
 // The deployment api alrady contains extensive testing for this, so there is no need to cover everything here.
@@ -19,7 +19,7 @@ describe('Management API:   POST  ->  /process_models/:process_model_id/update',
     testFixtureProvider = new TestFixtureProvider();
     await testFixtureProvider.initializeAndStart();
 
-    processModelAsXml = testFixtureProvider.readProcessModelFromFile(processModelId);
+    processModelAsXml = testFixtureProvider.readProcessModelFile(processModelId);
   });
 
   after(async () => {
@@ -38,7 +38,7 @@ describe('Management API:   POST  ->  /process_models/:process_model_id/update',
 
     await testFixtureProvider
       .managementApiClientService
-      .updateProcessDefinitionsByName(testFixtureProvider.identity, uniqueImportName, importPayload);
+      .updateProcessDefinitionsByName(testFixtureProvider.identities.defaultUser, uniqueImportName, importPayload);
 
     await assertThatImportWasSuccessful();
   });
@@ -47,7 +47,7 @@ describe('Management API:   POST  ->  /process_models/:process_model_id/update',
 
     const processModelService = await testFixtureProvider.resolveAsync('ProcessModelService');
 
-    const existingProcessModel = await processModelService.getProcessModelById(testFixtureProvider.identity, processModelId);
+    const existingProcessModel = await processModelService.getProcessModelById(testFixtureProvider.identities.defaultUser, processModelId);
 
     should.exist(existingProcessModel);
   }

@@ -7,6 +7,7 @@ import {
   ProcessStartResponsePayload,
   StartCallbackType,
 } from '@process-engine/consumer_api_contracts';
+
 import {IFlowNodeInstanceService} from '@process-engine/process_engine_contracts';
 
 import {TestFixtureProvider} from './test_fixture_provider';
@@ -28,43 +29,47 @@ export class ProcessInstanceHandler {
     return this._testFixtureProvider;
   }
 
-  public async startProcessInstanceAndReturnCorrelationId(processModelId: string, correlationId?: string): Promise<string> {
+  public async startProcessInstanceAndReturnCorrelationId(processModelId: string, correlationId?: string, inputValues?: any): Promise<string> {
 
     const startEventId: string = 'StartEvent_1';
     const startCallbackType: StartCallbackType = StartCallbackType.CallbackOnProcessInstanceCreated;
     const payload: ProcessStartRequestPayload = {
       correlationId: correlationId || uuid.v4(),
-      inputValues: {},
+      inputValues: inputValues || {},
     };
 
     const result: ProcessStartResponsePayload = await this.testFixtureProvider
       .managementApiClientService
-      .startProcessInstance(this.testFixtureProvider.identity, processModelId, startEventId, payload, startCallbackType);
+      .startProcessInstance(this.testFixtureProvider.identities.defaultUser, processModelId, startEventId, payload, startCallbackType);
 
     return result.correlationId;
   }
 
-  public async waitForProcessInstanceToReachUserTask(correlationId: string): Promise<void> {
+  public async waitForProcessInstanceToReachUserTask(correlationId: string, processModelId?: string): Promise<void> {
 
     const maxNumberOfRetries: number = 30;
     const delayBetweenRetriesInMs: number = 500;
 
-    const flowNodeInstanceService: IFlowNodeInstanceService =
-      await this.testFixtureProvider.resolveAsync<IFlowNodeInstanceService>('FlowNodeInstanceService');
+    const flowNodeInstanceService: IFlowNodeInstanceService = await this.testFixtureProvider.resolveAsync('FlowNodeInstanceService');
 
     for (let i: number = 0; i < maxNumberOfRetries; i++) {
 
       await this.wait(delayBetweenRetriesInMs);
 
-      const flowNodeInstances: Array<any> =
-        await flowNodeInstanceService.querySuspendedByCorrelation(correlationId);
+      let flowNodeInstances: Array<any> = await flowNodeInstanceService.querySuspendedByCorrelation(correlationId);
 
-      if (flowNodeInstances && flowNodeInstances.length >= 1) {
+      if (processModelId) {
+        flowNodeInstances = flowNodeInstances.filter((fni: any) => {
+          return fni.tokens[0].processModelId === processModelId;
+        });
+      }
+
+      if (flowNodeInstances.length >= 1) {
         return;
       }
     }
 
-    throw new Error(`No process instance within correlation '${correlationId}' found! The process instance likely failed to start!`);
+    throw new Error(`No process instance within correlation '${correlationId}' found! The process instance like failed to start!`);
   }
 
   public async wait(delayTimeInMs: number): Promise<void> {

@@ -3,9 +3,9 @@
 const should = require('should');
 const uuid = require('uuid');
 
-const startCallbackType = require('@process-engine/management_api_contracts').ProcessModelExecution.StartCallbackType;
+const StartCallbackType = require('@process-engine/management_api_contracts').ProcessModelExecution.StartCallbackType; //eslint-disable-line
 
-const TestFixtureProvider = require('../../dist/commonjs/test_fixture_provider').TestFixtureProvider;
+const TestFixtureProvider = require('../../dist/commonjs').TestFixtureProvider;
 
 describe('Management API:   GET  ->  /correlations/:correlation_id/process_model', () => {
 
@@ -35,11 +35,11 @@ describe('Management API:   GET  ->  /correlations/:correlation_id/process_model
       inputValues: {},
     };
 
-    const returnOn = startCallbackType.CallbackOnProcessInstanceFinished;
+    const returnOn = StartCallbackType.CallbackOnProcessInstanceFinished;
 
     const result = await testFixtureProvider
       .managementApiClientService
-      .startProcessInstance(testFixtureProvider.identity, processModelId, startEventId, payload, returnOn);
+      .startProcessInstance(testFixtureProvider.identities.defaultUser, processModelId, startEventId, payload, returnOn);
 
     should(result).have.property('correlationId');
     should(result.correlationId).be.equal(payload.correlationId);
@@ -49,19 +49,19 @@ describe('Management API:   GET  ->  /correlations/:correlation_id/process_model
 
   it('should return a Correlations ProcessModel through the management api', async () => {
 
-    const processModels = await testFixtureProvider
+    const processModel = await testFixtureProvider
       .managementApiClientService
-      .getProcessModelForCorrelation(testFixtureProvider.identity, correlationId);
+      .getProcessModelForCorrelation(testFixtureProvider.identities.defaultUser, correlationId);
 
-    should(processModels.id).be.equal('generic_sample');
-    should(processModels).have.property('xml');
+    should(processModel.id).be.equal(processModelId);
+    should(processModel).have.property('xml');
   });
 
   it('should fail to retrieve the ProcessModel, if the given Correlation does not exist', async () => {
     try {
       const processModelList = await testFixtureProvider
         .managementApiClientService
-        .getProcessModelForCorrelation(testFixtureProvider.identity);
+        .getProcessModelForCorrelation(testFixtureProvider.identities.defaultUser);
 
       should.fail(processModelList, undefined, 'This request should have failed!');
     } catch (error) {
@@ -76,7 +76,7 @@ describe('Management API:   GET  ->  /correlations/:correlation_id/process_model
     try {
       const processModelList = await testFixtureProvider
         .managementApiClientService
-        .getProcessModelForCorrelation(undefined, correlationId);
+        .getProcessModelForCorrelation({}, correlationId);
 
       should.fail(processModelList, undefined, 'This request should have failed!');
     } catch (error) {

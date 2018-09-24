@@ -2,7 +2,7 @@
 
 const should = require('should');
 
-const TestFixtureProvider = require('../../dist/commonjs/test_fixture_provider').TestFixtureProvider;
+const TestFixtureProvider = require('../../dist/commonjs').TestFixtureProvider;
 
 describe('Management API:   GET  ->  /processModels', () => {
 
@@ -25,7 +25,7 @@ describe('Management API:   GET  ->  /processModels', () => {
 
     const processModelList = await testFixtureProvider
       .managementApiClientService
-      .getProcessModels(testFixtureProvider.identity);
+      .getProcessModels(testFixtureProvider.identities.defaultUser);
 
     should(processModelList).have.property('processModels');
 
@@ -46,7 +46,7 @@ describe('Management API:   GET  ->  /processModels', () => {
     try {
       const processModelList = await testFixtureProvider
         .managementApiClientService
-        .getProcessModels(undefined);
+        .getProcessModels({});
 
       should.fail(processModelList, undefined, 'This request should have failed!');
     } catch (error) {

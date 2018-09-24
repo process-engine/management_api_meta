@@ -2,7 +2,7 @@
 
 const should = require('should');
 
-const TestFixtureProvider = require('../../dist/commonjs/test_fixture_provider').TestFixtureProvider;
+const TestFixtureProvider = require('../../dist/commonjs').TestFixtureProvider;
 
 describe('Management API:   GET  ->  /correlations/active', () => {
 
@@ -19,7 +19,7 @@ describe('Management API:   GET  ->  /correlations/active', () => {
 
     const result = await testFixtureProvider
       .managementApiClientService
-      .startProcessInstance(testFixtureProvider.identity, processModelId, 'StartEvent_1', {});
+      .startProcessInstance(testFixtureProvider.identities.defaultUser, processModelId, 'StartEvent_1', {});
 
     correlationId = result.correlationId;
 
@@ -30,11 +30,16 @@ describe('Management API:   GET  ->  /correlations/active', () => {
     await testFixtureProvider.tearDown();
   });
 
+  // NOTE:
+  // Technically, this test works just as expected.
+  // However, some, as of yet undetermined, error causes this test to fail on Jenkins.
+  // This is most likely a timing issue, since this seems to only happen, when Jenkins runs under enormous strain,
+  // but it requires further investigation before any kind of fix can be tried.
   it('should return all active correlations through the management api', async () => {
 
     const correlations = await testFixtureProvider
       .managementApiClientService
-      .getAllActiveCorrelations(testFixtureProvider.identity);
+      .getAllActiveCorrelations(testFixtureProvider.identities.defaultUser);
 
     should(correlations).be.instanceOf(Array);
     should(correlations.length).be.greaterThan(0);
@@ -49,7 +54,7 @@ describe('Management API:   GET  ->  /correlations/active', () => {
     try {
       const processModelList = await testFixtureProvider
         .managementApiClientService
-        .getAllActiveCorrelations();
+        .getAllActiveCorrelations({});
 
       should.fail(processModelList, undefined, 'This request should have failed!');
     } catch (error) {
