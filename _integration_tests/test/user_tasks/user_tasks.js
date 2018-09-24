@@ -2,8 +2,8 @@
 
 const should = require('should');
 
-const TestFixtureProvider = require('../../dist/commonjs/test_fixture_provider').TestFixtureProvider;
-const ProcessInstanceHandler = require('../../dist/commonjs/process_instance_handler').ProcessInstanceHandler;
+const TestFixtureProvider = require('../../dist/commonjs').TestFixtureProvider;
+const ProcessInstanceHandler = require('../../dist/commonjs').ProcessInstanceHandler;
 
 // NOTE:
 // The consumer api alrady contains extensive testing for this, so there is no need to cover everything here.
@@ -38,7 +38,7 @@ describe(`Management API: ${testCase}`, () => {
 
     const userTaskList = await testFixtureProvider
       .managementApiClientService
-      .getUserTasksForCorrelation(testFixtureProvider.identity, correlationId);
+      .getUserTasksForCorrelation(testFixtureProvider.identities.defaultUser, correlationId);
 
     assertUserTaskList(userTaskList);
   });
@@ -47,7 +47,7 @@ describe(`Management API: ${testCase}`, () => {
 
     const userTaskList = await testFixtureProvider
       .managementApiClientService
-      .getUserTasksForProcessModel(testFixtureProvider.identity, processModelId);
+      .getUserTasksForProcessModel(testFixtureProvider.identities.defaultUser, processModelId);
 
     assertUserTaskList(userTaskList);
   });
@@ -56,7 +56,7 @@ describe(`Management API: ${testCase}`, () => {
 
     const userTaskList = await testFixtureProvider
       .managementApiClientService
-      .getUserTasksForProcessModelInCorrelation(testFixtureProvider.identity, processModelId, correlationId);
+      .getUserTasksForProcessModelInCorrelation(testFixtureProvider.identities.defaultUser, processModelId, correlationId);
 
     assertUserTaskList(userTaskList);
   });
@@ -72,7 +72,7 @@ describe(`Management API: ${testCase}`, () => {
 
     await testFixtureProvider
       .managementApiClientService
-      .finishUserTask(testFixtureProvider.identity, processModelId, correlationId, userTaskId, userTaskResult);
+      .finishUserTask(testFixtureProvider.identities.defaultUser, processModelId, correlationId, userTaskId, userTaskResult);
   });
 
   function assertUserTaskList(userTaskList) {
