@@ -47,22 +47,27 @@ describe('Management API:   GET  ->  /correlations/:correlation_id/process_model
     return result.correlationId;
   }
 
-  it('should return a Correlations ProcessModel through the management api', async () => {
+  it('should return a correlation by its id through the Management API', async () => {
 
-    const processModels = await testFixtureProvider
+    const correlation = await testFixtureProvider
       .managementApiClientService
-      .getProcessModelsForCorrelation(testFixtureProvider.identities.defaultUser, correlationId);
+      .getCorrelationById(testFixtureProvider.identities.defaultUser, correlationId);
 
-    should(processModels).be.an.Array();
-    should(processModels[0].id).be.equal(processModelId);
-    should(processModels[0]).have.property('xml');
+    should(correlation).have.property('id');
+    should(correlation).have.property('processModels');
+
+    correlation.processModels.forEach((processModel) => {
+      should(processModel).have.property('xml');
+      should(processModel).have.property('id');
+    });
+
   });
 
   it('should fail to retrieve the ProcessModel, if the given Correlation does not exist', async () => {
     try {
       const processModelList = await testFixtureProvider
         .managementApiClientService
-        .getProcessModelsForCorrelation(testFixtureProvider.identities.defaultUser);
+        .getCorrelationById(testFixtureProvider.identities.defaultUser);
 
       should.fail(processModelList, undefined, 'This request should have failed!');
     } catch (error) {
@@ -77,7 +82,7 @@ describe('Management API:   GET  ->  /correlations/:correlation_id/process_model
     try {
       const processModelList = await testFixtureProvider
         .managementApiClientService
-        .getProcessModelsForCorrelation({}, correlationId);
+        .getCorrelationById({}, correlationId);
 
       should.fail(processModelList, undefined, 'This request should have failed!');
     } catch (error) {

@@ -46,7 +46,12 @@ describe('Management API:   GET  ->  /correlations/active', () => {
 
     correlations.forEach((correlation) => {
       should(correlation).have.property('id');
-      should(correlation).have.property('processModelId');
+      should(correlation).have.property('processModels');
+
+      correlation.processModels.forEach((processModel) => {
+        should(processModel).have.property('xml');
+        should(processModel).have.property('id');
+      });
     });
   });
 
