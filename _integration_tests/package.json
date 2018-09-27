@@ -43,6 +43,7 @@
     "@process-engine/management_api_http": "feature~inspect_correlation_features",
     "@process-engine/metrics_api_core": "0.1.0",
     "@process-engine/metrics.repository.file_system": "0.1.0",
+    "@process-engine/process_engine_contracts": "feature~inspect_correlation_features",
     "@process-engine/process_engine_core": "feature~inspect_correlation_features",
     "@process-engine/process_model.repository.sequelize": "feature~inspect_correlation",
     "@process-engine/timers.repository.sequelize": "2.1.1",

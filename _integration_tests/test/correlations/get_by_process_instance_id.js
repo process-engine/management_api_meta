@@ -7,11 +7,10 @@ const StartCallbackType = require('@process-engine/management_api_contracts').Pr
 
 const TestFixtureProvider = require('../../dist/commonjs').TestFixtureProvider;
 
-describe('Management API:   GET  ->  /correlations/:correlation_id/process_model', () => {
+describe('Management API:   GET  ->  /correlations/process_instance/:process_instance_id', () => {
 
   let testFixtureProvider;
 
-  let correlationId;
   const processModelId = 'generic_sample';
 
   before(async () => {
@@ -20,14 +19,14 @@ describe('Management API:   GET  ->  /correlations/:correlation_id/process_model
 
     await testFixtureProvider.importProcessFiles([processModelId]);
 
-    correlationId = await createFinishedProcessInstanceAndReturnCorrelationId();
+    await createFinishedProcessInstance();
   });
 
   after(async () => {
     await testFixtureProvider.tearDown();
   });
 
-  async function createFinishedProcessInstanceAndReturnCorrelationId() {
+  async function createFinishedProcessInstance() {
 
     const startEventId = 'StartEvent_1';
     const payload = {
@@ -47,32 +46,49 @@ describe('Management API:   GET  ->  /correlations/:correlation_id/process_model
     return result.correlationId;
   }
 
-  it('should return a correlation by its id through the Management API', async () => {
+  // Difficult to test, since we won't get a ProcessInstanceId returned after starting a new one.
+  it.skip('should return a correlation by its ProcessInstanceId through the Management API', async () => {
 
-    const correlation = await testFixtureProvider
+    const correlations = await testFixtureProvider
       .managementApiClientService
-      .getCorrelationById(testFixtureProvider.identities.defaultUser, correlationId);
+      .getCorrelationByProcessInstanceId(testFixtureProvider.identities.defaultUser, processModelId);
 
-    should(correlation).have.property('id');
-    should(correlation).have.property('processModels');
+    should(correlations).be.an.Array();
+    should(correlations.length).be.greaterThan(0);
 
-    correlation.processModels.forEach((processModel) => {
-      should(processModel).have.property('xml');
-      should(processModel).have.property('id');
+    correlations.forEach((correlation) => {
+
+      should(correlation).have.property('id');
+      should(correlation).have.property('state');
+      should(correlation).have.property('createdAt');
+      should(correlation).have.property('identity');
+      should(correlation.identity).have.property('token');
+      should(correlation).have.property('processModels');
+
+      correlation.processModels.forEach((processModel) => {
+        should(processModel).have.property('name');
+        should(processModel.name).be.equal(processModelId);
+        should(processModel).have.property('hash');
+        should(processModel).have.property('xml');
+        should(processModel).have.property('processInstanceId');
+        should(processModel).have.property('createdAt');
+      });
     });
 
   });
 
-  it('should fail to retrieve the ProcessModel, if the given Correlation does not exist', async () => {
+  it('should fail to retrieve the Correlation, if no Correlation for the given ProcessInstanceId exists', async () => {
+    const invalidProcessModelId = 'invalid_id';
+
     try {
       const processModelList = await testFixtureProvider
         .managementApiClientService
-        .getCorrelationById(testFixtureProvider.identities.defaultUser);
+        .getCorrelationByProcessInstanceId(testFixtureProvider.identities.defaultUser, invalidProcessModelId);
 
       should.fail(processModelList, undefined, 'This request should have failed!');
     } catch (error) {
       const expectedErrorCode = 404;
-      const expectedErrorMessage = /not found/i;
+      const expectedErrorMessage = /No correlations.*?found/i;
       should(error.code).be.match(expectedErrorCode);
       should(error.message).be.match(expectedErrorMessage);
     }
@@ -82,7 +98,7 @@ describe('Management API:   GET  ->  /correlations/:correlation_id/process_model
     try {
       const processModelList = await testFixtureProvider
         .managementApiClientService
-        .getCorrelationById({}, correlationId);
+        .getCorrelationByProcessInstanceId({}, processModelId);
 
       should.fail(processModelList, undefined, 'This request should have failed!');
     } catch (error) {
