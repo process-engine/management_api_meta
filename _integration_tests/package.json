@@ -58,6 +58,7 @@
     "moment": "2.22.2",
     "pg": "7.4.3",
     "pg-hstore": "2.3.2",
+    "sequelize": "4.38.0",
     "should": "13.2.3",
     "sqlite3": "4.0.2",
     "supertest": "3.0.0",
