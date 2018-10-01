@@ -11,6 +11,6 @@
   "license": "ISC",
   "devDependencies": {
     "meta-npm": "0.0.18",
-    "minstall": "^3.3.1-pre3"
+    "minstall": "3.3.1-pre3"
   }
 }

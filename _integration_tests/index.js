@@ -20,6 +20,7 @@ const iocModuleNames = [
   '@process-engine/kpi_api_http',
   '@process-engine/logging_api_core',
   '@process-engine/logging_api_http',
+  '@process-engine/logging.repository.file_system',
   '@process-engine/management_api_core',
   '@process-engine/management_api_http',
   '@process-engine/metrics_api_core',
