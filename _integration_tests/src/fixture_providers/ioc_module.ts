@@ -20,7 +20,8 @@ export function registerInContainer(container: any): void {
       .dependencies('ManagementApiInternalAccessor');
   } else {
     container.register('ManagementApiExternalAccessor', ManagementApiExternalAccessor)
-      .dependencies('HttpService');
+      .dependencies('HttpService')
+      .configure('management_api:external_accessor');
 
     container.register('ManagementApiClientService', ManagementApiClientService)
       .dependencies('ManagementApiExternalAccessor');

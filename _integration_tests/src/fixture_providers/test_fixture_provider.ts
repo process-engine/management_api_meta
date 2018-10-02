@@ -51,6 +51,12 @@ export class TestFixtureProvider {
 
     this._deploymentApiService = await this.resolveAsync<IDeploymentApi>('DeploymentApiService');
     this._managementApiClientService = await this.resolveAsync<IManagementApi>('ManagementApiClientService');
+
+    const accessApisExternally: boolean = process.env.MANAGEMENT_API_ACCESS_TYPE === 'external';
+
+    if (accessApisExternally) {
+      (this._managementApiClientService as any).managementApiAccessor.initializeSocket(this.identities.defaultUser);
+    }
   }
 
   public async tearDown(): Promise<void> {

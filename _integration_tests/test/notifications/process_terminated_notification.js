@@ -3,7 +3,7 @@
 const should = require('should');
 const uuid = require('uuid');
 
-const StartCallbackType = require('@process-engine/management_api_contracts').StartCallbackType;
+const StartCallbackType = require('@process-engine/management_api_contracts').ProcessModelExecution.StartCallbackType;
 
 const TestFixtureProvider = require('../../dist/commonjs').TestFixtureProvider;
 
@@ -12,7 +12,7 @@ describe('Management API:   Receive Process Terminated Notification', () => {
   let testFixtureProvider;
   let defaultIdentity;
 
-  const processModelId = 'test_consumer_api_process_terminate';
+  const processModelId = 'test_management_api_process_terminate';
 
   before(async () => {
     testFixtureProvider = new TestFixtureProvider();

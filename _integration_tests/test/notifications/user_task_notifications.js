@@ -13,18 +13,14 @@ describe('Management API:   Receive User Task Notifications', () => {
 
   let defaultIdentity;
 
-  const processModelId = 'test_consumer_api_usertask';
-  const processModelIdNoUserTasks = 'test_consumer_api_usertask_empty';
+  const processModelId = 'usertask_sample';
 
   before(async () => {
     testFixtureProvider = new TestFixtureProvider();
     await testFixtureProvider.initializeAndStart();
     defaultIdentity = testFixtureProvider.identities.defaultUser;
 
-    const processModelsToImport = [
-      processModelId,
-      processModelIdNoUserTasks,
-    ];
+    const processModelsToImport = [processModelId];
 
     await testFixtureProvider.importProcessFiles(processModelsToImport);
 
@@ -36,7 +32,7 @@ describe('Management API:   Receive User Task Notifications', () => {
   });
 
   async function finishWaitingUserTask(correlationId) {
-    const userTaskId = 'Task_1vdwmn1';
+    const userTaskId = 'user_task_1';
     const userTaskResult = {
       formFields: {
         Form_XGSVBgio: true,
