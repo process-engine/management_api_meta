@@ -54,7 +54,7 @@ describe('Management API:   GET  ->  /process_model/:process_model_id/logs', () 
       .getProcessModelLog(testFixtureProvider.identities.defaultUser, processModelId);
 
     should(logs).be.an.Array();
-    should(logs.length).be.greaterThan(0);
+    should(logs).not.be.empty();
 
     for (const log of logs) {
       should(log).have.property('timeStamp');
@@ -73,7 +73,7 @@ describe('Management API:   GET  ->  /process_model/:process_model_id/logs', () 
       .getProcessModelLog(testFixtureProvider.identities.defaultUser, processModelId, correlationId);
 
     should(logs).be.an.Array();
-    should(logs.length).be.greaterThan(0);
+    should(logs).not.be.empty();
 
     for (const log of logs) {
       should(log).have.property('timeStamp');
