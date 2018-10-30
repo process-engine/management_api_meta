@@ -92,6 +92,22 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
     }
   });
 
+  it('should fail when trying to receive the token history of a FlowNode which does not exist in the correlation', async () => {
+    const notExistingTaskId = 'not_existing_task';
+    try {
+      const processTokens = await testFixtureProvider
+        .managementApiClientService
+        .getTokensForFlowNodeInstance(defaultIdentity, processModelId, correlationId, notExistingTaskId);
+
+      should.fail(processTokens, undefined, 'This request should have failed!');
+    } catch (error) {
+      const expectedErrorCode = 404;
+      const expectedErrorMessage = /not.*exist/i;
+      should(error.code).be.equal(expectedErrorCode);
+      should(error.message).be.match(expectedErrorMessage);
+    }
+  });
+
   async function executeSampleProcess() {
 
     const payload = {
