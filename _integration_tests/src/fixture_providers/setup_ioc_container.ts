@@ -11,14 +11,11 @@ const iocModuleNames: Array<string> = [
   '@process-engine/correlations.repository.sequelize',
   '@process-engine/deployment_api_core',
   '@process-engine/external_task_api_core',
-  '@process-engine/external_task_api_http',
   '@process-engine/external_task.repository.sequelize',
   '@process-engine/flow_node_instance.repository.sequelize',
   '@process-engine/iam',
   '@process-engine/kpi_api_core',
-  '@process-engine/kpi_api_http',
   '@process-engine/logging_api_core',
-  '@process-engine/logging_api_http',
   '@process-engine/logging.repository.file_system',
   '@process-engine/management_api_core',
   '@process-engine/management_api_http',
@@ -28,7 +25,6 @@ const iocModuleNames: Array<string> = [
   '@process-engine/process_model.repository.sequelize',
   '@process-engine/timers.repository.sequelize',
   '@process-engine/token_history_api_core',
-  '@process-engine/token_history_api_http',
   '.',
 ];
 
