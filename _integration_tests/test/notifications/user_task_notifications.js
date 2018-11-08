@@ -15,6 +15,8 @@ describe('Management API:   Receive User Task Notifications', () => {
 
   const processModelId = 'usertask_sample';
 
+  let userTaskToFinish;
+
   before(async () => {
     testFixtureProvider = new TestFixtureProvider();
     await testFixtureProvider.initializeAndStart();
@@ -31,17 +33,20 @@ describe('Management API:   Receive User Task Notifications', () => {
     await testFixtureProvider.tearDown();
   });
 
-  async function finishWaitingUserTask(correlationId) {
-    const userTaskId = 'user_task_1';
+  async function finishWaitingUserTask() {
     const userTaskResult = {
       formFields: {
         Form_XGSVBgio: true,
       },
     };
 
+    const correlationId = userTaskToFinish.correlationId;
+    const processInstanceId = userTaskToFinish.processInstanceId;
+    const userTaskInstanceId = userTaskToFinish.flowNodeInstanceId;
+
     await testFixtureProvider
       .managementApiClientService
-      .finishUserTask(defaultIdentity, processModelId, correlationId, userTaskId, userTaskResult);
+      .finishUserTask(defaultIdentity, processInstanceId, correlationId, userTaskInstanceId, userTaskResult);
   }
 
   it('should send a notification when user task is suspended', async () => {
@@ -53,6 +58,7 @@ describe('Management API:   Receive User Task Notifications', () => {
       const messageReceivedCallback = async (userTaskWaitingMessage) => {
 
         should.exist(userTaskWaitingMessage);
+        userTaskToFinish = userTaskWaitingMessage;
 
         const userTaskList = await testFixtureProvider
           .managementApiClientService
