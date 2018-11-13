@@ -16,6 +16,8 @@ describe(`Management API: ${testCase}`, () => {
 
   let correlationId;
 
+  let userTaskToFinish;
+
   const processModelId = 'test_management_api_usertask';
 
   before(async () => {
@@ -27,7 +29,7 @@ describe(`Management API: ${testCase}`, () => {
     processInstanceHandler = new ProcessInstanceHandler(testFixtureProvider);
 
     correlationId = await processInstanceHandler.startProcessInstanceAndReturnCorrelationId(processModelId);
-    await processInstanceHandler.waitForProcessInstanceToReachUserTask(correlationId);
+    await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId);
   });
 
   after(async () => {
@@ -58,12 +60,16 @@ describe(`Management API: ${testCase}`, () => {
       .managementApiClientService
       .getUserTasksForProcessModelInCorrelation(testFixtureProvider.identities.defaultUser, processModelId, correlationId);
 
+    userTaskToFinish = userTaskList.userTasks[0];
+
     assertUserTaskList(userTaskList);
   });
 
   it('should successfully finish the given user task.', async () => {
 
-    const userTaskId = 'Task_1vdwmn1';
+    const processInstanceId = userTaskToFinish.processInstanceId;
+    const flowNodeInstanceId = userTaskToFinish.flowNodeInstanceId;
+
     const userTaskResult = {
       formFields: {
         Form_XGSVBgio: true,
@@ -72,7 +78,7 @@ describe(`Management API: ${testCase}`, () => {
 
     await testFixtureProvider
       .managementApiClientService
-      .finishUserTask(testFixtureProvider.identities.defaultUser, processModelId, correlationId, userTaskId, userTaskResult);
+      .finishUserTask(testFixtureProvider.identities.defaultUser, processInstanceId, correlationId, flowNodeInstanceId, userTaskResult);
   });
 
   function assertUserTaskList(userTaskList) {
