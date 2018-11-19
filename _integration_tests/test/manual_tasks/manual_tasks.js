@@ -67,10 +67,8 @@ describe(`Management API: ${testCase}`, () => {
 
   it('should successfully finish the given ManualTask.', async () => {
 
-    console.log(manualTaskToFinish);
-
-    const processInstanceId = manualTaskToFinish.processModelId;
-    const flowNodeInstanceId = manualTaskToFinish.id;
+    const processInstanceId = manualTaskToFinish.processInstanceId;
+    const flowNodeInstanceId = manualTaskToFinish.flowNodeInstanceId;
 
     await testFixtureProvider
       .managementApiClientService
@@ -87,6 +85,7 @@ describe(`Management API: ${testCase}`, () => {
     const manualTask = manualTaskList.manualTasks[0];
 
     should(manualTask).have.property('id');
+    should(manualTask).have.property('flowNodeInstanceId');
     should(manualTask).have.property('name');
     should(manualTask).have.property('correlationId');
     should(manualTask).have.property('processModelId');
