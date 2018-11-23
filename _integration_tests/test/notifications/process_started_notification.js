@@ -30,7 +30,7 @@ describe.only('Management API:   Receive Process Ended Notification', () => {
     await testFixtureProvider.tearDown();
   });
 
-  it('should send a notification when a process is finished', async () => {
+  it('should send a notification when the ProcessInstance was started', async () => {
 
     return new Promise((resolve, reject) => {
 
