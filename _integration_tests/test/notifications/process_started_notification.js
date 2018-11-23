@@ -47,7 +47,9 @@ describe.only('Management API:   Receive Process Ended Notification', () => {
 
         // Since this notification channel will receive ALL processEnded messages,
         // we need to make sure that we intercepted the one we anticipated.
-        if (processStartedMessage.correlationId !== payload.correlationId) {
+        const messageWasNotFromOurCorrelation = processStartedMessage.correlationId !== payload.correlationId;
+        if (messageWasNotFromOurCorrelation) {
+
           return;
         }
 
@@ -77,16 +79,17 @@ describe.only('Management API:   Receive Process Ended Notification', () => {
 
       const startCallbackType = StartCallbackType.CallbackOnProcessInstanceCreated;
 
-      const onProcessStartedCallback = (processStartedEvent) => {
-        should.exist(processStartedEvent);
-        should(processStartedEvent).have.property('correlationId');
+      const onProcessStartedCallback = (processStartedMessage) => {
+        should.exist(processStartedMessage);
+        should(processStartedMessage).have.property('correlationId');
+        const messageWasNotFromOurCorrelation = processStartedMessage.correlationId !== payload.correlationId;
+        if (messageWasNotFromOurCorrelation) {
 
-        if (processStartedEvent.correlationId !== payload.correlationId) {
           return;
         }
-        should(processStartedEvent.correlationId).be.equal(payload.correlationId);
-        should(processStartedEvent).have.property('flowNodeId');
-        should(processStartedEvent.flowNodeId).be.equal(startEventId);
+        should(processStartedMessage.correlationId).be.equal(payload.correlationId);
+        should(processStartedMessage).have.property('flowNodeId');
+        should(processStartedMessage.flowNodeId).be.equal(startEventId);
 
         resolve();
       };
