@@ -7,7 +7,7 @@ const StartCallbackType = require('@process-engine/management_api_contracts').Pr
 
 const TestFixtureProvider = require('../../dist/commonjs').TestFixtureProvider;
 
-describe.only('Management API:   Receive Process Ended Notification', () => {
+describe('Management API:   Receive Process Ended Notification', () => {
 
   let testFixtureProvider;
   let defaultIdentity;
