@@ -35,18 +35,15 @@ describe('Management API:   Receive Process Ended Notification', () => {
     return new Promise((resolve, reject) => {
 
       const startEventId = 'StartEvent_1';
-      const endEventId = 'EndEvent_Success';
       const payload = {
         correlationId: uuid.v4(),
         inputValues: {},
       };
-      const startCallbackType = StartCallbackType.CallbackOnEndEventReached;
+      const startCallbackType = StartCallbackType.onProcessInstanceStarted;
 
       const onProcessStartedCallback = (processStartedMessage) => {
-        console.log('Process started');
-        console.log(processStartedMessage);
-
         should.exist(processStartedMessage);
+        should(processStartedMessage).have.property('correlationId');
 
         // Since this notification channel will receive ALL processEnded messages,
         // we need to make sure that we intercepted the one we anticipated.
@@ -54,22 +51,18 @@ describe('Management API:   Receive Process Ended Notification', () => {
           return;
         }
 
-        /*
-        should(processEndedMessage).have.property('correlationId');
-        should(processEndedMessage.correlationId).be.equal(payload.correlationId);
-        should(processEndedMessage).have.property('flowNodeId');
-        should(processEndedMessage.flowNodeId).be.equal(endEventId);*/
+        should(processStartedMessage.correlationId).be.equal(payload.correlationId);
+        should(processStartedMessage).have.property('flowNodeId');
+        should(processStartedMessage.flowNodeId).be.equal(startEventId);
 
         resolve();
       };
 
-      testFixtureProvider.managementApiClientService.onProcessStarted(onProcessStartedCallback);
+      testFixtureProvider.managementApiClientService.onProcessStarted(defaultIdentity, onProcessStartedCallback);
 
       testFixtureProvider
         .managementApiClientService
-        .startProcessInstance(defaultIdentity, processModelId, startEventId, payload, startCallbackType, endEventId);
-
+        .startProcessInstance(defaultIdentity, processModelId, startEventId, payload, startCallbackType);
     });
   });
-
 });
