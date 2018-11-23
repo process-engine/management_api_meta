@@ -7,7 +7,7 @@ const StartCallbackType = require('@process-engine/management_api_contracts').Pr
 
 const TestFixtureProvider = require('../../dist/commonjs').TestFixtureProvider;
 
-describe('Management API:   Receive Process Ended Notification', () => {
+describe.only('Management API:   Receive Process Ended Notification', () => {
 
   let testFixtureProvider;
   let defaultIdentity;
@@ -30,7 +30,7 @@ describe('Management API:   Receive Process Ended Notification', () => {
     await testFixtureProvider.tearDown();
   });
 
-  it.only('should send a notification when a process is finished', async () => {
+  it('should send a notification when a process is finished', async () => {
 
     return new Promise((resolve, reject) => {
 
@@ -39,7 +39,7 @@ describe('Management API:   Receive Process Ended Notification', () => {
         correlationId: uuid.v4(),
         inputValues: {},
       };
-      const startCallbackType = StartCallbackType.onProcessInstanceStarted;
+      const startCallbackType = StartCallbackType.CallbackOnProcessInstanceCreated;
 
       const onProcessStartedCallback = (processStartedMessage) => {
         should.exist(processStartedMessage);
@@ -59,6 +59,39 @@ describe('Management API:   Receive Process Ended Notification', () => {
       };
 
       testFixtureProvider.managementApiClientService.onProcessStarted(defaultIdentity, onProcessStartedCallback);
+
+      testFixtureProvider
+        .managementApiClientService
+        .startProcessInstance(defaultIdentity, processModelId, startEventId, payload, startCallbackType);
+    });
+  });
+
+  it('should send a notification when a process with a given ProcessModelId was started', async () => {
+    return new Promise((resolve, reject) => {
+
+      const startEventId = 'StartEvent_1';
+      const payload = {
+        correlationId: uuid.v4(),
+        inputValues: {},
+      };
+
+      const startCallbackType = StartCallbackType.CallbackOnProcessInstanceCreated;
+
+      const onProcessStartedCallback = (processStartedEvent) => {
+        should.exist(processStartedEvent);
+        should(processStartedEvent).have.property('correlationId');
+
+        if (processStartedEvent.correlationId !== payload.correlationId) {
+          return;
+        }
+        should(processStartedEvent.correlationId).be.equal(payload.correlationId);
+        should(processStartedEvent).have.property('flowNodeId');
+        should(processStartedEvent.flowNodeId).be.equal(startEventId);
+
+        resolve();
+      };
+
+      testFixtureProvider.managementApiClientService.onProcessWithProcessModelIdStarted(defaultIdentity, onProcessStartedCallback, processModelId);
 
       testFixtureProvider
         .managementApiClientService
