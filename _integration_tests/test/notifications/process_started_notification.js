@@ -49,7 +49,6 @@ describe('Management API:   Receive Process Ended Notification', () => {
         // we need to make sure that we intercepted the one we anticipated.
         const messageWasNotFromOurCorrelation = processStartedMessage.correlationId !== payload.correlationId;
         if (messageWasNotFromOurCorrelation) {
-
           return;
         }
 
@@ -84,7 +83,6 @@ describe('Management API:   Receive Process Ended Notification', () => {
         should(processStartedMessage).have.property('correlationId');
         const messageWasNotFromOurCorrelation = processStartedMessage.correlationId !== payload.correlationId;
         if (messageWasNotFromOurCorrelation) {
-
           return;
         }
         should(processStartedMessage.correlationId).be.equal(payload.correlationId);
