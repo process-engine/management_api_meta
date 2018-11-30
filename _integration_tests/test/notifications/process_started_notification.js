@@ -81,10 +81,12 @@ describe('Management API:   Receive Process Ended Notification', () => {
       const onProcessStartedCallback = (processStartedMessage) => {
         should.exist(processStartedMessage);
         should(processStartedMessage).have.property('correlationId');
+
         const messageWasNotFromSpecifiedCorrelation = processStartedMessage.correlationId !== payload.correlationId;
         if (messageWasNotFromSpecifiedCorrelation) {
           return;
         }
+
         should(processStartedMessage.correlationId).be.equal(payload.correlationId);
         should(processStartedMessage).have.property('flowNodeId');
         should(processStartedMessage.flowNodeId).be.equal(startEventId);
