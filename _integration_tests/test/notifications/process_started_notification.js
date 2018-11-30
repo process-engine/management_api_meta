@@ -47,8 +47,8 @@ describe('Management API:   Receive Process Ended Notification', () => {
 
         // Since this notification channel will receive ALL processEnded messages,
         // we need to make sure that we intercepted the one we anticipated.
-        const messageWasNotFromOurCorrelation = processStartedMessage.correlationId !== payload.correlationId;
-        if (messageWasNotFromOurCorrelation) {
+        const messageWasNotFromSpecifiedCorrelation = processStartedMessage.correlationId !== payload.correlationId;
+        if (messageWasNotFromSpecifiedCorrelation) {
           return;
         }
 
@@ -81,8 +81,8 @@ describe('Management API:   Receive Process Ended Notification', () => {
       const onProcessStartedCallback = (processStartedMessage) => {
         should.exist(processStartedMessage);
         should(processStartedMessage).have.property('correlationId');
-        const messageWasNotFromOurCorrelation = processStartedMessage.correlationId !== payload.correlationId;
-        if (messageWasNotFromOurCorrelation) {
+        const messageWasNotFromSpecifiedCorrelation = processStartedMessage.correlationId !== payload.correlationId;
+        if (messageWasNotFromSpecifiedCorrelation) {
           return;
         }
         should(processStartedMessage.correlationId).be.equal(payload.correlationId);
