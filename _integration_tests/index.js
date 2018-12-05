@@ -31,7 +31,6 @@ const iocModuleNames = [
   '@process-engine/metrics_api_http',
   '@process-engine/process_engine_core',
   '@process-engine/process_model.repository.sequelize',
-  '@process-engine/timers.repository.sequelize',
   '@process-engine/token_history_api_core',
 
   '.',

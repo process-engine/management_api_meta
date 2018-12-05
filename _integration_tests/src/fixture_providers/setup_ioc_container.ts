@@ -24,7 +24,6 @@ const iocModuleNames: Array<string> = [
   '@process-engine/metrics.repository.file_system',
   '@process-engine/process_engine_core',
   '@process-engine/process_model.repository.sequelize',
-  '@process-engine/timers.repository.sequelize',
   '@process-engine/token_history_api_core',
   '.',
 ];
