@@ -108,7 +108,6 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
     }
   });
 
-  /////////////////////
   it('should successfully read the token history for each FlowNode of a specific process model of the executed correlation', async () => {
 
     const expectedTokenTypes = [
