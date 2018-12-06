@@ -128,12 +128,8 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
       .managementApiClientService
       .getTokensForCorrelationAndProcessModel(defaultIdentity, correlationId, processModelId);
 
-    should(tokenHistories).be.an.Array();
-
     for(const expectedFlowNodeName of expectedFlowNodeNames) {
-      const tokenHistory = tokenHistories.find((tokenHistory) => {
-        return tokenHistory[0].flowNodeId === expectedFlowNodeName;
-      });
+      const tokenHistory = tokenHistories.get(expectedFlowNodeName);
 
       should(tokenHistory).be.an.Array();
       should(tokenHistory.length).be.equal(2, `Not all state changes were persisted for FlowNode ${expectedFlowNodeName}!`);
