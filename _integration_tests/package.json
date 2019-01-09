@@ -53,6 +53,7 @@
     "addict-ioc": "~2.5.1",
     "bluebird": "~3.5.2",
     "loggerhythm": "~3.0.3",
+    "jsonwebtoken": "~8.4.0",
     "moment": "~2.22.2",
     "pg": "~7.6.0",
     "pg-hstore": "~2.3.2",
