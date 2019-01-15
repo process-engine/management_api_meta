@@ -9,7 +9,7 @@ import {
   StartCallbackType,
 } from '@process-engine/consumer_api_contracts';
 
-import {IFlowNodeInstanceService} from '@process-engine/process_engine_contracts';
+import {IFlowNodeInstanceService, Runtime} from '@process-engine/process_engine_contracts';
 
 import {TestFixtureProvider} from './test_fixture_provider';
 
@@ -55,7 +55,11 @@ export class ProcessInstanceHandler {
     return result.correlationId;
   }
 
-  public async waitForProcessInstanceToReachSuspendedTask(correlationId: string, processModelId?: string): Promise<void> {
+  public async waitForProcessInstanceToReachSuspendedTask(
+    correlationId: string,
+    processModelId?: string,
+    expectedNumberOfWaitingTasks: number = 1,
+  ): Promise<void> {
 
     const maxNumberOfRetries: number = 60;
     const delayBetweenRetriesInMs: number = 200;
@@ -66,20 +70,21 @@ export class ProcessInstanceHandler {
 
       await this.wait(delayBetweenRetriesInMs);
 
-      let flowNodeInstances: Array<any> = await flowNodeInstanceService.querySuspendedByCorrelation(correlationId);
+      let flowNodeInstances: Array<Runtime.Types.FlowNodeInstance> = await flowNodeInstanceService.querySuspendedByCorrelation(correlationId);
 
       if (processModelId) {
-        flowNodeInstances = flowNodeInstances.filter((fni: any) => {
+        flowNodeInstances = flowNodeInstances.filter((fni: Runtime.Types.FlowNodeInstance) => {
           return fni.tokens[0].processModelId === processModelId;
         });
       }
 
-      if (flowNodeInstances.length >= 1) {
+      const enoughWaitingTasksFound: boolean = flowNodeInstances.length >= expectedNumberOfWaitingTasks;
+      if (enoughWaitingTasksFound) {
         return;
       }
     }
 
-    throw new Error(`No process instance within correlation '${correlationId}' found! The process instance like failed to start!`);
+    throw new Error(`No process instance within correlation '${correlationId}' found! The process instance likely failed to start!`);
   }
 
   /**
@@ -96,6 +101,11 @@ export class ProcessInstanceHandler {
    */
   public waitForProcessInstanceToEnd(correlationId: string, processModelId: string, resolveFunc: EventReceivedCallback): void {
     const endMessageToWaitFor: string = `/processengine/correlation/${correlationId}/processmodel/${processModelId}/ended`;
+    this.eventAggregator.subscribeOnce(endMessageToWaitFor, resolveFunc);
+  }
+
+  public waitForProcessWithInstanceIdToEnd(processInstanceId: string, resolveFunc: EventReceivedCallback): void {
+    const endMessageToWaitFor: string = `/processengine/process/${processInstanceId}/ended`;
     this.eventAggregator.subscribeOnce(endMessageToWaitFor, resolveFunc);
   }
 

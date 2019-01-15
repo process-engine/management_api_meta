@@ -8,7 +8,11 @@ meta exec "git checkout develop" --exclude management_api_meta
 # retrieve latest versions
 meta git pull
 
+echo "Clearing npm cache"
+npm cache clean --force
+
 # install all necessary dependencies
+echo "Running npm install"
 npm install --no-package-lock
 
 if [[ "$?" -ne "0" ]]; then
