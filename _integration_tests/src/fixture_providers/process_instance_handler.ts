@@ -1,14 +1,8 @@
-'use strict';
-
 import * as uuid from 'uuid';
 
 import {EventReceivedCallback, IEventAggregator} from '@essential-projects/event_aggregator_contracts';
-import {
-  ProcessStartRequestPayload,
-  ProcessStartResponsePayload,
-  StartCallbackType,
-} from '@process-engine/consumer_api_contracts';
 
+import {DataModels} from '@process-engine/management_api_contracts';
 import {IFlowNodeInstanceService, Runtime} from '@process-engine/process_engine_contracts';
 
 import {TestFixtureProvider} from './test_fixture_provider';
@@ -42,13 +36,13 @@ export class ProcessInstanceHandler {
   public async startProcessInstanceAndReturnCorrelationId(processModelId: string, correlationId?: string, inputValues?: any): Promise<string> {
 
     const startEventId: string = 'StartEvent_1';
-    const startCallbackType: StartCallbackType = StartCallbackType.CallbackOnProcessInstanceCreated;
-    const payload: ProcessStartRequestPayload = {
+    const startCallbackType: DataModels.ProcessModels.StartCallbackType = DataModels.ProcessModels.StartCallbackType.CallbackOnProcessInstanceCreated;
+    const payload: DataModels.ProcessModels.ProcessStartRequestPayload = {
       correlationId: correlationId || uuid.v4(),
       inputValues: inputValues || {},
     };
 
-    const result: ProcessStartResponsePayload = await this.testFixtureProvider
+    const result: DataModels.ProcessModels.ProcessStartResponsePayload = await this.testFixtureProvider
       .managementApiClientService
       .startProcessInstance(this.testFixtureProvider.identities.defaultUser, processModelId, startEventId, payload, startCallbackType);
 
