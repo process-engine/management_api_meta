@@ -16,6 +16,8 @@ describe('Management API:   Receive identity specific UserTask Notifications', (
   let correlationId;
   let userTaskToFinish;
 
+  const noopCallback = () => {};
+
   before(async () => {
     testFixtureProvider = new TestFixtureProvider();
     await testFixtureProvider.initializeAndStart();
@@ -90,6 +92,36 @@ describe('Management API:   Receive identity specific UserTask Notifications', (
     });
   });
 
+  it('should fail to subscribe for the UserTaskForIdentityWaiting notification, if the user is unauthorized', async () => {
+    try {
+      const subscribeOnce = true;
+      const subscription = await testFixtureProvider
+        .managementApiClientService
+        .onUserTaskForIdentityWaiting({}, noopCallback, subscribeOnce);
+      should.fail(subscription, undefined, 'This should not have been possible, because the user is unauthorized!');
+    } catch (error) {
+      const expectedErrorMessage = /no auth token/i;
+      const expectedErrorCode = 401;
+      should(error.message).be.match(expectedErrorMessage);
+      should(error.code).be.match(expectedErrorCode);
+    }
+  });
+
+  it('should fail to subscribe for the UserTaskForIdentityFinished notification, if the user is unauthorized', async () => {
+    try {
+      const subscribeOnce = true;
+      const subscription = await testFixtureProvider
+        .managementApiClientService
+        .onUserTaskForIdentityFinished({}, noopCallback, subscribeOnce);
+      should.fail(subscription, undefined, 'This should not have been possible, because the user is unauthorized!');
+    } catch (error) {
+      const expectedErrorMessage = /no auth token/i;
+      const expectedErrorCode = 401;
+      should(error.message).be.match(expectedErrorMessage);
+      should(error.code).be.match(expectedErrorCode);
+    }
+  });
+
   async function finishWaitingUserTask() {
     const userTaskResult = {
       formFields: {
@@ -104,5 +136,4 @@ describe('Management API:   Receive identity specific UserTask Notifications', (
       .managementApiClientService
       .finishUserTask(defaultIdentity, processInstanceId, userTaskToFinish.correlationId, userTaskInstanceId, userTaskResult);
   }
-
 });
