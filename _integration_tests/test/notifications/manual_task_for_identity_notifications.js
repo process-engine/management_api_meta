@@ -5,7 +5,7 @@ const uuid = require('uuid');
 
 const {TestFixtureProvider, ProcessInstanceHandler} = require('../../dist/commonjs');
 
-describe('Management API:   Receive global ManualTask Notifications', () => {
+describe('Management API:   Receive identity specific ManualTask Notifications', () => {
 
   let processInstanceHandler;
   let testFixtureProvider;
@@ -32,7 +32,7 @@ describe('Management API:   Receive global ManualTask Notifications', () => {
     await testFixtureProvider.tearDown();
   });
 
-  it('should send a notification via socket when ManualTask is suspended', async () => {
+  it('should send a notification via socket when a ManualTask for the given identity is suspended', async () => {
 
     correlationId = uuid.v4();
 
@@ -60,13 +60,13 @@ describe('Management API:   Receive global ManualTask Notifications', () => {
       const subscribeOnce = true;
       await testFixtureProvider
         .managementApiClientService
-        .onManualTaskWaiting(defaultIdentity, notificationReceivedCallback, subscribeOnce);
+        .onManualTaskForIdentityWaiting(defaultIdentity, notificationReceivedCallback, subscribeOnce);
 
       await processInstanceHandler.startProcessInstanceAndReturnCorrelationId(processModelId, correlationId);
     });
   });
 
-  it('should send a notification via socket when a ManualTask is finished', async () => {
+  it('should send a notification via socket when a ManualTask for the given identity is finished', async () => {
 
     return new Promise(async (resolve, reject) => {
 
@@ -83,7 +83,7 @@ describe('Management API:   Receive global ManualTask Notifications', () => {
       const subscribeOnce = true;
       await testFixtureProvider
         .managementApiClientService
-        .onManualTaskFinished(defaultIdentity, notificationReceivedCallback, subscribeOnce);
+        .onManualTaskForIdentityFinished(defaultIdentity, notificationReceivedCallback, subscribeOnce);
 
       const processFinishedCallback = () => {
         if (!notificationReceived) {
