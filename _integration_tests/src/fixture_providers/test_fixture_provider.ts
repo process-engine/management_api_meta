@@ -129,10 +129,10 @@ export class TestFixtureProvider {
     };
   }
 
-  private async _createIdentity(username: string): Promise<IIdentity> {
+  private async _createIdentity(userId: string): Promise<IIdentity> {
 
     const tokenBody: TokenBody = {
-      sub: username,
+      sub: userId,
       name: 'hellas',
     };
 
@@ -144,7 +144,7 @@ export class TestFixtureProvider {
 
     return <IIdentity> {
       token: encodedToken,
-      userId: username,
+      userId: userId,
     };
   }
 
