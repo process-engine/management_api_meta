@@ -87,7 +87,7 @@ describe('Management API:   GET  ->  /correlations/all', () => {
       * Give the persistance backend some time to persist the Correlation
       * results.
       */
-      await wait(500);
+      await wait(750);
     }
 
     const correlations = await testFixtureProvider
