@@ -11,17 +11,17 @@ describe('Management API:   GET  ->  /correlations/all', () => {
 
   let testFixtureProvider;
 
-  const processModelId = 'generic_sample';
+  const genericProcessModelId = 'generic_sample';
   const errorProcessModelId = 'test_management_api_correlation_error';
 
   before(async () => {
     testFixtureProvider = new TestFixtureProvider();
     await testFixtureProvider.initializeAndStart();
 
-    await testFixtureProvider.importProcessFiles([processModelId, errorProcessModelId]);
+    await testFixtureProvider.importProcessFiles([genericProcessModelId, errorProcessModelId]);
 
-    await createFinishedProcessInstance(testFixtureProvider.identities.defaultUser, processModelId);
-    await createFinishedProcessInstance(testFixtureProvider.identities.secondDefaultUser, processModelId);
+    await createFinishedProcessInstance(testFixtureProvider.identities.defaultUser, genericProcessModelId);
+    await createFinishedProcessInstance(testFixtureProvider.identities.secondDefaultUser, genericProcessModelId);
   });
 
   after(async () => {
@@ -40,7 +40,7 @@ describe('Management API:   GET  ->  /correlations/all', () => {
 
     const result = await testFixtureProvider
       .managementApiClientService
-      .startProcessInstance(identity, processModelIdToUse, startEventId, payload, returnOn);
+      .startProcessInstance(identity, processModelIdToUse, processModelIdToUse, payload, returnOn);
 
     should(result).have.property('correlationId');
     should(result.correlationId).be.equal(payload.correlationId);
@@ -48,7 +48,7 @@ describe('Management API:   GET  ->  /correlations/all', () => {
     return result.correlationId;
   }
 
-  it('should return all correlations for an user through the management api', async () => {
+  it('should include all correlations that were finished with an error', async () => {
 
     const correlations = await testFixtureProvider
       .managementApiClientService
