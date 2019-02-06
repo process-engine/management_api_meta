@@ -17,6 +17,7 @@ import {initializeBootstrapper} from './setup_ioc_container';
 
 export type IdentityCollection = {
   defaultUser: IIdentity;
+  secondDefaultUser: IIdentity,
   restrictedUser: IIdentity;
 };
 
@@ -124,6 +125,7 @@ export class TestFixtureProvider {
     this._identities = {
       // all access user
       defaultUser: await this._createIdentity('defaultUser'),
+      secondDefaultUser: await this._createIdentity('secondDefaultUser'),
       // no access user
       restrictedUser: await this._createIdentity('restrictedUser'),
     };
