@@ -108,7 +108,6 @@ describe('Management API:   GET  ->  /correlations/active', () => {
   }
 
   async function cleanup(correlationId, identity) {
-    console.log(correlationId);
 
     await new Promise(async (resolve, reject) => {
       processInstanceHandler.waitForProcessInstanceToEnd(correlationId, processModelId, resolve);
