@@ -1,6 +1,7 @@
 import * as uuid from 'node-uuid';
 
 import {EventReceivedCallback, IEventAggregator} from '@essential-projects/event_aggregator_contracts';
+import {IIdentity} from '@essential-projects/iam_contracts';
 
 import {DataModels} from '@process-engine/management_api_contracts';
 import {IFlowNodeInstanceService, Runtime} from '@process-engine/process_engine_contracts';
@@ -33,7 +34,12 @@ export class ProcessInstanceHandler {
     return this._testFixtureProvider;
   }
 
-  public async startProcessInstanceAndReturnCorrelationId(processModelId: string, correlationId?: string, inputValues?: any): Promise<string> {
+  public async startProcessInstanceAndReturnCorrelationId(
+    processModelId: string,
+    correlationId?: string,
+    inputValues?: any,
+    identity?: IIdentity,
+  ): Promise<string> {
 
     const startEventId: string = 'StartEvent_1';
     const startCallbackType: DataModels.ProcessModels.StartCallbackType = DataModels.ProcessModels.StartCallbackType.CallbackOnProcessInstanceCreated;
@@ -42,12 +48,14 @@ export class ProcessInstanceHandler {
       inputValues: inputValues || {},
     };
 
+    const identityToUse: IIdentity = identity || this.testFixtureProvider.identities.defaultUser;
+
     const result: DataModels.ProcessModels.ProcessStartResponsePayload = await this.testFixtureProvider
       .managementApiClientService
-      .startProcessInstance(this.testFixtureProvider.identities.defaultUser, processModelId, startEventId, payload, startCallbackType);
+      .startProcessInstance(identityToUse, processModelId, startEventId, payload, startCallbackType);
 
     return result.correlationId;
-  }
+}
 
   public async waitForProcessInstanceToReachSuspendedTask(
     correlationId: string,
