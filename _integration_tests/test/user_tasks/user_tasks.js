@@ -18,6 +18,7 @@ describe(`Management API: ${testCase}`, () => {
   let userTaskToFinish;
 
   const processModelId = 'test_management_api_usertask';
+  let processInstanceId;
 
   before(async () => {
     testFixtureProvider = new TestFixtureProvider();
@@ -27,7 +28,10 @@ describe(`Management API: ${testCase}`, () => {
 
     processInstanceHandler = new ProcessInstanceHandler(testFixtureProvider);
 
-    correlationId = await processInstanceHandler.startProcessInstanceAndReturnCorrelationId(processModelId);
+    const result = await processInstanceHandler.startProcessInstanceAndReturnResult(processModelId);
+    correlationId = result.correlationId;
+    processInstanceId = result.processInstanceId;
+
     await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId);
   });
 
@@ -53,6 +57,15 @@ describe(`Management API: ${testCase}`, () => {
     assertUserTaskList(userTaskList);
   });
 
+  it('should return a process model\'s user tasks by its process_instance_id through the consumer api', async () => {
+
+    const userTaskList = await testFixtureProvider
+      .managementApiClientService
+      .getUserTasksForProcessInstance(testFixtureProvider.identities.defaultUser, processInstanceId);
+
+    assertUserTaskList(userTaskList);
+  });
+
   it('should return a list of user tasks for a given process model in a given correlation', async () => {
 
     const userTaskList = await testFixtureProvider
@@ -70,18 +83,7 @@ describe(`Management API: ${testCase}`, () => {
     // Mocha resolves and disassembles the backend BEFORE the process was finished, thus leading to inconsistent database entries.
     // To avoid a messed up database that could break other tests, we must wait here for the process to finish, before finishing the test.
     return new Promise(async (resolve) => {
-
-      const endMessageToWaitFor = `/processengine/correlation/${correlationId}/processmodel/${processModelId}/ended`;
-      const evaluationCallback = () => {
-        resolve();
-      };
-
-      // Subscribe for end of the process
-      const eventAggregator = await testFixtureProvider.resolveAsync('EventAggregator');
-      eventAggregator.subscribeOnce(endMessageToWaitFor, evaluationCallback);
-
-      const processInstanceId = userTaskToFinish.processInstanceId;
-      const flowNodeInstanceId = userTaskToFinish.flowNodeInstanceId;
+      processInstanceHandler.waitForProcessWithInstanceIdToEnd(userTaskToFinish.processInstanceId, resolve);
 
       const userTaskResult = {
         formFields: {
@@ -92,7 +94,13 @@ describe(`Management API: ${testCase}`, () => {
       // Now finish the UserTask.
       await testFixtureProvider
         .managementApiClientService
-        .finishUserTask(testFixtureProvider.identities.defaultUser, processInstanceId, correlationId, flowNodeInstanceId, userTaskResult);
+        .finishUserTask(
+          testFixtureProvider.identities.defaultUser,
+          userTaskToFinish.processInstanceId,
+          correlationId,
+          userTaskToFinish.flowNodeInstanceId,
+          userTaskResult,
+        );
     });
   });
 

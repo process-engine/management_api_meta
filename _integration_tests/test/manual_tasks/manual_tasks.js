@@ -14,6 +14,7 @@ describe(`Management API: ${testCase}`, () => {
   let testFixtureProvider;
 
   let correlationId;
+  let processInstanceId;
 
   let manualTaskToFinish;
 
@@ -27,7 +28,10 @@ describe(`Management API: ${testCase}`, () => {
 
     processInstanceHandler = new ProcessInstanceHandler(testFixtureProvider);
 
-    correlationId = await processInstanceHandler.startProcessInstanceAndReturnCorrelationId(processModelId);
+    const result = await processInstanceHandler.startProcessInstanceAndReturnResult(processModelId);
+    correlationId = result.correlationId;
+    processInstanceId = result.processInstanceId;
+
     await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId);
   });
 
@@ -53,6 +57,15 @@ describe(`Management API: ${testCase}`, () => {
     assertmanualTaskList(manualTaskList);
   });
 
+  it('should return a process model\'s ManualTasks by its process_instance_id through the consumer api', async () => {
+
+    const manualTaskList = await testFixtureProvider
+      .managementApiClientService
+      .getManualTasksForProcessInstance(testFixtureProvider.identities.defaultUser, processInstanceId);
+
+    assertmanualTaskList(manualTaskList);
+  });
+
   it('should return a list of ManualTasks for a given process model in a given correlation', async () => {
 
     const manualTaskList = await testFixtureProvider
@@ -70,23 +83,17 @@ describe(`Management API: ${testCase}`, () => {
     // Mocha resolves and disassembles the backend BEFORE the process was finished, thus leading to inconsistent database entries.
     // To avoid a messed up database that could break other tests, we must wait here for the process to finish, before finishing the test.
     return new Promise(async (resolve) => {
-
-      const endMessageToWaitFor = `/processengine/correlation/${correlationId}/processmodel/${processModelId}/ended`;
-      const evaluationCallback = () => {
-        resolve();
-      };
-
-      // Subscribe for end of the process
-      const eventAggregator = await testFixtureProvider.resolveAsync('EventAggregator');
-      eventAggregator.subscribeOnce(endMessageToWaitFor, evaluationCallback);
-
-      const processInstanceId = manualTaskToFinish.processInstanceId;
-      const flowNodeInstanceId = manualTaskToFinish.flowNodeInstanceId;
+      processInstanceHandler.waitForProcessWithInstanceIdToEnd(manualTaskToFinish.processInstanceId, resolve);
 
       // Now finish the ManualTask.
       await testFixtureProvider
         .managementApiClientService
-        .finishManualTask(testFixtureProvider.identities.defaultUser, processInstanceId, correlationId, flowNodeInstanceId);
+        .finishManualTask(
+          testFixtureProvider.identities.defaultUser,
+          manualTaskToFinish.processInstanceId,
+          correlationId,
+          manualTaskToFinish.flowNodeInstanceId,
+        );
     });
   });
 
