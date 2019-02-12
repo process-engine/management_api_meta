@@ -55,7 +55,30 @@ export class ProcessInstanceHandler {
       .startProcessInstance(identityToUse, processModelId, startEventId, payload, startCallbackType);
 
     return result.correlationId;
-}
+  }
+
+  public async startProcessInstanceAndReturnResult(
+    processModelId: string,
+    correlationId?: string,
+    inputValues?: any,
+    identity?: IIdentity,
+  ): Promise<DataModels.ProcessModels.ProcessStartResponsePayload> {
+
+    const startEventId: string = 'StartEvent_1';
+    const startCallbackType: DataModels.ProcessModels.StartCallbackType = DataModels.ProcessModels.StartCallbackType.CallbackOnProcessInstanceCreated;
+    const payload: DataModels.ProcessModels.ProcessStartRequestPayload = {
+      correlationId: correlationId || uuid.v4(),
+      inputValues: inputValues || {},
+    };
+
+    const identityToUse: IIdentity = identity || this.testFixtureProvider.identities.defaultUser;
+
+    const result: DataModels.ProcessModels.ProcessStartResponsePayload = await this.testFixtureProvider
+      .managementApiClientService
+      .startProcessInstance(identityToUse, processModelId, startEventId, payload, startCallbackType);
+
+    return result;
+  }
 
   public async waitForProcessInstanceToReachSuspendedTask(
     correlationId: string,
