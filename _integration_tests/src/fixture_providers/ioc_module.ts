@@ -14,7 +14,7 @@ export function registerInContainer(container: any): void {
 
   if (accessManagementApiExternally) {
     container.register('ManagementApiExternalAccessor', ManagementApiExternalAccessor)
-      .dependencies('HttpService')
+      .dependencies('HttpClient')
       .configure('management_api:external_accessor');
 
     container.register('ManagementApiClientService', ManagementApiClientService)
