@@ -26,6 +26,7 @@ def cleanup_docker() {
   sh(script: "docker volume prune --force");
 }
 
+@NonCPS
 def slack_send_summary(testlog, test_failed) {
   def passing_regex = /\d+ passing/;
   def failing_regex = /\d+ failing/;
@@ -35,19 +36,19 @@ def slack_send_summary(testlog, test_failed) {
   def failing_matcher = testlog =~ failing_regex;
   def pending_matcher = testlog =~ pending_regex;
 
-  def passing = passing_matcher.count > 0 ? passing_matcher[0] : 'Failed to parse passed test count.';
-  def failing = failing_matcher.count > 0 ? failing_matcher[0] : 'Failed to parse failed test count.';
-  def pending = pending_matcher.count > 0 ? pending_matcher[0] : 'Failed to parse pending test count.';
+  def passing = passing_matcher.count > 0 ? passing_matcher[0] : '0 passing';
+  def failing = failing_matcher.count > 0 ? failing_matcher[0] : '0 failing';
+  def pending = pending_matcher.count > 0 ? pending_matcher[0] : '0 pending';
 
   def color_string     =  '"color":"good"';
   def markdown_string  =  '"mrkdwn_in":["text","title"]';
-  def title_string     =  "\"title\":\":white_check_mark: Management tests for ${env.BRANCH_NAME} succeeded!\"";
+  def title_string     =  "\"title\":\":white_check_mark: Management API Integration Tests for ${BRANCH_NAME} Succeeded!\"";
   def result_string    =  "\"text\":\"${passing}\\n${failing}\\n${pending}\"";
   def action_string    =  "\"actions\":[{\"name\":\"open_jenkins\",\"type\":\"button\",\"text\":\"Open this run\",\"url\":\"${RUN_DISPLAY_URL}\"}]";
 
   if (test_failed == true) {
     color_string = '"color":"danger"';
-    title_string =  "\"title\":\":boom: Management tests for ${env.BRANCH_NAME} failed!\"";
+    title_string =  "\"title\":\":boom: Management API Integration Tests for ${BRANCH_NAME} Failed!\"";
   }
 
   slackSend(attachments: "[{$color_string, $title_string, $markdown_string, $result_string, $action_string}]");
