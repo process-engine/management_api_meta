@@ -3,8 +3,8 @@ import * as uuid from 'node-uuid';
 import {EventReceivedCallback, IEventAggregator} from '@essential-projects/event_aggregator_contracts';
 import {IIdentity} from '@essential-projects/iam_contracts';
 
+import {FlowNodeInstance, IFlowNodeInstanceService} from '@process-engine/flow_node_instance.contracts';
 import {DataModels} from '@process-engine/management_api_contracts';
-import {IFlowNodeInstanceService, Runtime} from '@process-engine/process_engine_contracts';
 
 import {TestFixtureProvider} from './test_fixture_provider';
 
@@ -95,10 +95,10 @@ export class ProcessInstanceHandler {
 
       await this.wait(delayBetweenRetriesInMs);
 
-      let flowNodeInstances: Array<Runtime.Types.FlowNodeInstance> = await flowNodeInstanceService.querySuspendedByCorrelation(correlationId);
+      let flowNodeInstances: Array<FlowNodeInstance> = await flowNodeInstanceService.querySuspendedByCorrelation(correlationId);
 
       if (processModelId) {
-        flowNodeInstances = flowNodeInstances.filter((fni: Runtime.Types.FlowNodeInstance) => {
+        flowNodeInstances = flowNodeInstances.filter((fni: FlowNodeInstance) => {
           return fni.tokens[0].processModelId === processModelId;
         });
       }

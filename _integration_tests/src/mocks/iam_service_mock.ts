@@ -1,7 +1,5 @@
-import * as jsonwebtoken from 'jsonwebtoken';
-
 import {ForbiddenError} from '@essential-projects/errors_ts';
-import {IIAMService, IIdentity, TokenBody} from '@essential-projects/iam_contracts';
+import {IIAMService, IIdentity} from '@essential-projects/iam_contracts';
 
 export class IamServiceMock implements IIAMService {
 
@@ -63,14 +61,16 @@ export class IamServiceMock implements IIAMService {
 
   public async ensureHasClaim(identity: IIdentity, claimName: string): Promise<void> {
 
-    const decodedToken: TokenBody = this._decodeToken(identity.token);
-    const identityName: string = decodedToken.sub;
+    const isDummyToken: boolean = identity.userId === 'dummy_token';
+    if (isDummyToken) {
+        return Promise.resolve();
+    }
 
-    if (identityName === 'forbiddenUser') {
+    if (identity.userId === 'forbiddenUser') {
       throw new ForbiddenError('access denied');
     }
 
-    const matchingUserConfig: Array<string> = this._claimConfigs[identityName];
+    const matchingUserConfig: Array<string> = this._claimConfigs[identity.userId];
     if (!matchingUserConfig) {
       throw new ForbiddenError('access denied');
     }
@@ -84,11 +84,5 @@ export class IamServiceMock implements IIAMService {
     }
 
     return Promise.resolve();
-  }
-
-  private _decodeToken(token: string): TokenBody {
-    const decodedToken: TokenBody = <TokenBody> jsonwebtoken.decode(token);
-
-    return decodedToken;
   }
 }
