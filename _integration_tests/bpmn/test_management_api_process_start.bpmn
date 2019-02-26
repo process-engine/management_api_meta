@@ -26,7 +26,7 @@
       <bpmn:incoming>SequenceFlow_1ajdmka</bpmn:incoming>
       <bpmn:errorEventDefinition id="ErrorEventDefinition_0zmp8o2" errorRef="Error_MpkrutlD" />
     </bpmn:endEvent>
-    <bpmn:startEvent id="StartEvent_1" name="test_consumer_api_process_start">
+    <bpmn:startEvent id="StartEvent_1" name="test_management_api_process_start">
       <bpmn:outgoing>SequenceFlow_0tr7zpe</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:sequenceFlow id="SequenceFlow_0g7zduf" name="" sourceRef="ExclusiveGateway_0x52ign" targetRef="ScriptTask_1n7vi73">
@@ -36,7 +36,7 @@
       <bpmn:extensionElements />
     </bpmn:sequenceFlow>
     <bpmn:sequenceFlow id="SequenceFlow_0tr7zpe" name="" sourceRef="StartEvent_1" targetRef="ExclusiveGateway_0x52ign">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"></bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" />
     </bpmn:sequenceFlow>
     <bpmn:scriptTask id="ScriptTask_1jpy4k7" name="Simulate Process Error">
       <bpmn:extensionElements>
