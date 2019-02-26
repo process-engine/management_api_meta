@@ -2,13 +2,13 @@
 
 const should = require('should');
 
-const StartCallbackType = require('@process-engine/consumer_api_contracts').DataModels.ProcessModels.StartCallbackType;
+const StartCallbackType = require('@process-engine/management_api_contracts').DataModels.ProcessModels.StartCallbackType;
 
 const {TestFixtureProvider} = require('../../dist/commonjs');
 
-const testCase = 'Consumer API:   POST  ->  /process_models/:process_model_id/start?start_callback_type=1&start_event_id=:start_event_id';
+const testCase = 'Management API:   POST  ->  /process_models/:process_model_id/start?start_callback_type=1&start_event_id=:start_event_id';
 
-describe(`Consumer API: ${testCase}`, () => {
+describe(`Management API: ${testCase}`, () => {
 
   let testFixtureProvider;
   let defaultIdentity;
@@ -84,8 +84,10 @@ describe(`Consumer API: ${testCase}`, () => {
 
       should.fail(result, undefined, 'This request should have failed!');
     } catch (error) {
+
       const expectedErrorCode = 404;
       const expectedErrorMessage = /start.*event.*not found/i;
+
       should(error.message).be.match(expectedErrorMessage);
       should(error.code).be.match(expectedErrorCode);
     }
@@ -102,8 +104,10 @@ describe(`Consumer API: ${testCase}`, () => {
 
       should.fail(result, undefined, 'The Process should not have been executed.');
     } catch (error) {
+
       const expectedErrorCode = 400;
       const expectedErrorMessage = /multiple.*start.*events/i;
+
       should(error.message).be.match(expectedErrorMessage);
       should(error.code).be.match(expectedErrorCode);
     }
