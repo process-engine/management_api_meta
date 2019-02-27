@@ -184,6 +184,6 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
 
     await testFixtureProvider
       .managementApiClientService
-      .startProcessInstance(defaultIdentity, processModelId, startEventId, payload, returnOn);
+      .startProcessInstance(defaultIdentity, processModelId, payload, returnOn, startEventId);
   }
 });
