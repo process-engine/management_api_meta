@@ -12,6 +12,8 @@ describe('Management API: GET -> /process_model/:processModelId/logs?correlation
 
   let defaultIdentity;
 
+  let processInstanceId;
+
   const processModelId = 'test_management_api_logging_simple_process';
   const correlationId = uuid.v4();
 
@@ -24,11 +26,35 @@ describe('Management API: GET -> /process_model/:processModelId/logs?correlation
     defaultIdentity = testFixtureProvider.identities.defaultUser;
 
     await testFixtureProvider.importProcessFiles([processModelId]);
-    await executeSampleProcess(correlationId);
+    const startResult = await executeSampleProcess(correlationId);
+
+    processInstanceId = startResult.processInstanceId;
   });
 
   after(async () => {
     await testFixtureProvider.tearDown();
+  });
+
+  it('should sucessfully get an array which contains all logs for a given processInstance', async () => {
+    const logs = await testFixtureProvider
+      .managementApiClientService
+      .getProcessInstanceLog(defaultIdentity, processModelId, processInstanceId);
+
+    const expectedProperties = [
+      'timeStamp',
+      'correlationId',
+      'processModelId',
+      'processInstanceId',
+      'logLevel',
+      'message',
+    ];
+
+    should(logs).be.an.Array();
+    should(logs).have.length(8);
+
+    for (const currentLogEntry of logs) {
+      should(currentLogEntry).have.properties(...expectedProperties);
+    }
   });
 
   it('should sucessfully get an array which contains all logs for a given correlation', async () => {
