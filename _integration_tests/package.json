@@ -32,7 +32,7 @@
     "@essential-projects/sequelize_connection_manager": "~2.1.0",
     "@essential-projects/timing": "~4.1.0",
     "@process-engine/consumer_api_core": "feature~fix_naming_inconsistencies",
-    "@process-engine/correlation.service": "~feature~fix_naming_inconsistencies",
+    "@process-engine/correlation.service": "feature~fix_naming_inconsistencies",
     "@process-engine/correlations.repository.sequelize": "feature~fix_naming_inconsistencies",
     "@process-engine/deployment_api_core": "~2.1.0",
     "@process-engine/external_task_api_client": "~1.0.0",
