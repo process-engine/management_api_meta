@@ -72,7 +72,7 @@ pipeline {
     stage('Prepare') {
       steps {
         script {
-          echo("Branch is '${branch}'")
+          echo("Branch is '${BRANCH_NAME}'")
         }
         nodejs(configId: NPM_RC_FILE, nodeJSInstallationName: NODE_JS_VERSION) {
           sh('node --version')
