@@ -117,7 +117,7 @@ pipeline {
 
                 def db_environment_settings = "jenkinsDbStoragePath=${db_storage_folder_path} ${db_storage_path_correlation} ${db_storage_path_external_task} ${db_storage_path_process_model} ${db_storage_path_flow_node_instance}";
 
-                def npm_test_command = "node ./node_modules/.bin/cross-env ${node_env_settings} ${db_environment_settings} ./node_modules/.bin/mocha -t 200000 test/**/*.js test/**/**/*.js";
+                def npm_test_command = "node ./node_modules/.bin/cross-env ${node_env_settings} ${db_environment_settings} ./node_modules/.bin/mocha -t 20000 test/**/*.js test/**/**/*.js";
 
                 docker.image("node:${NODE_VERSION_NUMBER}").inside("--env PATH=$PATH:/$WORKSPACE/node_modules/.bin") {
                   sqlite_exit_code = sh(script: "${npm_test_command} --colors --reporter mocha-jenkins-reporter --exit | tee management_api_test_results_sqlite.txt", returnStatus: true);
@@ -179,7 +179,7 @@ pipeline {
 
                   docker.image("node:${NODE_VERSION_NUMBER}").inside("--link ${c.id}:${postgres_host} --env PATH=$PATH:/$WORKSPACE/node_modules/.bin") {
 
-                    def npm_test_command = "node ./node_modules/.bin/cross-env ${node_env_settings} ${db_environment_settings} ./node_modules/.bin/mocha -t 200000 test/**/*.js test/**/**/*.js";
+                    def npm_test_command = "node ./node_modules/.bin/cross-env ${node_env_settings} ${db_environment_settings} ./node_modules/.bin/mocha -t 20000 test/**/*.js test/**/**/*.js";
 
                     postgres_exit_code = sh(script: "${npm_test_command} --colors --reporter mocha-jenkins-reporter --exit > management_api_test_results_postgres.txt", returnStatus: true);
 
