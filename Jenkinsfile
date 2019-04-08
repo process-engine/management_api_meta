@@ -77,12 +77,9 @@ pipeline {
           }
           nodejs(configId: NPM_RC_FILE, nodeJSInstallationName: NODE_JS_VERSION) {
             sh('node --version')
-            sh('npm install')
+            sh('npm install --no-package-lock')
             sh('npm run build')
-            sh('npm rebuild')
           }
-
-          archiveArtifacts('package-lock.json')
 
           stash(includes: '*, **/**', name: 'post_build');
         }
@@ -100,6 +97,8 @@ pipeline {
               unstash('post_build');
 
               script {
+
+                sh('ls -laih');
 
                 // Node environment settings
                 def node_env = 'NODE_ENV=test-sqlite';
@@ -146,6 +145,9 @@ pipeline {
               unstash('post_build');
 
               script {
+
+                sh('ls -laih');
+
                 // Node Environment settings
                 def node_env = 'NODE_ENV=test-postgres';
                 def management_api_mode = 'MANAGEMENT_API_ACCESS_TYPE=internal ';
