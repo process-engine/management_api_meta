@@ -101,7 +101,7 @@ pipeline {
                 sh('ls -laih');
 
                 // Node environment settings
-                def node_env = 'NODE_ENV=test-sqlite';
+                def node_env = 'NODE_ENV=sqlite';
                 def management_api_mode = 'MANAGEMENT_API_ACCESS_TYPE=internal ';
                 def junit_report_path = 'JUNIT_REPORT_PATH=management_api_test_results_sqlite.xml';
                 def config_path = 'CONFIG_PATH=config';
@@ -149,7 +149,7 @@ pipeline {
                 sh('ls -laih');
 
                 // Node Environment settings
-                def node_env = 'NODE_ENV=test-postgres';
+                def node_env = 'NODE_ENV=postgres';
                 def management_api_mode = 'MANAGEMENT_API_ACCESS_TYPE=internal ';
                 def junit_report_path = 'JUNIT_REPORT_PATH=management_api_test_results_postgres.xml';
                 def config_path = 'CONFIG_PATH=config';
