@@ -120,7 +120,7 @@ pipeline {
                 def npm_test_command = "node ./node_modules/.bin/cross-env ${node_env_settings} ${db_environment_settings} ./node_modules/.bin/mocha -t 200000 test/**/*.js test/**/**/*.js";
 
                 docker.image("node:${NODE_VERSION_NUMBER}").inside("--env PATH=$PATH:/$WORKSPACE/node_modules/.bin") {
-                  sqlite_exit_code = sh(script: "${npm_test_command} --colors --reporter mocha-jenkins-reporter --exit > management_api_test_results_sqlite.txt", returnStatus: true);
+                  sqlite_exit_code = sh(script: "${npm_test_command} --colors --reporter mocha-jenkins-reporter --exit | tee management_api_test_results_sqlite.txt", returnStatus: true);
 
                   sqlite_testresults = sh(script: "cat management_api_test_results_sqlite.txt", returnStdout: true).trim();
                   junit 'management_api_test_results_sqlite.xml'
