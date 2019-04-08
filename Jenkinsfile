@@ -12,7 +12,7 @@ def cleanup_workspace() {
 }
 
 @NonCPS
-def slack_send_summary(testlog, test_failed) {
+def slack_send_summary(testlog, test_failed, database_type) {
   def passing_regex = /\d+ passing/;
   def failing_regex = /\d+ failing/;
   def pending_regex = /\d+ pending/;
@@ -27,13 +27,13 @@ def slack_send_summary(testlog, test_failed) {
 
   def color_string     =  '"color":"good"';
   def markdown_string  =  '"mrkdwn_in":["text","title"]';
-  def title_string     =  "\"title\":\":white_check_mark: Management API Integration Tests for ${BRANCH_NAME} Succeeded!\"";
+  def title_string     =  "\"title\":\":white_check_mark: Management API Integration Tests against ${database_type} for ${BRANCH_NAME} Succeeded!\"";
   def result_string    =  "\"text\":\"${passing}\\n${failing}\\n${pending}\"";
   def action_string    =  "\"actions\":[{\"name\":\"open_jenkins\",\"type\":\"button\",\"text\":\"Open this run\",\"url\":\"${RUN_DISPLAY_URL}\"}]";
 
   if (test_failed == true) {
     color_string = '"color":"danger"';
-    title_string =  "\"title\":\":boom: Management API Integration Tests for ${BRANCH_NAME} Failed!\"";
+    title_string =  "\"title\":\":boom: Management API Integration Tests against ${database_type} for ${BRANCH_NAME} Failed!\"";
   }
 
   slackSend(attachments: "[{$color_string, $title_string, $markdown_string, $result_string, $action_string}]");
