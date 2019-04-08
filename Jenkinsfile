@@ -96,15 +96,7 @@ pipeline {
 
           def db_environment_settings = "${db_storage_path_correlation} ${db_storage_path_external_task} ${db_storage_path_flow_node_instance} ${db_storage_path_process_model} ${db_storage_path_timer}"
 
-          // FileSystem Repositories
-          def logging_folder_path = "$WORKSPACE/logs";
-          def metrics_folder_path = "$WORKSPACE/metrics";
-          def db_storage_path_logging = "--env process_engine__logging_repository__log_output_path=$logging_folder_path";
-          def db_storage_path_metrics = "--env process_engine__metrics_repository__log_output_path=$metrics_folder_path";
-
-          def filesystem_environment_settings = "${db_storage_path_logging} ${db_storage_path_metrics}"
-
-          server_image.inside("${node_env} ${management_api_mode} ${db_environment_settings} ${filesystem_environment_settings} ${junit_report_path} ${config_path}") {
+          server_image.inside("${node_env} ${management_api_mode} ${db_environment_settings} ${junit_report_path} ${config_path}") {
             error_code = sh(script: "node /usr/src/app/node_modules/.bin/mocha --timeout 60000 /usr/src/app/test/**/*.js --colors --reporter mocha-jenkins-reporter --exit > result.txt", returnStatus: true);
             testresults = sh(script: "cat result.txt", returnStdout: true).trim();
 
