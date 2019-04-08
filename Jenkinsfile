@@ -71,19 +71,21 @@ pipeline {
   stages {
     stage('Prepare') {
       steps {
-        script {
-          echo("Branch is '${BRANCH_NAME}'")
-        }
-        nodejs(configId: NPM_RC_FILE, nodeJSInstallationName: NODE_JS_VERSION) {
-          sh('node --version')
-          sh('npm install')
-          sh('npm run build')
-          sh('npm rebuild')
-        }
+        dir('_integration_tests') {
+          script {
+            echo("Branch is '${BRANCH_NAME}'")
+          }
+          nodejs(configId: NPM_RC_FILE, nodeJSInstallationName: NODE_JS_VERSION) {
+            sh('node --version')
+            sh('npm install')
+            sh('npm run build')
+            sh('npm rebuild')
+          }
 
-        archiveArtifacts('package-lock.json')
+          archiveArtifacts('package-lock.json')
 
-        stash(includes: '*, **/**', name: 'post_build');
+          stash(includes: '*, **/**', name: 'post_build');
+        }
       }
     }
     stage('Management API Tests') {
@@ -94,39 +96,41 @@ pipeline {
             skipDefaultCheckout()
           }
           steps {
-            unstash('post_build');
+            dir('_integration_tests') {
+              unstash('post_build');
 
-            script {
+              script {
 
-              // Node environment settings
-              def node_env = 'NODE_ENV=test-sqlite';
-              def management_api_mode = 'MANAGEMENT_API_ACCESS_TYPE=internal ';
-              def junit_report_path = 'JUNIT_REPORT_PATH=management_api_test_results_sqlite.xml';
-              def config_path = 'CONFIG_PATH=config';
+                // Node environment settings
+                def node_env = 'NODE_ENV=test-sqlite';
+                def management_api_mode = 'MANAGEMENT_API_ACCESS_TYPE=internal ';
+                def junit_report_path = 'JUNIT_REPORT_PATH=management_api_test_results_sqlite.xml';
+                def config_path = 'CONFIG_PATH=config';
 
-              def node_env_settings = "${node_env} ${management_api_mode} ${junit_report_path} ${config_path}"
+                def node_env_settings = "${node_env} ${management_api_mode} ${junit_report_path} ${config_path}"
 
-              // SQLite Config
-              def db_storage_folder_path = "$WORKSPACE/process_engine_databases";
-              def db_storage_path_correlation = "process_engine__correlation_repository__storage=$db_storage_folder_path/correlation.sqlite";
-              def db_storage_path_external_task = "process_engine__external_task_repository__storage=$db_storage_folder_path/external_task.sqlite";
-              def db_storage_path_process_model = "process_engine__process_model_repository__storage=$db_storage_folder_path/process_model.sqlite";
-              def db_storage_path_flow_node_instance = "process_engine__flow_node_instance_repository__storage=$db_storage_folder_path/flow_node_instance.sqlite";
+                // SQLite Config
+                def db_storage_folder_path = "$WORKSPACE/process_engine_databases";
+                def db_storage_path_correlation = "process_engine__correlation_repository__storage=$db_storage_folder_path/correlation.sqlite";
+                def db_storage_path_external_task = "process_engine__external_task_repository__storage=$db_storage_folder_path/external_task.sqlite";
+                def db_storage_path_process_model = "process_engine__process_model_repository__storage=$db_storage_folder_path/process_model.sqlite";
+                def db_storage_path_flow_node_instance = "process_engine__flow_node_instance_repository__storage=$db_storage_folder_path/flow_node_instance.sqlite";
 
-              def db_environment_settings = "jenkinsDbStoragePath=${db_storage_folder_path} ${db_storage_path_correlation} ${db_storage_path_external_task} ${db_storage_path_process_model} ${db_storage_path_flow_node_instance}";
+                def db_environment_settings = "jenkinsDbStoragePath=${db_storage_folder_path} ${db_storage_path_correlation} ${db_storage_path_external_task} ${db_storage_path_process_model} ${db_storage_path_flow_node_instance}";
 
-              def npm_test_command = "node ./node_modules/.bin/cross-env ${node_env_settings} ${db_environment_settings} mocha -t 200000 test/**/*.js test/**/**/*.js";
+                def npm_test_command = "node ./node_modules/.bin/cross-env ${node_env_settings} ${db_environment_settings} mocha -t 200000 test/**/*.js test/**/**/*.js";
 
-              docker.image("node:${NODE_VERSION_NUMBER}").inside("--env PATH=$PATH:/$WORKSPACE/node_modules/.bin") {
-                sqlite_exit_code = sh(script: "${npm_test_command} --colors --reporter mocha-jenkins-reporter --exit > management_api_test_results_sqlite.txt", returnStatus: true);
+                docker.image("node:${NODE_VERSION_NUMBER}").inside("--env PATH=$PATH:/$WORKSPACE/node_modules/.bin") {
+                  sqlite_exit_code = sh(script: "${npm_test_command} --colors --reporter mocha-jenkins-reporter --exit > management_api_test_results_sqlite.txt", returnStatus: true);
 
-                sqlite_testresults = sh(script: "cat management_api_test_results_sqlite.txt", returnStdout: true).trim();
-                junit 'management_api_test_results_sqlite.xml'
-              };
+                  sqlite_testresults = sh(script: "cat management_api_test_results_sqlite.txt", returnStdout: true).trim();
+                  junit 'management_api_test_results_sqlite.xml'
+                };
 
-              sh('cat management_api_test_results_sqlite.txt');
+                sh('cat management_api_test_results_sqlite.txt');
 
-              sqlite_tests_failed = sqlite_exit_code > 0;
+                sqlite_tests_failed = sqlite_exit_code > 0;
+              }
             }
           }
         }
@@ -138,53 +142,55 @@ pipeline {
             skipDefaultCheckout()
           }
           steps {
-            unstash('post_build');
+            dir('_integration_tests') {
+              unstash('post_build');
 
-            script {
-              // Node Environment settings
-              def node_env = 'NODE_ENV=test-postgres';
-              def management_api_mode = 'MANAGEMENT_API_ACCESS_TYPE=internal ';
-              def junit_report_path = 'JUNIT_REPORT_PATH=management_api_test_results_postgres.xml';
-              def config_path = 'CONFIG_PATH=config';
+              script {
+                // Node Environment settings
+                def node_env = 'NODE_ENV=test-postgres';
+                def management_api_mode = 'MANAGEMENT_API_ACCESS_TYPE=internal ';
+                def junit_report_path = 'JUNIT_REPORT_PATH=management_api_test_results_postgres.xml';
+                def config_path = 'CONFIG_PATH=config';
 
-              def node_env_settings = "${node_env} ${management_api_mode} ${junit_report_path} ${config_path}"
+                def node_env_settings = "${node_env} ${management_api_mode} ${junit_report_path} ${config_path}"
 
-              // Postgres Config
-              def postgres_host = "postgres";
-              def postgres_username = "admin";
-              def postgres_password = "admin";
-              def postgres_database = "processengine";
+                // Postgres Config
+                def postgres_host = "postgres";
+                def postgres_username = "admin";
+                def postgres_password = "admin";
+                def postgres_database = "processengine";
 
-              def db_database_host_correlation = "process_engine__correlation_repository__host=${postgres_host}";
-              def db_database_host_external_task = "process_engine__external_task_repository__host=${postgres_host}";
-              def db_database_host_process_model = "process_engine__process_model_repository__host=${postgres_host}";
-              def db_database_host_flow_node_instance = "process_engine__flow_node_instance_repository__host=${postgres_host}";
+                def db_database_host_correlation = "process_engine__correlation_repository__host=${postgres_host}";
+                def db_database_host_external_task = "process_engine__external_task_repository__host=${postgres_host}";
+                def db_database_host_process_model = "process_engine__process_model_repository__host=${postgres_host}";
+                def db_database_host_flow_node_instance = "process_engine__flow_node_instance_repository__host=${postgres_host}";
 
-              def db_environment_settings = "${db_database_host_correlation} ${db_database_host_external_task} ${db_database_host_process_model} ${db_database_host_flow_node_instance}";
+                def db_environment_settings = "${db_database_host_correlation} ${db_database_host_external_task} ${db_database_host_process_model} ${db_database_host_flow_node_instance}";
 
-              def postgres_settings = "--env POSTGRES_USER=${postgres_username} --env POSTGRES_PASSWORD=${postgres_password} --env POSTGRES_DB=${postgres_database}";
+                def postgres_settings = "--env POSTGRES_USER=${postgres_username} --env POSTGRES_PASSWORD=${postgres_password} --env POSTGRES_DB=${postgres_database}";
 
-              docker.image('postgres:11').withRun("${postgres_settings}") { c ->
+                docker.image('postgres:11').withRun("${postgres_settings}") { c ->
 
-                docker.image('postgres:11').inside("--link ${c.id}:${postgres_host}") {
-                  sh "while ! pg_isready --host ${postgres_host} --username ${postgres_username} --dbname ${postgres_database}; do sleep 1; done"
+                  docker.image('postgres:11').inside("--link ${c.id}:${postgres_host}") {
+                    sh "while ! pg_isready --host ${postgres_host} --username ${postgres_username} --dbname ${postgres_database}; do sleep 1; done"
+                  };
+
+                  docker.image("node:${NODE_VERSION_NUMBER}").inside("--link ${c.id}:${postgres_host} --env PATH=$PATH:/$WORKSPACE/node_modules/.bin") {
+
+                    def npm_test_command = "node ./node_modules/.bin/cross-env ${node_env_settings} ${db_environment_settings} mocha -t 200000 test/**/*.js test/**/**/*.js";
+
+                    postgres_exit_code = sh(script: "${npm_test_command} --colors --reporter mocha-jenkins-reporter --exit > management_api_test_results_postgres.txt", returnStatus: true);
+
+                    postgres_testresults = sh(script: "cat management_api_test_results_postgres.txt", returnStdout: true).trim();
+                    junit 'management_api_test_results_postgres.xml'
+                  };
+
                 };
 
-                docker.image("node:${NODE_VERSION_NUMBER}").inside("--link ${c.id}:${postgres_host} --env PATH=$PATH:/$WORKSPACE/node_modules/.bin") {
+                sh('cat management_api_test_results_postgres.txt');
 
-                  def npm_test_command = "node ./node_modules/.bin/cross-env ${node_env_settings} ${db_environment_settings} mocha -t 200000 test/**/*.js test/**/**/*.js";
-
-                  postgres_exit_code = sh(script: "${npm_test_command} --colors --reporter mocha-jenkins-reporter --exit > management_api_test_results_postgres.txt", returnStatus: true);
-
-                  postgres_testresults = sh(script: "cat management_api_test_results_postgres.txt", returnStdout: true).trim();
-                  junit 'management_api_test_results_postgres.xml'
-                };
-
-              };
-
-              sh('cat management_api_test_results_postgres.txt');
-
-              postgres_test_failed = postgres_exit_code > 0;
+                postgres_test_failed = postgres_exit_code > 0;
+              }
             }
           }
         }
