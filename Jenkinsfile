@@ -98,8 +98,6 @@ pipeline {
 
               script {
 
-                sh('ls -laih');
-
                 // Node environment settings
                 def node_env = 'NODE_ENV=sqlite';
                 def management_api_mode = 'MANAGEMENT_API_ACCESS_TYPE=internal ';
@@ -145,8 +143,6 @@ pipeline {
               unstash('post_build');
 
               script {
-
-                sh('ls -laih');
 
                 // Node Environment settings
                 def node_env = 'NODE_ENV=postgres';
