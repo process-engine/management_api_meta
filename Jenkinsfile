@@ -102,7 +102,7 @@ pipeline {
                 // Node Environment settings
                 def node_env = 'NODE_ENV=mysql';
                 def management_api_mode = 'MANAGEMENT_API_ACCESS_TYPE=internal ';
-                def junit_report_path = 'JUNIT_REPORT_PATH=management_api_test_results_postgres.xml';
+                def junit_report_path = 'JUNIT_REPORT_PATH=management_api_test_results_mysql.xml';
                 def config_path = 'CONFIG_PATH=config';
 
                 def node_env_settings = "${node_env} ${management_api_mode} ${junit_report_path} ${config_path}"
@@ -133,14 +133,14 @@ pipeline {
                   }
 
                   docker.image("node:${NODE_VERSION_NUMBER}").inside("--link ${c.id}:${mysql_host} --env HOME=${WORKSPACE} --env ConnectionStrings__StatePersistence='${mysql_connection_string}'") {
-                    mysql_exit_code = sh(script: "${npm_test_command} --colors --reporter mocha-jenkins-reporter --exit > process_engine_runtime_integration_tests_mysql.txt", returnStatus: true);
+                    mysql_exit_code = sh(script: "${npm_test_command} --colors --reporter mocha-jenkins-reporter --exit > management_api_test_results_mysql.txt", returnStatus: true);
 
-                    mysql_testresults = sh(script: "cat process_engine_runtime_integration_tests_mysql.txt", returnStdout: true).trim();
-                    junit 'process_engine_runtime_integration_tests_mysql.xml'
+                    mysql_testresults = sh(script: "cat management_api_test_results_mysql.txt", returnStdout: true).trim();
+                    junit 'management_api_test_results_mysql.xml'
                   }
                 }
 
-                sh('cat process_engine_runtime_integration_tests_mysql.txt');
+                sh('cat management_api_test_results_mysql.txt');
 
                 mysql_test_failed = mysql_exit_code > 0;
               }
