@@ -97,7 +97,6 @@ pipeline {
               unstash('post_build');
 
               script {
-
                 // Node environment settings
                 def node_env = 'NODE_ENV=sqlite';
                 def management_api_mode = 'MANAGEMENT_API_ACCESS_TYPE=internal ';
@@ -134,7 +133,6 @@ pipeline {
               unstash('post_build');
 
               script {
-
                 // Node Environment settings
                 def node_env = 'NODE_ENV=postgres';
                 def management_api_mode = 'MANAGEMENT_API_ACCESS_TYPE=internal ';
@@ -159,13 +157,11 @@ pipeline {
                 def postgres_settings = "--env POSTGRES_USER=${postgres_username} --env POSTGRES_PASSWORD=${postgres_password} --env POSTGRES_DB=${postgres_database}";
 
                 docker.image('postgres:11').withRun("${postgres_settings}") { c ->
-
                   docker.image('postgres:11').inside("--link ${c.id}:${postgres_host}") {
                     sh "while ! pg_isready --host ${postgres_host} --username ${postgres_username} --dbname ${postgres_database}; do sleep 1; done"
                   };
 
                   docker.image("node:${NODE_VERSION_NUMBER}").inside("--link ${c.id}:${postgres_host} --env PATH=$PATH:/$WORKSPACE/node_modules/.bin") {
-
                     def npm_test_command = "node ./node_modules/.bin/cross-env ${node_env_settings} ${db_environment_settings} ./node_modules/.bin/mocha -t 20000 test/**/*.js test/**/**/*.js";
 
                     postgres_exit_code = sh(script: "${npm_test_command} --colors --reporter mocha-jenkins-reporter --exit > management_api_test_results_postgres.txt", returnStatus: true);
