@@ -15,11 +15,7 @@ import {IManagementApi} from '@process-engine/management_api_contracts';
 
 import {initializeBootstrapper} from './setup_ioc_container';
 
-export type IdentityCollection = {
-  defaultUser: IIdentity;
-  secondDefaultUser: IIdentity,
-  restrictedUser: IIdentity;
-};
+export type IdentityCollection = {[userName: string]: IIdentity};
 
 export class TestFixtureProvider {
 
@@ -120,6 +116,7 @@ export class TestFixtureProvider {
       // all access user
       defaultUser: await this._createIdentity('defaultUser'),
       secondDefaultUser: await this._createIdentity('secondDefaultUser'),
+      superAdmin: await this._createIdentity('superAdmin'),
       // no access user
       restrictedUser: await this._createIdentity('restrictedUser'),
     };
