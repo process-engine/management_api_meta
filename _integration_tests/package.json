@@ -43,7 +43,7 @@
     "@process-engine/kpi_api_core": "~2.0.0",
     "@process-engine/logging_api_core": "~1.0.0",
     "@process-engine/logging.repository.file_system": "~1.1.0",
-    "@process-engine/management_api_client": "5.0.0-a0a3e316-b3",
+    "@process-engine/management_api_client": "5.0.0-8d3611fd-b4",
     "@process-engine/management_api_core": "feature~add_admin_claim_check",
     "@process-engine/management_api_http": "4.3.0-7637a656-b3",
     "@process-engine/metrics_api_core": "~1.0.0",
