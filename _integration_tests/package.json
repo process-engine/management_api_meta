@@ -20,7 +20,12 @@
     "test-postgres": "npm run test-internal-postgres && npm run test-external-postgres",
     "test": "npm run test-sqlite",
     "test-all": "npm run test-sqlite && npm run test-postgres",
-    "build": "gulp build"
+    "clean": "rm -rf dist",
+    "build": "npm run clean && npm run build-commonjs && npm run build-amd",
+    "build-commonjs": "tsc",
+    "build-amd": "tsc --module amd --outDir ./dist/amd",
+    "lint": "eslint src/**/*.ts src/*.ts",
+    "lint-fix": "eslint --fix src/**/*.ts src/*.ts"
   },
   "dependencies": {
     "@essential-projects/bootstrapper": "~3.4.0",
