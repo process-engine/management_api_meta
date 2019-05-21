@@ -64,7 +64,6 @@ describe('Management API: Trigger Messages and Signals', () => {
         .managementApiClientService
         .triggerMessageEvent(defaultIdentity, messageEventName, payload);
     });
-
   });
 
 });

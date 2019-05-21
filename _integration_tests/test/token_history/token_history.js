@@ -11,6 +11,7 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
 
   let testFixtureProvider;
   let defaultIdentity;
+  let processInstanceId;
 
   const processModelId = 'heatmap_sample';
   const correlationId = uuid.v4();
@@ -23,7 +24,9 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
     defaultIdentity = testFixtureProvider.identities.defaultUser;
 
     await testFixtureProvider.importProcessFiles([processModelId]);
-    await executeSampleProcess();
+    const startResponse = await executeSampleProcess();
+
+    processInstanceId = startResponse.processInstanceId;
   });
 
   after(async () => {
@@ -68,6 +71,58 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
         should(matchingTokenHistoryEntry.processModelId).be.equal(processModelId, 'No ProcessModelId was assigned to the TokenHistory entry!');
 
         should(matchingTokenHistoryEntry).have.property('flowNodeInstanceId');
+        should(matchingTokenHistoryEntry).have.property('previousFlowNodeInstanceId');
+        should(matchingTokenHistoryEntry).have.property('processInstanceId');
+        should(matchingTokenHistoryEntry).have.property('identity');
+        should(matchingTokenHistoryEntry).have.property('createdAt');
+        should(matchingTokenHistoryEntry).have.property('caller');
+        should(matchingTokenHistoryEntry).have.property('payload');
+      }
+    }
+  });
+
+  it('should successfully read the token history of the executed process', async () => {
+
+    const expectedTokenTypes = [
+      'onEnter',
+      'onExit',
+    ];
+
+    const expectedFlowNodeNames = [
+      'StartEvent_1',
+      'ExclusiveGateway_0fi1ct7',
+      'ScriptTask_1',
+      'ServiceTask_1',
+      'ExclusiveGateway_134ybqm',
+      'EndEvent_0eie6q6',
+    ];
+
+    const tokenHistoryGroup = await testFixtureProvider
+      .managementApiClientService
+      .getTokensForProcessInstance(defaultIdentity, processInstanceId);
+
+    should(tokenHistoryGroup).be.an.Object();
+
+    for (const expectedFlowNodeName of expectedFlowNodeNames) {
+      const tokenHistory = tokenHistoryGroup[expectedFlowNodeName];
+
+      should(tokenHistory).be.an.Array();
+      should(tokenHistory.length).be.equal(2, `Not all state changes were persisted for FlowNode ${expectedFlowNodeName}!`);
+
+      for (const tokenType of expectedTokenTypes) {
+
+        const matchingTokenHistoryEntry = tokenHistory.find((entry) => {
+          return entry.tokenEventType === tokenType;
+        });
+
+        should.exist(matchingTokenHistoryEntry, `No '${tokenType}' token was persisted for FlowNode ${expectedFlowNodeName}!`);
+
+        should(matchingTokenHistoryEntry.flowNodeId).be.equal(expectedFlowNodeName, 'No FlowNodeId was assigned to the TokenHistory entry!');
+        should(matchingTokenHistoryEntry.correlationId).be.equal(correlationId, 'No CorrelationId was assigned to the TokenHistory entry!');
+        should(matchingTokenHistoryEntry.processModelId).be.equal(processModelId, 'No ProcessModelId was assigned to the TokenHistory entry!');
+
+        should(matchingTokenHistoryEntry).have.property('flowNodeInstanceId');
+        should(matchingTokenHistoryEntry).have.property('previousFlowNodeInstanceId');
         should(matchingTokenHistoryEntry).have.property('processInstanceId');
         should(matchingTokenHistoryEntry).have.property('identity');
         should(matchingTokenHistoryEntry).have.property('createdAt');
@@ -87,7 +142,7 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
     } catch (error) {
       const expectedErrorCode = 401;
       const expectedErrorMessage = /no auth token provided/i;
-      should(error.code).be.match(expectedErrorCode);
+      should(error.code).be.equal(expectedErrorCode);
       should(error.message).be.match(expectedErrorMessage);
     }
   });
@@ -147,6 +202,7 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
         should(matchingTokenHistoryEntry.processModelId).be.equal(processModelId, 'No ProcessModelId was assigned to the TokenHistory entry!');
 
         should(matchingTokenHistoryEntry).have.property('flowNodeInstanceId');
+        should(matchingTokenHistoryEntry).have.property('previousFlowNodeInstanceId');
         should(matchingTokenHistoryEntry).have.property('processInstanceId');
         should(matchingTokenHistoryEntry).have.property('identity');
         should(matchingTokenHistoryEntry).have.property('createdAt');
@@ -166,7 +222,7 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
     } catch (error) {
       const expectedErrorCode = 401;
       const expectedErrorMessage = /no auth token provided/i;
-      should(error.code).be.match(expectedErrorCode);
+      should(error.code).be.equal(expectedErrorCode);
       should(error.message).be.match(expectedErrorMessage);
     }
   });
@@ -182,8 +238,10 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
 
     const returnOn = StartCallbackType.CallbackOnProcessInstanceFinished;
 
-    await testFixtureProvider
+    const startResponse = await testFixtureProvider
       .managementApiClientService
       .startProcessInstance(defaultIdentity, processModelId, payload, returnOn, startEventId);
+
+    return startResponse;
   }
 });

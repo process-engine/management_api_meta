@@ -93,22 +93,6 @@ describe('Management API: GET -> /process_model/:processModelId/logs?correlation
     }
   });
 
-  it('should throw a 401 error when no auth token is provided', async () => {
-    try {
-      await testFixtureProvider
-        .managementApiClientService
-        .getProcessModelLog({}, processModelId, correlationId);
-
-      should.fail(null, null, 'The request should have failed with code 401!');
-    } catch (error) {
-      const expectedErrorCode = 401;
-      const expectedErrorMessage = /no auth token provided/i;
-      should(error).have.properties('code', 'message');
-      should(error.code).be.match(expectedErrorCode);
-      should(error.message).be.match(expectedErrorMessage);
-    }
-  });
-
   it('should return an empty array when trying to get logs for a non existing processModelid', async () => {
     const nonExistingProcessModelId = 'bogus_process_model_id';
     const logs = await testFixtureProvider
@@ -127,5 +111,21 @@ describe('Management API: GET -> /process_model/:processModelId/logs?correlation
 
     should(logs).be.an.Array();
     should(logs).be.empty();
+  });
+
+  it('should throw a 401 error when no auth token is provided', async () => {
+    try {
+      await testFixtureProvider
+        .managementApiClientService
+        .getProcessModelLog({}, processModelId, correlationId);
+
+      should.fail(null, null, 'The request should have failed with code 401!');
+    } catch (error) {
+      const expectedErrorCode = 401;
+      const expectedErrorMessage = /no auth token provided/i;
+      should(error).have.properties('code', 'message');
+      should(error.message).be.match(expectedErrorMessage);
+      should(error.code).be.equal(expectedErrorCode);
+    }
   });
 });
