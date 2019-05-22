@@ -100,7 +100,7 @@ pipeline {
       parallel {
         stage('MySQL') {
           agent {
-            label 'macos && any-docker'
+            label 'linux && any-docker'
           }
           options {
             skipDefaultCheckout()
@@ -167,7 +167,7 @@ pipeline {
         }
         stage('PostgreSQL') {
           agent {
-            label 'macos && any-docker'
+            label 'linux && any-docker'
           }
           options {
             skipDefaultCheckout()
@@ -231,7 +231,9 @@ pipeline {
           }
         }
         stage('SQLite') {
-          agent any
+          agent {
+            label 'macos'
+          }
           options {
             skipDefaultCheckout()
           }
