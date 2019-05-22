@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-naming */
 import * as fs from 'fs';
 import * as jsonwebtoken from 'jsonwebtoken';
 import * as path from 'path';
@@ -5,9 +6,9 @@ import * as path from 'path';
 import {InvocationContainer} from 'addict-ioc';
 
 import {Logger} from 'loggerhythm';
-const logger: Logger = Logger.createLogger('test:bootstrapper');
 
 import {AppBootstrapper} from '@essential-projects/bootstrapper_node';
+import {HttpExtension} from '@essential-projects/http_extension';
 import {IIdentity, TokenBody} from '@essential-projects/iam_contracts';
 
 import {IDeploymentApi} from '@process-engine/deployment_api_contracts';
@@ -15,11 +16,9 @@ import {IManagementApi} from '@process-engine/management_api_contracts';
 
 import {initializeBootstrapper} from './setup_ioc_container';
 
-export type IdentityCollection = {
-  defaultUser: IIdentity;
-  secondDefaultUser: IIdentity,
-  restrictedUser: IIdentity;
-};
+const logger: Logger = Logger.createLogger('test:bootstrapper');
+
+export type IdentityCollection = {[userName: string]: IIdentity};
 
 export class TestFixtureProvider {
 
@@ -45,52 +44,52 @@ export class TestFixtureProvider {
 
   public async initializeAndStart(): Promise<void> {
 
-    await this._initializeBootstrapper();
+    await this.initializeBootstrapper();
 
     await this.bootstrapper.start();
 
-    await this._createMockIdentities();
+    await this.createMockIdentities();
 
     this._deploymentApiService = await this.resolveAsync<IDeploymentApi>('DeploymentApiService');
     this._managementApiClientService = await this.resolveAsync<IManagementApi>('ManagementApiClientService');
   }
 
   public async tearDown(): Promise<void> {
-    const httpExtension: any = await this.container.resolveAsync('HttpExtension');
+    const httpExtension = await this.container.resolveAsync<HttpExtension>('HttpExtension');
     await httpExtension.close();
     await this.bootstrapper.stop();
   }
 
-  public resolve<T>(moduleName: string, args?: any): T {
-    return this.container.resolve<T>(moduleName, args);
+  public resolve<TModule>(moduleName: string, args?: any): TModule {
+    return this.container.resolve<TModule>(moduleName, args);
   }
 
-  public async resolveAsync<T>(moduleName: string, args?: any): Promise<T> {
-    return this.container.resolveAsync<T>(moduleName, args);
+  public async resolveAsync<TModule>(moduleName: string, args?: any): Promise<TModule> {
+    return this.container.resolveAsync<TModule>(moduleName, args);
   }
 
   public async importProcessFiles(processFileNames: Array<string>): Promise<void> {
 
     for (const processFileName of processFileNames) {
-      await this._registerProcess(processFileName);
+      await this.registerProcess(processFileName);
     }
   }
 
   public readProcessModelFile(processFileName: string): string {
 
-    const bpmnFolderPath: string = this.getBpmnDirectoryPath();
-    const fullFilePath: string = path.join(bpmnFolderPath, `${processFileName}.bpmn`);
+    const bpmnFolderPath = this.getBpmnDirectoryPath();
+    const fullFilePath = path.join(bpmnFolderPath, `${processFileName}.bpmn`);
 
-    const fileContent: string = fs.readFileSync(fullFilePath, 'utf-8');
+    const fileContent = fs.readFileSync(fullFilePath, 'utf-8');
 
     return fileContent;
   }
 
   public getBpmnDirectoryPath(): string {
 
-    const bpmnDirectoryName: string = 'bpmn';
-    let rootDirPath: string = process.cwd();
-    const integrationTestDirName: string = '_integration_tests';
+    const bpmnDirectoryName = 'bpmn';
+    let rootDirPath = process.cwd();
+    const integrationTestDirName = '_integration_tests';
 
     if (!rootDirPath.endsWith(integrationTestDirName)) {
       rootDirPath = path.join(rootDirPath, integrationTestDirName);
@@ -99,12 +98,12 @@ export class TestFixtureProvider {
     return path.join(rootDirPath, bpmnDirectoryName);
   }
 
-  private async _initializeBootstrapper(): Promise<void> {
+  private async initializeBootstrapper(): Promise<void> {
 
     try {
       this.container = await initializeBootstrapper();
 
-      const appPath: string = path.resolve(__dirname);
+      const appPath = path.resolve(__dirname);
       this.bootstrapper = await this.container.resolveAsync<AppBootstrapper>('AppBootstrapper', [appPath]);
 
       logger.info('Bootstrapper started.');
@@ -114,18 +113,19 @@ export class TestFixtureProvider {
     }
   }
 
-  private async _createMockIdentities(): Promise<void> {
+  private async createMockIdentities(): Promise<void> {
 
     this._identities = {
       // all access user
-      defaultUser: await this._createIdentity('defaultUser'),
-      secondDefaultUser: await this._createIdentity('secondDefaultUser'),
+      defaultUser: await this.createIdentity('defaultUser'),
+      secondDefaultUser: await this.createIdentity('secondDefaultUser'),
+      superAdmin: await this.createIdentity('superAdmin'),
       // no access user
-      restrictedUser: await this._createIdentity('restrictedUser'),
+      restrictedUser: await this.createIdentity('restrictedUser'),
     };
   }
 
-  private async _createIdentity(userId: string): Promise<IIdentity> {
+  private async createIdentity(userId: string): Promise<IIdentity> {
 
     const tokenBody: TokenBody = {
       sub: userId,
@@ -136,21 +136,22 @@ export class TestFixtureProvider {
       expiresIn: 60,
     };
 
-    const encodedToken: string = jsonwebtoken.sign(tokenBody, 'randomkey', signOptions);
+    const encodedToken = jsonwebtoken.sign(tokenBody, 'randomkey', signOptions);
 
-    return <IIdentity> {
+    return {
       token: encodedToken,
       userId: userId,
     };
   }
 
-  private async _registerProcess(processFileName: string): Promise<void> {
+  private async registerProcess(processFileName: string): Promise<void> {
 
-    const bpmnDirectoryPath: string = this.getBpmnDirectoryPath();
-    const processFilePath: string = path.join(bpmnDirectoryPath, `${processFileName}.bpmn`);
+    const bpmnDirectoryPath = this.getBpmnDirectoryPath();
+    const processFilePath = path.join(bpmnDirectoryPath, `${processFileName}.bpmn`);
 
-    const processName: string = path.parse(processFileName).name;
+    const processName = path.parse(processFileName).name;
 
     await this.deploymentApiService.importBpmnFromFile(this.identities.defaultUser, processFilePath, processName, true);
   }
+
 }

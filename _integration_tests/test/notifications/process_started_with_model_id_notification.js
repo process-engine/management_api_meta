@@ -3,7 +3,7 @@
 const should = require('should');
 const uuid = require('node-uuid');
 
-const {TestFixtureProvider, ProcessInstanceHandler} = require('../../dist/commonjs');
+const {ProcessInstanceHandler, TestFixtureProvider} = require('../../dist/commonjs');
 
 describe('Management API:   Receive ProcessWithProcessModelIdStarted Notifications', () => {
 
@@ -114,7 +114,7 @@ describe('Management API:   Receive ProcessWithProcessModelIdStarted Notificatio
       const expectedErrorMessage = /no auth token/i;
       const expectedErrorCode = 401;
       should(error.message).be.match(expectedErrorMessage);
-      should(error.code).be.match(expectedErrorCode);
+      should(error.code).be.equal(expectedErrorCode);
     }
   });
 

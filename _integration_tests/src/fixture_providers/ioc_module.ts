@@ -1,16 +1,15 @@
-'use strict';
-
-import {IamServiceMock} from '../mocks/index';
+import {IContainer} from 'addict-ioc';
 
 import {
+  ManagementApiClientService,
   ExternalAccessor as ManagementApiExternalAccessor,
   InternalAccessor as ManagementApiInternalAccessor,
-  ManagementApiClientService,
 } from '@process-engine/management_api_client';
+import {IamServiceMock} from '../mocks/index';
 
-export function registerInContainer(container: any): void {
+export function registerInContainer(container: IContainer): void {
 
-  const accessManagementApiExternally: boolean = process.env.MANAGEMENT_API_ACCESS_TYPE === 'external';
+  const accessManagementApiExternally = process.env.MANAGEMENT_API_ACCESS_TYPE === 'external';
 
   if (accessManagementApiExternally) {
     container.register('ManagementApiExternalAccessor', ManagementApiExternalAccessor)

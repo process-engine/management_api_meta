@@ -7,7 +7,7 @@ const StartCallbackType = require('@process-engine/management_api_contracts').Da
 
 const TestFixtureProvider = require('../../dist/commonjs').TestFixtureProvider;
 
-describe('Management API:   GET  ->  /process_model/:process_model_id/logs', () => {
+describe('ManagementAPI:   GET  ->  /process_model/:process_model_id/logs', () => {
 
   let testFixtureProvider;
 
@@ -54,7 +54,7 @@ describe('Management API:   GET  ->  /process_model/:process_model_id/logs', () 
       .getProcessModelLog(testFixtureProvider.identities.defaultUser, processModelId);
 
     should(logs).be.an.Array();
-    should(logs).not.be.empty();
+    should(logs.length).be.greaterThan(0);
 
     for (const log of logs) {
       should(log).have.property('timeStamp');
@@ -73,7 +73,7 @@ describe('Management API:   GET  ->  /process_model/:process_model_id/logs', () 
       .getProcessModelLog(testFixtureProvider.identities.defaultUser, processModelId, correlationId);
 
     should(logs).be.an.Array();
-    should(logs).not.be.empty();
+    should(logs.length).be.greaterThan(0);
 
     for (const log of logs) {
       should(log).have.property('timeStamp');
@@ -109,7 +109,7 @@ describe('Management API:   GET  ->  /process_model/:process_model_id/logs', () 
     } catch (error) {
       const expectedErrorCode = 401;
       const expectedErrorMessage = /no auth token provided/i;
-      should(error.code).be.match(expectedErrorCode);
+      should(error.code).be.equal(expectedErrorCode);
       should(error.message).be.match(expectedErrorMessage);
     }
   });

@@ -39,7 +39,7 @@ describe('Management API:   Get waiting Events', () => {
     await testFixtureProvider.tearDown();
   });
 
-  it('should return a correlation\'s events by its correlation_id through the consumer api', async () => {
+  it('should return a correlation\'s events by its correlation_id through the ManagementAPI', async () => {
 
     const eventList = await testFixtureProvider
       .managementApiClientService
@@ -85,7 +85,7 @@ describe('Management API:   Get waiting Events', () => {
     });
   });
 
-  it('should return a process models events by its process_model_id through the consumer api', async () => {
+  it('should return a process models events by its process_model_id through the ManagementAPI', async () => {
 
     const eventList = await testFixtureProvider
       .managementApiClientService

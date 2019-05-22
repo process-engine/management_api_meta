@@ -1,6 +1,6 @@
 import {InvocationContainer} from 'addict-ioc';
 
-const iocModuleNames: Array<string> = [
+const iocModuleNames = [
   '@essential-projects/bootstrapper',
   '@essential-projects/bootstrapper_node',
   '@essential-projects/event_aggregator',
@@ -32,13 +32,14 @@ const iocModuleNames: Array<string> = [
   '.',
 ];
 
-const iocModules: Array<any> = iocModuleNames.map((moduleName: string): any => {
+const iocModules = iocModuleNames.map((moduleName: string): any => {
+  // eslint-disable-next-line
   return require(`${moduleName}/ioc_module`);
 });
 
 export async function initializeBootstrapper(): Promise<InvocationContainer> {
 
-  const container: InvocationContainer = new InvocationContainer({
+  const container = new InvocationContainer({
     defaults: {
       conventionCalls: ['initialize'],
     },
