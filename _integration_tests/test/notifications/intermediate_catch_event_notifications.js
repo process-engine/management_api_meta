@@ -49,7 +49,7 @@ describe('Management API:   Receive global IntermediateCatchEvent Notifications'
     await testFixtureProvider.tearDown();
   });
 
-  it('should send a notification via socket when IntermediateCatchEvent is suspended', async () => {
+  it('should send a notification via socket when an IntermediateCatchEvent is suspended', async () => {
 
     correlationId = uuid.v4();
 

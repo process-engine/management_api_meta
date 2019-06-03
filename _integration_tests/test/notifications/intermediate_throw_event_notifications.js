@@ -46,7 +46,7 @@ describe('Management API:   Receive global IntermediateThrowEvent Notifications'
     await testFixtureProvider.tearDown();
   });
 
-  it('should send a notification via socket when IntermediateThrowEvent is triggered', async () => {
+  it('should send a notification via socket when an IntermediateThrowEvent is triggered', async () => {
 
     correlationId = uuid.v4();
 
