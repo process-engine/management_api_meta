@@ -75,7 +75,7 @@ describe('Management API:   Receive global Activity Notifications', () => {
       const subscribeOnce = true;
       await testFixtureProvider
         .managementApiClientService
-        .onActivityWaiting(defaultIdentity, notificationReceivedCallback, subscribeOnce);
+        .onActivityReached(defaultIdentity, notificationReceivedCallback, subscribeOnce);
 
       await processInstanceHandler.startProcessInstanceAndReturnCorrelationId(processModelId, correlationId);
     });
@@ -115,7 +115,7 @@ describe('Management API:   Receive global Activity Notifications', () => {
       const subscribeOnce = true;
       const subscription = await testFixtureProvider
         .managementApiClientService
-        .onActivityWaiting({}, noopCallback, subscribeOnce);
+        .onActivityReached({}, noopCallback, subscribeOnce);
       should.fail(subscription, undefined, 'This should not have been possible, because the user is unauthorized!');
     } catch (error) {
       const expectedErrorMessage = /no auth token/i;
@@ -152,7 +152,7 @@ describe('Management API:   Receive global Activity Notifications', () => {
     const subscribeOnce = false;
     const subscription = await testFixtureProvider
       .managementApiClientService
-      .onActivityWaiting(defaultIdentity, notificationReceivedCallback, subscribeOnce);
+      .onActivityReached(defaultIdentity, notificationReceivedCallback, subscribeOnce);
 
     // Publish the first notification
     eventAggregator.publish(activityWaitingMessagePath, sampleActivityMessage);
@@ -231,7 +231,7 @@ describe('Management API:   Receive global Activity Notifications', () => {
       const subscribeOnce = false;
       const subscription = await testFixtureProvider
         .managementApiClientService
-        .onActivityWaiting(defaultIdentity, notificationReceivedCallback, subscribeOnce);
+        .onActivityReached(defaultIdentity, notificationReceivedCallback, subscribeOnce);
 
       // Publish a number of events
       eventAggregator.publish(activityWaitingMessagePath, sampleActivityMessage);
@@ -281,7 +281,7 @@ describe('Management API:   Receive global Activity Notifications', () => {
     const subscribeOnce = true;
     await testFixtureProvider
       .managementApiClientService
-      .onActivityWaiting(defaultIdentity, notificationReceivedCallback, subscribeOnce);
+      .onActivityReached(defaultIdentity, notificationReceivedCallback, subscribeOnce);
 
     // Publish a number of events
     eventAggregator.publish(activityWaitingMessagePath, sampleActivityMessage);
