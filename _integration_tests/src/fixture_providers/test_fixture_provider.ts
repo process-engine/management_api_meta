@@ -11,8 +11,8 @@ import {AppBootstrapper} from '@essential-projects/bootstrapper_node';
 import {HttpExtension} from '@essential-projects/http_extension';
 import {IIdentity, TokenBody} from '@essential-projects/iam_contracts';
 
-import {IDeploymentApi} from '@process-engine/deployment_api_contracts';
 import {IManagementApi} from '@process-engine/management_api_contracts';
+import {IProcessModelUseCases} from '@process-engine/process_model.contracts';
 
 import {initializeBootstrapper} from './setup_ioc_container';
 
@@ -25,8 +25,8 @@ export class TestFixtureProvider {
   private bootstrapper: AppBootstrapper;
   private container: InvocationContainer;
 
-  private _deploymentApiService: IDeploymentApi;
   private _managementApiClientService: IManagementApi;
+  private _processModelUseCases: IProcessModelUseCases;
 
   private _identities: IdentityCollection;
 
@@ -34,12 +34,12 @@ export class TestFixtureProvider {
     return this._identities;
   }
 
-  public get deploymentApiService(): IDeploymentApi {
-    return this._deploymentApiService;
-  }
-
   public get managementApiClientService(): IManagementApi {
     return this._managementApiClientService;
+  }
+
+  public get processModelUseCases(): IProcessModelUseCases {
+    return this._processModelUseCases;
   }
 
   public async initializeAndStart(): Promise<void> {
@@ -50,8 +50,8 @@ export class TestFixtureProvider {
 
     await this.createMockIdentities();
 
-    this._deploymentApiService = await this.resolveAsync<IDeploymentApi>('DeploymentApiService');
     this._managementApiClientService = await this.resolveAsync<IManagementApi>('ManagementApiClientService');
+    this._processModelUseCases = await this.resolveAsync<IProcessModelUseCases>('ProcessModelUseCases');
   }
 
   public async tearDown(): Promise<void> {
@@ -145,13 +145,18 @@ export class TestFixtureProvider {
   }
 
   private async registerProcess(processFileName: string): Promise<void> {
+    const xml = this.readProcessModelFromFile(processFileName);
+    await this.processModelUseCases.persistProcessDefinitions(this.identities.defaultUser, processFileName, xml, true);
+  }
+
+  private readProcessModelFromFile(fileName: string): string {
 
     const bpmnDirectoryPath = this.getBpmnDirectoryPath();
-    const processFilePath = path.join(bpmnDirectoryPath, `${processFileName}.bpmn`);
+    const processModelPath = path.join(bpmnDirectoryPath, `${fileName}.bpmn`);
 
-    const processName = path.parse(processFileName).name;
+    const processModelAsXml = fs.readFileSync(processModelPath, 'utf-8');
 
-    await this.deploymentApiService.importBpmnFromFile(this.identities.defaultUser, processFilePath, processName, true);
+    return processModelAsXml;
   }
 
 }
