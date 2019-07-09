@@ -22,6 +22,8 @@ const iocModuleNames = [
   '@process-engine/consumer_api_core',
   '@process-engine/correlation.service',
   '@process-engine/correlations.repository.sequelize',
+  '@process-engine/cronjob_history.service',
+  '@process-engine/cronjob_history.repository.sequelize',
   '@process-engine/deployment_api_core',
   '@process-engine/external_task_api_core',
   '@process-engine/external_task_api_http',
