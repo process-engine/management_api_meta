@@ -11,7 +11,7 @@ import {AppBootstrapper} from '@essential-projects/bootstrapper_node';
 import {HttpExtension} from '@essential-projects/http_extension';
 import {IIdentity, TokenBody} from '@essential-projects/iam_contracts';
 
-import {IManagementApi} from '@process-engine/management_api_contracts';
+import {IManagementApiClient} from '@process-engine/management_api_contracts';
 import {IProcessModelUseCases} from '@process-engine/process_model.contracts';
 
 import {initializeBootstrapper} from './setup_ioc_container';
@@ -25,7 +25,7 @@ export class TestFixtureProvider {
   private bootstrapper: AppBootstrapper;
   private container: InvocationContainer;
 
-  private _managementApiClientService: IManagementApi;
+  private _managementApiClientService: IManagementApiClient;
   private _processModelUseCases: IProcessModelUseCases;
 
   private _identities: IdentityCollection;
@@ -34,7 +34,7 @@ export class TestFixtureProvider {
     return this._identities;
   }
 
-  public get managementApiClientService(): IManagementApi {
+  public get managementApiClientService(): IManagementApiClient {
     return this._managementApiClientService;
   }
 
@@ -50,7 +50,7 @@ export class TestFixtureProvider {
 
     await this.createMockIdentities();
 
-    this._managementApiClientService = await this.resolveAsync<IManagementApi>('ManagementApiClientService');
+    this._managementApiClientService = await this.resolveAsync<IManagementApiClient>('ManagementApiClientService');
     this._processModelUseCases = await this.resolveAsync<IProcessModelUseCases>('ProcessModelUseCases');
   }
 
