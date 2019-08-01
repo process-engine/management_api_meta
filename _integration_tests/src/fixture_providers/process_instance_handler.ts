@@ -40,7 +40,7 @@ export class ProcessInstanceHandler {
     const identityToUse = identity || this.testFixtureProvider.identities.defaultUser;
 
     const result = await this.testFixtureProvider
-      .managementApiClientService
+      .managementApiClient
       .startProcessInstance(identityToUse, processModelId, payload, startCallbackType, startEventId);
 
     return result.correlationId;
@@ -63,7 +63,7 @@ export class ProcessInstanceHandler {
     const identityToUse = identity || this.testFixtureProvider.identities.defaultUser;
 
     const result = await this.testFixtureProvider
-      .managementApiClientService
+      .managementApiClient
       .startProcessInstance(identityToUse, processModelId, payload, startCallbackType, startEventId);
 
     return result;

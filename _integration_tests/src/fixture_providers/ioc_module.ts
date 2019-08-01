@@ -16,13 +16,13 @@ export function registerInContainer(container: IContainer): void {
       .dependencies('HttpClient')
       .configure('management_api:external_accessor');
 
-    container.register('ManagementApiClientService', ManagementApiClientService)
+    container.register('ManagementApiClient', ManagementApiClientService)
       .dependencies('ManagementApiExternalAccessor');
   } else {
     container.register('ManagementApiInternalAccessor', ManagementApiInternalAccessor)
       .dependencies('ManagementApiService');
 
-    container.register('ManagementApiClientService', ManagementApiClientService)
+    container.register('ManagementApiClient', ManagementApiClientService)
       .dependencies('ManagementApiInternalAccessor');
   }
 
