@@ -1,7 +1,7 @@
 import {IContainer} from 'addict-ioc';
 
 import {
-  ManagementApiClientService,
+  ManagementApiClient,
   ExternalAccessor as ManagementApiExternalAccessor,
   InternalAccessor as ManagementApiInternalAccessor,
 } from '@process-engine/management_api_client';
@@ -16,13 +16,26 @@ export function registerInContainer(container: IContainer): void {
       .dependencies('HttpClient')
       .configure('management_api:external_accessor');
 
-    container.register('ManagementApiClientService', ManagementApiClientService)
+    container.register('ManagementApiClient', ManagementApiClient)
       .dependencies('ManagementApiExternalAccessor');
   } else {
     container.register('ManagementApiInternalAccessor', ManagementApiInternalAccessor)
-      .dependencies('ManagementApiService');
+      .dependencies(
+        'ManagementApiCorrelationService',
+        'ManagementApiCronjobService',
+        'ManagementApiEmptyActivityService',
+        'ManagementApiEventService',
+        'ManagementApiFlowNodeInstanceService',
+        'ManagementApiKpiService',
+        'ManagementApiLoggingService',
+        'ManagementApiManualTaskService',
+        'ManagementApiNotificationService',
+        'ManagementApiProcessModelService',
+        'ManagementApiTokenHistoryService',
+        'ManagementApiUserTaskService',
+      );
 
-    container.register('ManagementApiClientService', ManagementApiClientService)
+    container.register('ManagementApiClient', ManagementApiClient)
       .dependencies('ManagementApiInternalAccessor');
   }
 

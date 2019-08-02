@@ -35,7 +35,7 @@ describe('Management API:   GET  ->  /cronjobs/active', () => {
   it('should return all active cronjobs', async () => {
 
     const cronjobs = await testFixtureProvider
-      .managementApiClientService
+      .managementApiClient
       .getAllActiveCronjobs(defaultIdentity);
 
     should(cronjobs).be.an.Array();
@@ -56,7 +56,7 @@ describe('Management API:   GET  ->  /cronjobs/active', () => {
     await cronjobService.addOrUpdate(parsedProcessModel2);
 
     const cronjobs = await testFixtureProvider
-      .managementApiClientService
+      .managementApiClient
       .getAllActiveCronjobs(defaultIdentity);
 
     should(cronjobs).be.an.Array();
@@ -73,7 +73,7 @@ describe('Management API:   GET  ->  /cronjobs/active', () => {
     await cronjobService.remove(processModelId2);
 
     const cronjobs = await testFixtureProvider
-      .managementApiClientService
+      .managementApiClient
       .getAllActiveCronjobs(defaultIdentity);
 
     should(cronjobs).be.an.Array();
@@ -83,7 +83,7 @@ describe('Management API:   GET  ->  /cronjobs/active', () => {
   it('should fail to retrieve a list of cronjobs, when the user is unauthorized', async () => {
     try {
       const cronjobs = await testFixtureProvider
-        .managementApiClientService
+        .managementApiClient
         .getAllActiveCronjobs({});
 
       should.fail(cronjobs, undefined, 'This request should have failed!');
