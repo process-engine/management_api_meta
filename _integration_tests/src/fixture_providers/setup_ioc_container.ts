@@ -18,7 +18,6 @@ const iocModuleNames = [
   '@process-engine/flow_node_instance.repository.sequelize',
   '@process-engine/flow_node_instance.service',
   '@process-engine/iam',
-  '@process-engine/kpi_api_core',
   '@process-engine/logging_api_core',
   '@process-engine/logging.repository.file_system',
   '@process-engine/management_api_core',
@@ -29,7 +28,6 @@ const iocModuleNames = [
   '@process-engine/process_model.repository.sequelize',
   '@process-engine/process_model.service',
   '@process-engine/process_model.use_case',
-  '@process-engine/token_history_api_core',
   '.',
 ];
 
