@@ -132,37 +132,6 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
     }
   });
 
-  it('should fail to retrieve the token history, when the user is unauthorized', async () => {
-    try {
-      const processModelList = await testFixtureProvider
-        .managementApiClient
-        .getTokensForFlowNode({}, processModelId, correlationId, startEventId);
-
-      should.fail(processModelList, undefined, 'This request should have failed!');
-    } catch (error) {
-      const expectedErrorCode = 401;
-      const expectedErrorMessage = /no auth token provided/i;
-      should(error.code).be.equal(expectedErrorCode);
-      should(error.message).be.match(expectedErrorMessage);
-    }
-  });
-
-  it('should fail when trying to receive the token history of a FlowNode which does not exist in the correlation', async () => {
-    const notExistingTaskId = 'not_existing_task';
-    try {
-      const processTokens = await testFixtureProvider
-        .managementApiClient
-        .getTokensForFlowNode(defaultIdentity, processModelId, correlationId, notExistingTaskId);
-
-      should.fail(processTokens, undefined, 'This request should have failed!');
-    } catch (error) {
-      const expectedErrorCode = 404;
-      const expectedErrorMessage = /not.*exist/i;
-      should(error.code).be.equal(expectedErrorCode);
-      should(error.message).be.match(expectedErrorMessage);
-    }
-  });
-
   it('should successfully read the token history for each FlowNode of a specific process model of the executed correlation', async () => {
 
     const expectedTokenTypes = [
@@ -209,6 +178,37 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
         should(matchingTokenHistoryEntry).have.property('caller');
         should(matchingTokenHistoryEntry).have.property('payload');
       }
+    }
+  });
+
+  it('should fail to retrieve the token history, when the user is unauthorized', async () => {
+    try {
+      const processModelList = await testFixtureProvider
+        .managementApiClient
+        .getTokensForFlowNode({}, processModelId, correlationId, startEventId);
+
+      should.fail(processModelList, undefined, 'This request should have failed!');
+    } catch (error) {
+      const expectedErrorCode = 401;
+      const expectedErrorMessage = /no auth token provided/i;
+      should(error.code).be.equal(expectedErrorCode);
+      should(error.message).be.match(expectedErrorMessage);
+    }
+  });
+
+  it('should fail when trying to receive the token history of a FlowNode which does not exist in the correlation', async () => {
+    const notExistingTaskId = 'not_existing_task';
+    try {
+      const processTokens = await testFixtureProvider
+        .managementApiClient
+        .getTokensForFlowNode(defaultIdentity, processModelId, correlationId, notExistingTaskId);
+
+      should.fail(processTokens, undefined, 'This request should have failed!');
+    } catch (error) {
+      const expectedErrorCode = 404;
+      const expectedErrorMessage = /not.*exist/i;
+      should(error.code).be.equal(expectedErrorCode);
+      should(error.message).be.match(expectedErrorMessage);
     }
   });
 
