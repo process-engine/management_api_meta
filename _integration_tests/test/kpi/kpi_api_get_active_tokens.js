@@ -3,6 +3,8 @@
 const should = require('should');
 const uuid = require('node-uuid');
 
+const StartCallbackType = require('@process-engine/management_api_contracts').DataModels.ProcessModels.StartCallbackType;
+
 const {TestFixtureProvider, ProcessInstanceHandler} = require('../../dist/commonjs');
 
 describe('Management API -> Get ActiveTokens - ', () => {
@@ -36,16 +38,20 @@ describe('Management API -> Get ActiveTokens - ', () => {
 
   it('should successfully get the active tokens for a running ProcessModel', async () => {
 
-    const activeTokens = await testFixtureProvider
-      .managementApiClient
-      .getActiveTokensForProcessModel(defaultIdentity, processModelId);
+    try {
+      const activeTokens = await testFixtureProvider
+        .managementApiClient
+        .getActiveTokensForProcessModel(defaultIdentity, processModelId);
 
-    should(activeTokens).be.an.Array();
-    const assertionError = `Expected ${JSON.stringify(activeTokens)} to have two entries, but received ${activeTokens.length}!`;
-    should(activeTokens.length).be.equal(2, assertionError); // 2 UserTasks running in parallel executed branches
+      should(activeTokens).be.an.Array();
+      const assertionError = `Expected ${JSON.stringify(activeTokens)} to have two entries, but received ${activeTokens.length}!`;
+      should(activeTokens.length).be.equal(2, assertionError); // 2 UserTasks running in parallel executed branches
 
-    for (const activeToken of activeTokens) {
-      assertActiveToken(activeToken, activeToken.flowNodeId);
+      for (const activeToken of activeTokens) {
+        assertActiveToken(activeToken, activeToken.flowNodeId);
+      }
+    } catch (error) {
+      console.log(error);
     }
   });
 
@@ -132,11 +138,17 @@ describe('Management API -> Get ActiveTokens - ', () => {
 
   async function executeSampleProcess() {
 
-    const initialToken = {
-      user_task: false,
+    const returnOn = StartCallbackType.CallbackOnProcessInstanceFinished;
+    const payload = {
+      correlationId: correlationId || uuid.v4(),
+      inputValues: {
+        user_task: false,
+      },
     };
 
-    await processInstanceHandler.startProcessInstanceAndReturnResult(processModelId, correlationId, initialToken);
+    await testFixtureProvider
+      .managementApiClient
+      .startProcessInstance(defaultIdentity, processModelId, payload, returnOn);
   }
 
   async function executeProcessAndWaitForUserTask() {
