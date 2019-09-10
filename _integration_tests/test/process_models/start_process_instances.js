@@ -1,12 +1,10 @@
-'use strict';
-
 const should = require('should');
 
 const StartCallbackType = require('@process-engine/management_api_contracts').DataModels.ProcessModels.StartCallbackType;
 
 const {TestFixtureProvider} = require('../../dist/commonjs');
 
-describe(`ManagementAPI: POST  ->  /process_models/:process_model_id/start?start_callback_type=1&start_event_id=:start_event_id`, () => {
+describe('ManagementAPI: POST  ->  /process_models/:process_model_id/start?start_callback_type=1&start_event_id=:start_event_id', () => {
 
   let testFixtureProvider;
   let defaultIdentity;
@@ -29,6 +27,16 @@ describe(`ManagementAPI: POST  ->  /process_models/:process_model_id/start?start
 
   after(async () => {
     await testFixtureProvider.tearDown();
+  });
+
+  it('should start and finish a ProcessInstance with one start event, if the payload not provided', async () => {
+    const returnOn = StartCallbackType.CallbackOnProcessInstanceFinished;
+
+    const result = await testFixtureProvider
+      .managementApiClient
+      .startProcessInstance(defaultIdentity, processModelId, undefined, returnOn);
+
+    should(result.tokenPayload).be.eql('process instance started');
   });
 
   it('should start and finish a ProcessInstance with one start event, if the StartEventId is not provided', async () => {
