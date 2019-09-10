@@ -31,7 +31,6 @@ describe('Management API -> Get ActiveTokens - ', () => {
   });
 
   after(async () => {
-    await cleanup();
     await testFixtureProvider.tearDown();
   });
 
@@ -168,26 +167,5 @@ describe('Management API -> Get ActiveTokens - ', () => {
     should(activeToken).have.property('processInstanceId');
     should(activeToken).have.property('flowNodeInstanceId');
     should(activeToken).have.property('createdAt');
-  }
-
-  async function cleanup() {
-    return new Promise(async (resolve, reject) => {
-
-      processInstanceHandler.waitForProcessWithInstanceIdToEnd(processInstanceId, resolve);
-
-      const userTaskList = await testFixtureProvider
-        .managementApiClient
-        .getUserTasksForCorrelation(testFixtureProvider.identities.defaultUser, correlationId);
-
-      for (const userTask of userTaskList.userTasks) {
-        const userTaskProcessInstanceId = userTask.processInstanceId;
-        const userTaskInstanceId = userTask.flowNodeInstanceId;
-        const userTaskResult = {};
-
-        await testFixtureProvider
-          .managementApiClient
-          .finishUserTask(testFixtureProvider.identities.defaultUser, userTaskProcessInstanceId, correlationId, userTaskInstanceId, userTaskResult);
-      }
-    });
   }
 });
