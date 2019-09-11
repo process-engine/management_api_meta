@@ -38,20 +38,16 @@ describe('Management API -> Get ActiveTokens - ', () => {
 
   it('should successfully get the active tokens for a running ProcessModel', async () => {
 
-    try {
-      const activeTokens = await testFixtureProvider
-        .managementApiClient
-        .getActiveTokensForProcessModel(defaultIdentity, processModelId);
+    const activeTokens = await testFixtureProvider
+      .managementApiClient
+      .getActiveTokensForProcessModel(defaultIdentity, processModelId);
 
-      should(activeTokens).be.an.Array();
-      const assertionError = `Expected ${JSON.stringify(activeTokens)} to have two entries, but received ${activeTokens.length}!`;
-      should(activeTokens.length).be.equal(2, assertionError); // 2 UserTasks running in parallel executed branches
+    should(activeTokens).be.an.Array();
+    const assertionError = `Expected ${JSON.stringify(activeTokens)} to have two entries, but received ${activeTokens.length}!`;
+    should(activeTokens.length).be.equal(2, assertionError); // 2 UserTasks running in parallel executed branches
 
-      for (const activeToken of activeTokens) {
-        assertActiveToken(activeToken, activeToken.flowNodeId);
-      }
-    } catch (error) {
-      console.log(error);
+    for (const activeToken of activeTokens) {
+      assertActiveToken(activeToken, activeToken.flowNodeId);
     }
   });
 
