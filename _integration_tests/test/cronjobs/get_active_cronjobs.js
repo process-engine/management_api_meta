@@ -45,7 +45,6 @@ describe('Management API:   GET  ->  /cronjobs/active', () => {
     should(cronjob.processModelId).be.equal('test_management_api_cyclic_timers');
     should(cronjob.startEventId).be.equal('TimerStartEvent_1');
     should(cronjob.crontab).be.equal('*/15 1 * * *');
-    should(cronjob.nextExecution).be.a.Date();
   });
 
   it('should include all cronjobs that are added \'on the fly\'', async () => {
@@ -66,6 +65,8 @@ describe('Management API:   GET  ->  /cronjobs/active', () => {
   });
 
   it('should not include cronjobs that are removed \'on the fly\'', async () => {
+
+    await disposeProcessModel(processModelId2);
 
     await cronjobService.remove(processModelId2);
 
@@ -97,4 +98,11 @@ describe('Management API:   GET  ->  /cronjobs/active', () => {
 
     return testFixtureProvider.processModelUseCases.getProcessModelById(testFixtureProvider.identities.defaultUser, processModelId);
   }
+
+  async function disposeProcessModel(processModelId) {
+    await testFixtureProvider
+      .processModelUseCases
+      .deleteProcessModel(testFixtureProvider.identities.defaultUser, processModelId);
+  }
+
 });
