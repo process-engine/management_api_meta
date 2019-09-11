@@ -244,7 +244,6 @@ pipeline {
               unstash('post_build');
 
               script {
-                // Node environment settings
                 def node_env = 'NODE_ENV=sqlite';
                 def management_api_mode = 'MANAGEMENT_API_ACCESS_TYPE=internal ';
                 def junit_report_path = 'JUNIT_REPORT_PATH=management_api_test_results_sqlite.xml';
