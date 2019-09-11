@@ -55,6 +55,8 @@ export class TestFixtureProvider {
   }
 
   public async tearDown(): Promise<void> {
+    await this.clearDatabases();
+
     const httpExtension = await this.container.resolveAsync<HttpExtension>('HttpExtension');
     await httpExtension.close();
     await this.bootstrapper.stop();
@@ -96,6 +98,16 @@ export class TestFixtureProvider {
     }
 
     return path.join(rootDirPath, bpmnDirectoryName);
+  }
+
+  public async clearDatabases(): Promise<void> {
+
+    const processModels = await this.processModelUseCases.getProcessModels(this.identities.superAdmin);
+
+    for (const processModel of processModels) {
+      logger.info(`Removing ProcessModel ${processModel.id} and all related data`);
+      await this.processModelUseCases.deleteProcessModel(this.identities.superAdmin, processModel.id);
+    }
   }
 
   private async initializeBootstrapper(): Promise<void> {

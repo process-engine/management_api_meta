@@ -28,7 +28,6 @@ describe('Management API:   GET  ->  /cronjobs/active', () => {
 
   after(async () => {
     await cronjobService.stop();
-    await disposeProcessModel(processModelId);
     await testFixtureProvider.tearDown();
   });
 
@@ -68,8 +67,6 @@ describe('Management API:   GET  ->  /cronjobs/active', () => {
 
   it('should not include cronjobs that are removed \'on the fly\'', async () => {
 
-    await disposeProcessModel(processModelId2);
-
     await cronjobService.remove(processModelId2);
 
     const cronjobs = await testFixtureProvider
@@ -100,11 +97,4 @@ describe('Management API:   GET  ->  /cronjobs/active', () => {
 
     return testFixtureProvider.processModelUseCases.getProcessModelById(testFixtureProvider.identities.defaultUser, processModelId);
   }
-
-  async function disposeProcessModel(processModelId) {
-    await testFixtureProvider
-      .processModelUseCases
-      .deleteProcessModel(testFixtureProvider.identities.defaultUser, processModelId);
-  }
-
 });
