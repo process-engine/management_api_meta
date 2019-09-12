@@ -221,7 +221,6 @@ describe('Management API: GetEmptyActivitiesForCorrelation', () => {
       should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
       should(emptyActivityList.emptyActivities).have.a.lengthOf(0);
     });
-
   });
 
   describe('Security Checks', () => {
@@ -266,6 +265,5 @@ describe('Management API: GetEmptyActivitiesForCorrelation', () => {
         should(error.code).be.match(expectedErrorCode);
       }
     });
-
   });
 });

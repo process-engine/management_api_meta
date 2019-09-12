@@ -110,7 +110,6 @@ describe(`Management API: GetEmptyActivitiesForProcessModelInCorrelation`, () =>
       should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
       should(emptyActivityList.emptyActivities).have.a.lengthOf(0);
     });
-
   });
 
   describe('Pagination', () => {
@@ -198,7 +197,6 @@ describe(`Management API: GetEmptyActivitiesForProcessModelInCorrelation`, () =>
       should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
       should(emptyActivityList.emptyActivities).have.a.lengthOf(0);
     });
-
   });
 
   describe('Security Checks', () => {
@@ -243,6 +241,5 @@ describe(`Management API: GetEmptyActivitiesForProcessModelInCorrelation`, () =>
         should(error.code).be.match(expectedErrorCode);
       }
     });
-
   });
 });

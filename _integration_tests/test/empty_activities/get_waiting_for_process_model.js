@@ -116,7 +116,6 @@ describe('Management API: GetEmptyActivitiesForProcessModel', () => {
       should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
       should(emptyActivityList.emptyActivities).have.a.lengthOf(0);
     });
-
   });
 
   describe('Pagination', () => {
@@ -203,7 +202,6 @@ describe('Management API: GetEmptyActivitiesForProcessModel', () => {
       should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
       should(emptyActivityList.emptyActivities).have.a.lengthOf(0);
     });
-
   });
 
   describe('Security Checks', () => {
@@ -241,6 +239,5 @@ describe('Management API: GetEmptyActivitiesForProcessModel', () => {
         should(error.code).be.match(expectedErrorCode);
       }
     });
-
   });
 });
