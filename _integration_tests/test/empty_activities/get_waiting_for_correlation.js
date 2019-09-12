@@ -53,8 +53,8 @@ describe('Management API: GetEmptyActivitiesForCorrelation', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
-      should(emptyActivityList.emptyActivities).have.length(1);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).have.a.lengthOf(1);
 
       const emptyActivity = emptyActivityList.emptyActivities[0];
 
@@ -80,7 +80,7 @@ describe('Management API: GetEmptyActivitiesForCorrelation', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
       should(emptyActivityList.emptyActivities.length).be.greaterThan(0);
 
       const emptyActivity = emptyActivityList.emptyActivities[0];
@@ -115,8 +115,8 @@ describe('Management API: GetEmptyActivitiesForCorrelation', () => {
           .getEmptyActivitiesForCorrelation(defaultIdentity, processModelIdNoEmptyActivities);
 
         should(emptyActivityList).have.property('emptyActivities');
-        should(emptyActivityList.emptyActivities).be.instanceOf(Array);
-        should(emptyActivityList.emptyActivities.length).be.equal(0);
+        should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
+        should(emptyActivityList.emptyActivities).have.a.lengthOf(0);
 
         eventAggregator.publish('/processengine/process/signal/Continue', {});
       });
@@ -131,8 +131,8 @@ describe('Management API: GetEmptyActivitiesForCorrelation', () => {
         .getEmptyActivitiesForCorrelation(defaultIdentity, invalidCorrelationId);
 
       should(emptyActivityList).have.property('emptyActivities');
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
-      should(emptyActivityList.emptyActivities.length).be.equal(0);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).have.a.lengthOf(0);
     });
   });
 
@@ -157,8 +157,8 @@ describe('Management API: GetEmptyActivitiesForCorrelation', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
-      should(emptyActivityList.emptyActivities).have.length(5);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).have.a.lengthOf(5);
     });
 
     it('should apply no offset, a limit of 2 and return 2 items', async () => {
@@ -169,8 +169,8 @@ describe('Management API: GetEmptyActivitiesForCorrelation', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
-      should(emptyActivityList.emptyActivities).have.length(2);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).have.a.lengthOf(2);
     });
 
     it('should apply an offset of 5, a limit of 2 and return 2 items', async () => {
@@ -181,8 +181,8 @@ describe('Management API: GetEmptyActivitiesForCorrelation', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
-      should(emptyActivityList.emptyActivities).have.length(2);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).have.a.lengthOf(2);
     });
 
     it('should apply an offset of 7, a limit of 5 and return 3 items', async () => {
@@ -193,8 +193,8 @@ describe('Management API: GetEmptyActivitiesForCorrelation', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
-      should(emptyActivityList.emptyActivities).have.length(3);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).have.a.lengthOf(3);
     });
 
     it('should return all items, if the limit is larger than the max number of records', async () => {
@@ -205,8 +205,8 @@ describe('Management API: GetEmptyActivitiesForCorrelation', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
-      should(emptyActivityList.emptyActivities).have.length(10);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).have.a.lengthOf(10);
 
     });
 
@@ -218,8 +218,8 @@ describe('Management API: GetEmptyActivitiesForCorrelation', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
-      should(emptyActivityList.emptyActivities).have.length(0);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).have.a.lengthOf(0);
     });
 
   });

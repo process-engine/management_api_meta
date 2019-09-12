@@ -67,7 +67,7 @@ describe('Management API: GetEmptyActivitiesForProcessModel', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
       should(emptyActivityList.emptyActivities).have.length(1);
 
       const emptyActivity = emptyActivityList.emptyActivities[0];
@@ -97,8 +97,8 @@ describe('Management API: GetEmptyActivitiesForProcessModel', () => {
           .getEmptyActivitiesForProcessModel(defaultIdentity, processModelIdNoEmptyActivities);
 
         should(emptyActivityList).have.property('emptyActivities');
-        should(emptyActivityList.emptyActivities).be.instanceOf(Array);
-        should(emptyActivityList.emptyActivities.length).be.equal(0);
+        should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
+        should(emptyActivityList.emptyActivities).have.a.lengthOf(0);
 
         eventAggregator.publish('/processengine/process/signal/Continue', {});
       });
@@ -113,8 +113,8 @@ describe('Management API: GetEmptyActivitiesForProcessModel', () => {
         .getEmptyActivitiesForProcessModel(defaultIdentity, invalidprocessModelId);
 
       should(emptyActivityList).have.property('emptyActivities');
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
-      should(emptyActivityList.emptyActivities.length).be.equal(0);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).have.a.lengthOf(0);
     });
 
   });
@@ -139,7 +139,7 @@ describe('Management API: GetEmptyActivitiesForProcessModel', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
       should(emptyActivityList.emptyActivities).have.length(5);
     });
 
@@ -151,7 +151,7 @@ describe('Management API: GetEmptyActivitiesForProcessModel', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
       should(emptyActivityList.emptyActivities).have.length(2);
     });
 
@@ -163,7 +163,7 @@ describe('Management API: GetEmptyActivitiesForProcessModel', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
       should(emptyActivityList.emptyActivities).have.length(2);
     });
 
@@ -175,7 +175,7 @@ describe('Management API: GetEmptyActivitiesForProcessModel', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
       should(emptyActivityList.emptyActivities).have.length(3);
     });
 
@@ -187,7 +187,7 @@ describe('Management API: GetEmptyActivitiesForProcessModel', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
       should(emptyActivityList.emptyActivities).have.length(10);
 
     });
@@ -200,7 +200,7 @@ describe('Management API: GetEmptyActivitiesForProcessModel', () => {
 
       should(emptyActivityList).have.property('emptyActivities');
 
-      should(emptyActivityList.emptyActivities).be.instanceOf(Array);
+      should(emptyActivityList.emptyActivities).be.an.instanceOf(Array);
       should(emptyActivityList.emptyActivities).have.length(0);
     });
 
