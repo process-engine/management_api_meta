@@ -44,7 +44,7 @@ describe('Management API -> Get ActiveTokens - ', () => {
 
     should(activeTokens).be.an.Array();
     const assertionError = `Expected ${JSON.stringify(activeTokens)} to have two entries, but received ${activeTokens.length}!`;
-    should(activeTokens.length).be.equal(2, assertionError); // 2 UserTasks running in parallel executed branches
+    should(activeTokens).have.a.lengthOf(2, assertionError); // 2 UserTasks running in parallel executed branches
 
     for (const activeToken of activeTokens) {
       assertActiveToken(activeToken, activeToken.flowNodeId);
@@ -59,7 +59,7 @@ describe('Management API -> Get ActiveTokens - ', () => {
 
     should(activeTokens).be.an.Array();
     const assertionError = `Expected ${JSON.stringify(activeTokens)} to have two entries, but received ${activeTokens.length}!`;
-    should(activeTokens.length).be.equal(2, assertionError); // 2 UserTasks running in parallel executed branches
+    should(activeTokens).have.a.lengthOf(2, assertionError); // 2 UserTasks running in parallel executed branches
 
     for (const activeToken of activeTokens) {
       assertActiveToken(activeToken, activeToken.flowNodeId);
@@ -74,7 +74,7 @@ describe('Management API -> Get ActiveTokens - ', () => {
 
     should(activeTokens).be.an.Array();
     const assertionError = `Expected ${JSON.stringify(activeTokens)} to have two entries, but received ${activeTokens.length}!`;
-    should(activeTokens.length).be.equal(2, assertionError); // 2 UserTasks running in parallel executed branches
+    should(activeTokens).have.a.lengthOf(2, assertionError); // 2 UserTasks running in parallel executed branches
 
     for (const activeToken of activeTokens) {
       assertActiveToken(activeToken, activeToken.flowNodeId);
@@ -88,7 +88,7 @@ describe('Management API -> Get ActiveTokens - ', () => {
       .getActiveTokensForFlowNode(defaultIdentity, userTask1Id);
 
     should(activeTokens).be.an.Array();
-    should(activeTokens.length).be.equal(1);
+    should(activeTokens).have.a.lengthOf(1);
 
     const activeToken = activeTokens[0];
 
@@ -107,7 +107,7 @@ describe('Management API -> Get ActiveTokens - ', () => {
 
     should(activeTokens).be.an.Array();
     const assertionError = `Expected ${JSON.stringify(activeTokens)} to have two entries, but received ${activeTokens.length}!`;
-    should(activeTokens.length).be.equal(2, assertionError); // 2 UserTasks running in parallel executed branches
+    should(activeTokens).have.a.lengthOf(2, assertionError); // 2 UserTasks running in parallel executed branches
 
     for (const activeToken of activeTokens) {
       assertActiveToken(activeToken, activeToken.flowNodeId);
@@ -125,7 +125,7 @@ describe('Management API -> Get ActiveTokens - ', () => {
       .getActiveTokensForFlowNode(defaultIdentity, userTask1Id);
 
     should(activeTokens).be.an.Array();
-    should(activeTokens.length).be.equal(1);
+    should(activeTokens).have.a.lengthOf(1);
 
     const activeToken = activeTokens[0];
 

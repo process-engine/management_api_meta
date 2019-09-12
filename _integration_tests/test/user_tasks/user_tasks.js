@@ -108,7 +108,7 @@ describe(`Management API: ${testCase}`, () => {
 
     should(userTaskList).have.property('userTasks');
 
-    should(userTaskList.userTasks).be.instanceOf(Array);
+    should(userTaskList.userTasks).be.an.instanceOf(Array);
     should(userTaskList.userTasks.length).be.greaterThan(0);
 
     const userTask = userTaskList.userTasks[0];
@@ -119,8 +119,8 @@ describe(`Management API: ${testCase}`, () => {
     should(userTask).have.property('data');
 
     should(userTask.data).have.property('formFields');
-    should(userTask.data.formFields).be.instanceOf(Array);
-    should(userTask.data.formFields.length).be.equal(1);
+    should(userTask.data.formFields).be.an.instanceOf(Array);
+    should(userTask.data.formFields).have.a.lengthOf(1);
 
     const formField = userTask.data.formFields[0];
 

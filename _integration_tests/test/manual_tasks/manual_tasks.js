@@ -101,7 +101,7 @@ describe(`Management API: ${testCase}`, () => {
 
     should(manualTaskList).have.property('manualTasks');
 
-    should(manualTaskList.manualTasks).be.instanceOf(Array);
+    should(manualTaskList.manualTasks).be.an.instanceOf(Array);
     should(manualTaskList.manualTasks.length).be.greaterThan(0);
 
     const manualTask = manualTaskList.manualTasks[0];

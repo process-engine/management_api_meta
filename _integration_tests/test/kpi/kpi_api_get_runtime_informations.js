@@ -28,7 +28,7 @@ describe('Management API -> Get ProcessInstance Runtime Informations - ', () => 
       .getRuntimeInformationForProcessModel(defaultIdentity, processModelId);
 
     should(runtimeInfos).be.an.Array();
-    should(runtimeInfos.length).be.equal(10, `Expected 10 runtime informations, but got ${runtimeInfos.length}.`);
+    should(runtimeInfos).have.a.lengthOf(10, `Expected 10 runtime informations, but got ${runtimeInfos.length}.`);
 
     const expectedFlowNodeIds = [
       'StartEvent_1mox3jl',

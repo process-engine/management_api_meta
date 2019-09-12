@@ -46,8 +46,8 @@ describe('Management API:   Get waiting Events', () => {
 
     should(eventList).have.property('events');
 
-    should(eventList.events).be.instanceOf(Array);
-    should(eventList.events.length).be.equal(1);
+    should(eventList.events).be.an.instanceOf(Array);
+    should(eventList.events).have.a.lengthOf(1);
 
     eventList.events.forEach((event) => {
       should(event).have.property('id');
@@ -69,7 +69,7 @@ describe('Management API:   Get waiting Events', () => {
 
     should(eventList).have.property('events');
 
-    should(eventList.events).be.instanceOf(Array);
+    should(eventList.events).be.an.instanceOf(Array);
     should(eventList.events.length).be.greaterThan(0);
 
     eventList.events.forEach((event) => {
@@ -92,7 +92,7 @@ describe('Management API:   Get waiting Events', () => {
 
     should(eventList).have.property('events');
 
-    should(eventList.events).be.instanceOf(Array);
+    should(eventList.events).be.an.instanceOf(Array);
     should(eventList.events.length).be.greaterThan(0);
 
     eventList.events.forEach((event) => {

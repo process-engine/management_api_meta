@@ -62,7 +62,7 @@ describe('Management API:   GET  ->  /cronjobs/history/process_model/:process_mo
       .managementApiClient
       .getCronjobExecutionHistoryForProcessModel(defaultIdentity, processModelId);
 
-    should(cronjobHistory).have.length(2);
+    should(cronjobHistory).have.a.lengthOf(2);
 
     assertCronjobHistory(cronjobHistory, processModelId);
   });
@@ -72,7 +72,7 @@ describe('Management API:   GET  ->  /cronjobs/history/process_model/:process_mo
       .managementApiClient
       .getCronjobExecutionHistoryForProcessModel(superAdmin, processModelId);
 
-    should(cronjobHistory).have.length(2);
+    should(cronjobHistory).have.a.lengthOf(2);
 
     assertCronjobHistory(cronjobHistory, processModelId);
   });
@@ -84,7 +84,7 @@ describe('Management API:   GET  ->  /cronjobs/history/process_model/:process_mo
       .managementApiClient
       .getCronjobExecutionHistoryForProcessModel(defaultIdentity, processModelId, startEventId);
 
-    should(cronjobHistory).have.length(1);
+    should(cronjobHistory).have.a.lengthOf(1);
 
     assertCronjobHistory(cronjobHistory, processModelId, startEventId);
   });

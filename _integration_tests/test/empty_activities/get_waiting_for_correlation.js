@@ -226,10 +226,10 @@ describe('Management API: GetEmptyActivitiesForCorrelation', () => {
 
   describe('Security Checks', () => {
 
-    let correlationId;
+    const correlationId = uuid.v4();
 
     before(async () => {
-      correlationId = await processInstanceHandler.startProcessInstanceAndReturnCorrelationId(processModelId);
+      await processInstanceHandler.startProcessInstanceAndReturnCorrelationId(processModelId, correlationId);
       await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId);
     });
 

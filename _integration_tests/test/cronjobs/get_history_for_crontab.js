@@ -64,7 +64,7 @@ describe('Management API:   GET  ->  /cronjobs/history/crontab/:crontab', () => 
       .managementApiClient
       .getCronjobExecutionHistoryForCrontab(defaultIdentity, crontab);
 
-    should(cronjobHistory).have.length(2);
+    should(cronjobHistory).have.a.lengthOf(2);
 
     assertCronjobHistory(cronjobHistory, crontab);
   });
@@ -76,7 +76,7 @@ describe('Management API:   GET  ->  /cronjobs/history/crontab/:crontab', () => 
       .managementApiClient
       .getCronjobExecutionHistoryForCrontab(superAdmin, crontab);
 
-    should(cronjobHistory).have.length(2);
+    should(cronjobHistory).have.a.lengthOf(2);
 
     assertCronjobHistory(cronjobHistory, crontab);
   });

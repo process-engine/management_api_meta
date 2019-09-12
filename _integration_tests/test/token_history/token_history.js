@@ -56,7 +56,7 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
         .getTokensForFlowNode(defaultIdentity, correlationId, processModelId, flowNodeId);
 
       should(tokenHistory).be.an.Array();
-      should(tokenHistory.length).be.equal(2, `Not all state changes were persisted for FlowNode ${flowNodeId}!`);
+      should(tokenHistory).have.a.lengthOf(2, `Not all state changes were persisted for FlowNode ${flowNodeId}!`);
 
       for (const tokenType of expectedTokenTypes) {
 
@@ -107,7 +107,7 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
       const tokenHistory = tokenHistoryGroup[expectedFlowNodeName];
 
       should(tokenHistory).be.an.Array();
-      should(tokenHistory.length).be.equal(2, `Not all state changes were persisted for FlowNode ${expectedFlowNodeName}!`);
+      should(tokenHistory).have.a.lengthOf(2, `Not all state changes were persisted for FlowNode ${expectedFlowNodeName}!`);
 
       for (const tokenType of expectedTokenTypes) {
 
@@ -156,7 +156,7 @@ describe('Management API: GET  ->  /correlation/:correlationId/process_model/:pr
       const tokenHistory = tokenHistories[expectedFlowNodeName];
 
       should(tokenHistory).be.an.Array();
-      should(tokenHistory.length).be.equal(2, `Not all state changes were persisted for FlowNode ${expectedFlowNodeName}!`);
+      should(tokenHistory).have.a.lengthOf(2, `Not all state changes were persisted for FlowNode ${expectedFlowNodeName}!`);
 
       for (const tokenType of expectedTokenTypes) {
 

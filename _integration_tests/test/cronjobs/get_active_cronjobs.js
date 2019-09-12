@@ -38,7 +38,7 @@ describe('Management API:   GET  ->  /cronjobs/active', () => {
       .getAllActiveCronjobs(defaultIdentity);
 
     should(cronjobs).be.an.Array();
-    should(cronjobs).have.length(1);
+    should(cronjobs).have.a.lengthOf(1);
 
     const cronjob = cronjobs[0];
 
@@ -58,7 +58,7 @@ describe('Management API:   GET  ->  /cronjobs/active', () => {
       .getAllActiveCronjobs(defaultIdentity);
 
     should(cronjobs).be.an.Array();
-    should(cronjobs).have.length(2);
+    should(cronjobs).have.a.lengthOf(2);
 
     should(cronjobs).matchAny((cronjob) => cronjob.processModelId === processModelId);
     should(cronjobs).matchAny((cronjob) => cronjob.processModelId === processModelId2);
@@ -75,7 +75,7 @@ describe('Management API:   GET  ->  /cronjobs/active', () => {
       .getAllActiveCronjobs(defaultIdentity);
 
     should(cronjobs).be.an.Array();
-    should(cronjobs).have.length(1);
+    should(cronjobs).have.a.lengthOf(1);
   });
 
   it('should fail to retrieve a list of cronjobs, when the user is unauthorized', async () => {

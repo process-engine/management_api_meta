@@ -41,7 +41,7 @@ describe('Management API: GET -> /process_model/:processModelId/logs?correlation
     ];
 
     should(logs).be.an.Array();
-    should(logs).have.length(14);
+    should(logs).have.a.lengthOf(14);
 
     for (const currentLogEntry of logs) {
       should(currentLogEntry).have.properties(...expectedProperties);
@@ -63,7 +63,7 @@ describe('Management API: GET -> /process_model/:processModelId/logs?correlation
     ];
 
     should(logs).be.an.Array();
-    should(logs).have.length(14);
+    should(logs).have.a.lengthOf(14);
 
     for (const currentLogEntry of logs) {
       should(currentLogEntry).have.properties(...expectedProperties);
@@ -86,7 +86,7 @@ describe('Management API: GET -> /process_model/:processModelId/logs?correlation
     ];
 
     should(logs).be.an.Array();
-    should(logs).have.length(28);
+    should(logs).have.a.lengthOf(28);
 
     for (const currentLogEntry of logs) {
       should(currentLogEntry).have.properties(...expectedProperties);

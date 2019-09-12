@@ -29,7 +29,7 @@ describe('ManagementAPI:   GET  ->  /processModels', () => {
 
     should(processModelList).have.property('processModels');
 
-    should(processModelList.processModels).be.instanceOf(Array);
+    should(processModelList.processModels).be.an.instanceOf(Array);
     should(processModelList.processModels.length).be.greaterThan(0);
 
     processModelList.processModels.forEach((processModel) => {
@@ -37,8 +37,8 @@ describe('ManagementAPI:   GET  ->  /processModels', () => {
       should(processModel).have.property('xml');
       should(processModel).have.property('startEvents');
       should(processModel).have.property('endEvents');
-      should(processModel.startEvents).be.instanceOf(Array);
-      should(processModel.endEvents).be.instanceOf(Array);
+      should(processModel.startEvents).be.an.instanceOf(Array);
+      should(processModel.endEvents).be.an.instanceOf(Array);
     });
   });
 

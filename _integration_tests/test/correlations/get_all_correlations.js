@@ -54,7 +54,7 @@ describe('Management API:   GET  ->  /correlations/all', () => {
       .managementApiClient
       .getAllCorrelations(testFixtureProvider.identities.defaultUser);
 
-    should(correlations).be.instanceOf(Array);
+    should(correlations).be.an.instanceOf(Array);
     should(correlations.length).be.greaterThan(0);
 
     correlations.forEach((correlation) => {
@@ -83,7 +83,7 @@ describe('Management API:   GET  ->  /correlations/all', () => {
       .managementApiClient
       .getAllCorrelations(testFixtureProvider.identities.superAdmin);
 
-    should(correlations).be.instanceOf(Array);
+    should(correlations).be.an.instanceOf(Array);
     should(correlations.length).be.greaterThan(0);
 
     correlations.forEach((correlation) => {
@@ -145,7 +145,7 @@ describe('Management API:   GET  ->  /correlations/all', () => {
       .managementApiClient
       .getAllCorrelations(testFixtureProvider.identities.defaultUser);
 
-    should(correlations).be.instanceOf(Array);
+    should(correlations).be.an.instanceOf(Array);
     should(correlations.length).be.greaterThan(0);
 
     const oneCorrelationErrorState = correlations.some((currentCorrelation) => {

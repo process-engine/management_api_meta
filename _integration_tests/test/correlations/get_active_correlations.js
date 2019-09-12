@@ -38,7 +38,7 @@ describe('Management API:   GET  ->  /correlations/active', () => {
       .managementApiClient
       .getActiveCorrelations(defaultIdentity);
 
-    should(correlations).be.instanceOf(Array);
+    should(correlations).be.an.instanceOf(Array);
     should(correlations.length).be.greaterThan(0);
 
     correlations.forEach((correlation) => {
@@ -69,7 +69,7 @@ describe('Management API:   GET  ->  /correlations/active', () => {
       .managementApiClient
       .getActiveCorrelations(testFixtureProvider.identities.superAdmin);
 
-    should(correlations).be.instanceOf(Array);
+    should(correlations).be.an.instanceOf(Array);
     should(correlations.length).be.greaterThan(0);
 
     correlations.forEach((correlation) => {

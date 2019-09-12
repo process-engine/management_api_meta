@@ -50,7 +50,7 @@ describe(`Management API: ${testCase}`, () => {
   }
 
   function assertFlowNodeInstances(flowNodeInstances) {
-    should(flowNodeInstances).be.instanceOf(Array);
+    should(flowNodeInstances).be.an.instanceOf(Array);
     should(flowNodeInstances.length).be.greaterThan(0);
 
     for (const flowNodeInstance of flowNodeInstances) {
