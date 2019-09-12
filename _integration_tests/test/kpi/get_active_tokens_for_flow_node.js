@@ -7,13 +7,12 @@ const StartCallbackType = require('@process-engine/management_api_contracts').Da
 
 const {TestFixtureProvider, ProcessInstanceHandler} = require('../../dist/commonjs');
 
-describe('Management API -> Get ActiveTokens - ', () => {
+describe('Management API: GetActiveTokensForFlowNode', () => {
 
   let processInstanceHandler;
   let testFixtureProvider;
 
   let defaultIdentity;
-  let processInstanceId;
 
   const processModelId = 'heatmap_sample';
   const correlationId = uuid.v4();
@@ -36,51 +35,6 @@ describe('Management API -> Get ActiveTokens - ', () => {
     await testFixtureProvider.tearDown();
   });
 
-  it('should successfully get the active tokens for a running ProcessModel', async () => {
-
-    const activeTokens = await testFixtureProvider
-      .managementApiClient
-      .getActiveTokensForProcessModel(defaultIdentity, processModelId);
-
-    should(activeTokens).be.an.Array();
-    const assertionError = `Expected ${JSON.stringify(activeTokens)} to have two entries, but received ${activeTokens.length}!`;
-    should(activeTokens).have.a.lengthOf(2, assertionError); // 2 UserTasks running in parallel executed branches
-
-    for (const activeToken of activeTokens) {
-      assertActiveToken(activeToken, activeToken.flowNodeId);
-    }
-  });
-
-  it('should successfully get the active tokens for a running ProcessModel within a correlation', async () => {
-
-    const activeTokens = await testFixtureProvider
-      .managementApiClient
-      .getActiveTokensForCorrelationAndProcessModel(defaultIdentity, correlationId, processModelId);
-
-    should(activeTokens).be.an.Array();
-    const assertionError = `Expected ${JSON.stringify(activeTokens)} to have two entries, but received ${activeTokens.length}!`;
-    should(activeTokens).have.a.lengthOf(2, assertionError); // 2 UserTasks running in parallel executed branches
-
-    for (const activeToken of activeTokens) {
-      assertActiveToken(activeToken, activeToken.flowNodeId);
-    }
-  });
-
-  it('should successfully get the active tokens for a running ProcessInstance', async () => {
-
-    const activeTokens = await testFixtureProvider
-      .managementApiClient
-      .getActiveTokensForProcessInstance(defaultIdentity, processInstanceId);
-
-    should(activeTokens).be.an.Array();
-    const assertionError = `Expected ${JSON.stringify(activeTokens)} to have two entries, but received ${activeTokens.length}!`;
-    should(activeTokens).have.a.lengthOf(2, assertionError); // 2 UserTasks running in parallel executed branches
-
-    for (const activeToken of activeTokens) {
-      assertActiveToken(activeToken, activeToken.flowNodeId);
-    }
-  });
-
   it('should successfully get the active tokens for a running FlowNodeInstance', async () => {
 
     const activeTokens = await testFixtureProvider
@@ -93,25 +47,6 @@ describe('Management API -> Get ActiveTokens - ', () => {
     const activeToken = activeTokens[0];
 
     assertActiveToken(activeToken, userTask1Id);
-  });
-
-  it('should not include tokens from already finished ProcessModels with the same ID', async () => {
-
-    // Execute another ProcessInstance and wait for it to finish this time.
-    // The tokens of this ProcessInstance should not show as ActiveTokens.
-    await executeSampleProcess();
-
-    const activeTokens = await testFixtureProvider
-      .managementApiClient
-      .getActiveTokensForProcessModel(defaultIdentity, processModelId);
-
-    should(activeTokens).be.an.Array();
-    const assertionError = `Expected ${JSON.stringify(activeTokens)} to have two entries, but received ${activeTokens.length}!`;
-    should(activeTokens).have.a.lengthOf(2, assertionError); // 2 UserTasks running in parallel executed branches
-
-    for (const activeToken of activeTokens) {
-      assertActiveToken(activeToken, activeToken.flowNodeId);
-    }
   });
 
   it('should not include tokens from already finished FlowNodeInstances with the same ID', async () => {
@@ -153,10 +88,7 @@ describe('Management API -> Get ActiveTokens - ', () => {
       user_task: true,
     };
 
-    const startResult = await processInstanceHandler.startProcessInstanceAndReturnResult(processModelId, correlationId, initialToken);
-
-    processInstanceId = startResult.processInstanceId;
-
+    await processInstanceHandler.startProcessInstanceAndReturnResult(processModelId, correlationId, initialToken);
     await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId, processModelId, 2);
   }
 

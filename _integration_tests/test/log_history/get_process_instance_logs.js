@@ -151,6 +151,5 @@ describe('Management API: GetProcessInstanceLogs', () => {
         should(error.code).be.equal(expectedErrorCode);
       }
     });
-
   });
 });
