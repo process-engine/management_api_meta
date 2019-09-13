@@ -14,7 +14,7 @@ describe('Management API: GetActiveTokensForFlowNode', () => {
 
   let defaultIdentity;
 
-  const processModelId = 'heatmap_sample';
+  const processModelId = 'test_management_api_heatmap_sample';
   const userTask1Id = 'UserTask_1';
 
   before(async () => {

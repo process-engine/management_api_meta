@@ -12,7 +12,7 @@ describe(`Management API: ${testCase}`, () => {
 
   let correlationId;
   let processInstanceId;
-  const processModelId = 'generic_sample';
+  const processModelId = 'test_management_api_generic_sample';
 
   before(async () => {
     testFixtureProvider = new TestFixtureProvider();

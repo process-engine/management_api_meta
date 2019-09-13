@@ -11,8 +11,8 @@ describe('Management API: GetActiveTokensForProcessInstance', () => {
   let testFixtureProvider;
 
   let defaultIdentity;
-  const processModelId = 'heatmap_sample';
-  const processModelIdTokenSample = 'active_token_sample';
+  const processModelId = 'test_management_api_heatmap_sample';
+  const processModelIdTokenSample = 'test_management_api_active_token_sample';
 
   before(async () => {
     testFixtureProvider = new TestFixtureProvider();

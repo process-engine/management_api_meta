@@ -27,7 +27,7 @@ describe('Management API: GetAllCorrelations', () => {
 
   describe('Execution', () => {
 
-    const processModelId = 'generic_sample';
+    const processModelId = 'test_management_api_generic_sample';
     const errorProcessModelId = 'test_management_api_correlation_error';
 
     before(async () => {
@@ -148,7 +148,7 @@ describe('Management API: GetAllCorrelations', () => {
 
   describe('Pagination', () => {
 
-    const processModelId = 'generic_sample';
+    const processModelId = 'test_management_api_generic_sample';
 
     before(async () => {
       await testFixtureProvider.importProcessFiles([processModelId]);

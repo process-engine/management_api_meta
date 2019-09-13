@@ -13,7 +13,7 @@ describe('Management API: getTokensForFlowNodeByProcessInstanceId', () => {
   let defaultIdentity;
   let processInstanceId;
 
-  const processModelId = 'heatmap_sample';
+  const processModelId = 'test_management_api_heatmap_sample';
   const correlationId = uuid.v4();
   const startEventId = 'StartEvent_1';
 

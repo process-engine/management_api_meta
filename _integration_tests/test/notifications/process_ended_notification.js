@@ -14,7 +14,7 @@ describe('Management API:   Receive ProcessEnded Notification', () => {
   let defaultIdentity;
 
   const correlationId = uuid.v4();
-  const processModelId = 'generic_sample';
+  const processModelId = 'test_management_api_generic_sample';
 
   const noopCallback = () => {};
 

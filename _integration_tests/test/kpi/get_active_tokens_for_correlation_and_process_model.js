@@ -10,7 +10,7 @@ describe('Management API: GetActiveTokensForCorrelationAndProcessModel', () => {
   let processInstanceHandler;
   let testFixtureProvider;
 
-  const processModelId = 'heatmap_sample';
+  const processModelId = 'test_management_api_heatmap_sample';
 
   let defaultIdentity;
 

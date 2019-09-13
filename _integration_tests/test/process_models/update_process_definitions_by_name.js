@@ -8,7 +8,7 @@ describe('Management API:   POST  ->  /process_models/:process_model_id/update',
 
   let testFixtureProvider;
 
-  const processModelId = 'generic_sample';
+  const processModelId = 'test_management_api_generic_sample';
   const processModelIdNoLanes = 'process_model_without_lanes';
   const processModelIdNameMismatch = 'process_model_name_mismatch';
   const processModelIdTooManyProcesses = 'process_model_too_many_processes';

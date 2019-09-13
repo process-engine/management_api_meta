@@ -13,7 +13,7 @@ describe('Management API: GetCorrelationByProcessInstanceId', () => {
   let processInstanceId1;
   let processInstanceId2;
 
-  const processModelId = 'generic_sample';
+  const processModelId = 'test_management_api_generic_sample';
 
   before(async () => {
     testFixtureProvider = new TestFixtureProvider();

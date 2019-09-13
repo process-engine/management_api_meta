@@ -12,7 +12,7 @@ describe('Management API: GetTokensForFlowNode', () => {
   let testFixtureProvider;
   let defaultIdentity;
 
-  const processModelId = 'heatmap_sample';
+  const processModelId = 'test_management_api_heatmap_sample';
   const correlationId = uuid.v4();
   const startEventId = 'StartEvent_1';
 

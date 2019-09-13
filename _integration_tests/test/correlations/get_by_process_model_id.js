@@ -13,7 +13,7 @@ describe('Management API: GetCorrelationsByProcessModelId', () => {
   let defaultIdentity;
   let secondIdentity;
 
-  const processModelId = 'generic_sample';
+  const processModelId = 'test_management_api_generic_sample';
 
   before(async () => {
     testFixtureProvider = new TestFixtureProvider();
@@ -144,7 +144,7 @@ describe('Management API: GetCorrelationsByProcessModelId', () => {
 
   describe('Pagination', () => {
 
-    const processModelId = 'generic_sample';
+    const processModelId = 'test_management_api_generic_sample';
 
     before(async () => {
       await testFixtureProvider.importProcessFiles([processModelId]);
