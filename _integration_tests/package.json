@@ -12,8 +12,8 @@
   ],
   "scripts": {
     "start": "cross-env NODE_ENV=sqlite CONFIG_PATH=config node index.js",
-    "test-internal-sqlite": "cross-env NODE_ENV=sqlite CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=internal mocha -t 15000 test/notifications/cronjob_executed_notifications.js --exit",
-    "test-external-sqlite": "cross-env NODE_ENV=sqlite CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=external mocha -t 15000 test/notifications/cronjob_executed_notifications.js --exit",
+    "test-internal-sqlite": "cross-env NODE_ENV=sqlite CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=internal mocha -t 15000 test/**/*.js --exit",
+    "test-external-sqlite": "cross-env NODE_ENV=sqlite CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=external mocha -t 15000 test/**/*.js --exit",
     "test-internal-postgres": "cross-env NODE_ENV=postgres CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=internal mocha -t 15000 test/**/*.js --exit",
     "test-external-postgres": "cross-env NODE_ENV=postgres CONFIG_PATH=config MANAGEMENT_API_ACCESS_TYPE=external mocha -t 15000 test/**/*.js --exit",
     "test-sqlite": "npm run test-internal-sqlite && npm run test-external-sqlite",
