@@ -4,9 +4,9 @@
     <bpmn:extensionElements>
       <camunda:formData />
     </bpmn:extensionElements>
-    <bpmn:participant id="Participant_0px403d" name="heatmap_sample" processRef="heatmap_sample" />
+    <bpmn:participant id="Participant_0px403d" name="test_management_api_heatmap_sample" processRef="test_management_api_heatmap_sample" />
   </bpmn:collaboration>
-  <bpmn:process id="heatmap_sample" name="heatmap_sample" isExecutable="true">
+  <bpmn:process id="test_management_api_heatmap_sample" name="test_management_api_heatmap_sample" isExecutable="true">
     <bpmn:laneSet>
       <bpmn:lane id="Default_Test_Lane" name="Default_Test_Lane">
         <bpmn:flowNodeRef>StartEvent_1</bpmn:flowNodeRef>

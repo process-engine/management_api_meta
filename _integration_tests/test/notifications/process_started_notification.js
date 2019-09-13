@@ -13,7 +13,7 @@ describe('Management API:   Receive Process Started Notification', () => {
 
   let defaultIdentity;
 
-  const processModelId = 'generic_sample';
+  const processModelId = 'test_management_api_generic_sample';
 
   const noopCallback = () => {};
 

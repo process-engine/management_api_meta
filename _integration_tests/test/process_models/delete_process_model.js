@@ -8,7 +8,7 @@ describe('ManagementAPI:   GET  ->  /process_models/:process_model_id/delete', (
 
   let testFixtureProvider;
 
-  const processModelId = 'generic_sample';
+  const processModelId = 'test_management_api_generic_sample';
 
   before(async () => {
     testFixtureProvider = new TestFixtureProvider();
