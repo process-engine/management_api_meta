@@ -38,25 +38,25 @@ describe('Management API: GetCronjobExecutionHistoryForProcessModel', () => {
       startEventId: 'TimerStartEvent_1',
       crontab: '* * 1 1 1',
       executedAt: moment().subtract(10, 'minutes')
-.toDate(),
+        .toDate(),
     }, {
       processModelId: processModelId,
       startEventId: 'TimerStartEvent_2',
       crontab: '* * 2 2 2',
       executedAt: moment().subtract(20, 'minutes')
-.toDate(),
+        .toDate(),
     }, {
       processModelId: processModelId2,
       startEventId: 'TimerStartEvent_1',
       crontab: '* * 3 3 3',
       executedAt: moment().subtract(5, 'minutes')
-.toDate(),
+        .toDate(),
     }, {
       processModelId: processModelId2,
       startEventId: 'TimerStartEvent_2',
       crontab: '* * 4 4 4',
       executedAt: moment().subtract(25, 'minutes')
-.toDate(),
+        .toDate(),
     }];
 
     before(async () => {
@@ -111,43 +111,43 @@ describe('Management API: GetCronjobExecutionHistoryForProcessModel', () => {
       startEventId: startEventId,
       crontab: crontab,
       executedAt: moment().subtract(10, 'minutes')
-.toDate(),
+        .toDate(),
     }, {
       processModelId: processModelId,
       startEventId: startEventId,
       crontab: crontab,
       executedAt: moment().subtract(20, 'minutes')
-.toDate(),
+        .toDate(),
     }, {
       processModelId: processModelId,
       startEventId: startEventId,
       crontab: crontab,
       executedAt: moment().subtract(5, 'minutes')
-.toDate(),
+        .toDate(),
     }, {
       processModelId: processModelId,
       startEventId: startEventId,
       crontab: crontab,
       executedAt: moment().subtract(12, 'minutes')
-.toDate(),
+        .toDate(),
     }, {
       processModelId: processModelId,
       startEventId: startEventId,
       crontab: crontab,
       executedAt: moment().subtract(25, 'minutes')
-.toDate(),
+        .toDate(),
     }, {
       processModelId: processModelId,
       startEventId: startEventId,
       crontab: crontab,
       executedAt: moment().subtract(35, 'minutes')
-.toDate(),
+        .toDate(),
     }, {
       processModelId: processModelId,
       startEventId: startEventId,
       crontab: crontab,
       executedAt: moment().subtract(45, 'minutes')
-.toDate(),
+        .toDate(),
     }];
 
     before(async () => {
