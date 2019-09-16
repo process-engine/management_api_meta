@@ -1,6 +1,10 @@
 {
   "extends": "@essential-projects/eslint-config",
   "rules": {
-    "no-plusplus": ["off"]
+    "no-plusplus": ["off"],
+    "newline-per-chained-call": "off",
+    "strict": "off",
+    "@typescript-eslint/no-var-requires": "off",
+    "@typescript-eslint/no-require-imports": "off"
   }
 }
