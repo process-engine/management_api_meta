@@ -41,7 +41,7 @@ describe('Management API: GetSuspendedTasksForProcessModel', () => {
     before(async () => {
       const correlationId = uuid.v4();
       await processInstanceHandler.startProcessInstanceAndReturnCorrelationId(processModelId, correlationId);
-      await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId);
+      await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId, processModelId, 3);
     });
 
     after(async () => {

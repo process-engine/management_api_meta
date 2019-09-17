@@ -42,7 +42,7 @@ describe('Management API: GetSuspendedTasksForCorrelation', () => {
 
     before(async () => {
       await processInstanceHandler.startProcessInstanceAndReturnCorrelationId(processModelId, correlationId);
-      await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId);
+      await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId, processModelId, 3);
     });
 
     it('should return a Correlation\'s Tasks by its CorrelationId through the Management API', async () => {
@@ -371,7 +371,7 @@ describe('Management API: GetSuspendedTasksForCorrelation', () => {
 
     before(async () => {
       await processInstanceHandler.startProcessInstanceAndReturnCorrelationId(processModelId, correlationId);
-      await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId);
+      await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId, processModelId, 3);
     });
 
     it('should fail to retrieve the Correlation\'s Tasks, when the user is unauthorized', async () => {

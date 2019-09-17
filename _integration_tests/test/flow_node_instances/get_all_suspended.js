@@ -251,7 +251,7 @@ describe('Management API: getAllSuspendedTasks', () => {
 
     before(async () => {
       await processInstanceHandler.startProcessInstanceAndReturnCorrelationId(processModelId, correlationId);
-      await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId);
+      await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId, processModelId, 3);
     });
 
     it('should fail to retrieve the Correlation\'s Tasks, when the user is unauthorized', async () => {

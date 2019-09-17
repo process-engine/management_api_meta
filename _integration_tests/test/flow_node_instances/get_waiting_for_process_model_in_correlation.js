@@ -37,7 +37,7 @@ describe('Management API: GetSuspendedTasksForProcessModelInCorrelation', () => 
 
     before(async () => {
       await processInstanceHandler.startProcessInstanceAndReturnCorrelationId(processModelId, correlationId);
-      await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId);
+      await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId, processModelId, 3);
     });
 
     it('should return a list of Tasks for a given process model in a given correlation', async () => {
@@ -113,7 +113,7 @@ describe('Management API: GetSuspendedTasksForProcessModelInCorrelation', () => 
       should(manualTask).not.have.property('identity');
     });
 
-    it('should return an empty Array, if the given correlation does not have any UserTasks', async () => {
+    it('should return an empty Array, if the given correlation does not have any Tasks', async () => {
 
       return new Promise(async (resolve, reject) => {
         const result = await processInstanceHandler.startProcessInstanceAndReturnResult(processModelIdNoTasks);
@@ -319,7 +319,7 @@ describe('Management API: GetSuspendedTasksForProcessModelInCorrelation', () => 
 
     before(async () => {
       await processInstanceHandler.startProcessInstanceAndReturnCorrelationId(processModelId, correlationId);
-      await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId);
+      await processInstanceHandler.waitForProcessInstanceToReachSuspendedTask(correlationId, processModelId, 3);
     });
 
     it('should fail to retrieve the correlation\'s Tasks, when the user is unauthorized', async () => {
