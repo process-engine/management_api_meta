@@ -33,7 +33,6 @@ export function registerInContainer(container: IContainer): void {
         'ManagementApiProcessModelService',
         'ManagementApiTokenHistoryService',
         'ManagementApiUserTaskService',
-        'ManagementApiTaskService',
       );
 
     container.register('ManagementApiClient', ManagementApiClient)
