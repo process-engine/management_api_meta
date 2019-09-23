@@ -11,7 +11,7 @@ describe('Management API: GetActiveCorrelations', () => {
 
   let defaultIdentity;
   let secondDefaultIdentity;
-  const processModelId = 'usertask_sample';
+  const processModelId = 'test_management_api_usertask';
 
   before(async () => {
     testFixtureProvider = new TestFixtureProvider();
