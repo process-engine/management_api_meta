@@ -1,0 +1,18 @@
+{
+  "server": {
+    "host": "localhost",
+    "port": 6666
+  },
+  "api": {
+    "version": "v1"
+  },
+  "cors": {
+    "enabled": true,
+    "options": {
+      "credentials": true,
+      "methods": "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+      "origin": "*",
+      "preflightContinue": false
+    }
+  }
+}
