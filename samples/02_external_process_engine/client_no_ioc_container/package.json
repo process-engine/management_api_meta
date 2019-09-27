@@ -1,0 +1,42 @@
+{
+  "name": "@process-engine/management_api_sample_client_no_ioc",
+  "publishConfig": {
+    "registry": "https://www.npmjs.com"
+  },
+  "version": "2.0.0",
+  "description": "This is the client application for the management api example on how to connect to an external process engine. This client does not use ioc containers.",
+  "license": "MIT",
+  "main": "dist/commonjs/program.js",
+  "files": [
+    "tests"
+  ],
+  "scripts": {
+    "start": "cross-env NODE_ENV=demo CONFIG_PATH=config node dist/commonjs/program.js",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && npm run build-commonjs && npm run build-amd",
+    "build-commonjs": "tsc",
+    "build-amd": "tsc --module amd --outDir ./dist/amd",
+    "prepare": "npm run build",
+    "lint": "eslint src/*.ts",
+    "lint-fix": "eslint --fix src/*.ts",
+    "test": ":"
+  },
+  "dependencies": {
+    "@essential-projects/http": "~2.4.0",
+    "@process-engine/management_api_client": "6.2.0-alpha.1",
+    "addict-ioc": "^2.5.1",
+    "loggerhythm": "^3.0.3",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0",
+    "tsconfig": "^7.0.0"
+  },
+  "devDependencies": {
+    "@essential-projects/eslint-config": "^1.0.0",
+    "@types/express": "^4.16.0",
+    "@types/node": "^10.12.2",
+    "@types/socket.io": "^2.1.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.16.0",
+    "typescript": "^3.4.5"
+  }
+}
