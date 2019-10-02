@@ -12,7 +12,7 @@ import {HttpExtension} from '@essential-projects/http_extension';
 import {IIdentity, TokenBody} from '@essential-projects/iam_contracts';
 
 import {IManagementApiClient} from '@process-engine/management_api_contracts';
-import {IProcessModelUseCases} from '@process-engine/process_model.contracts';
+import {IProcessModelUseCases} from '@process-engine/persistence_api.contracts';
 
 import {initializeBootstrapper} from './setup_ioc_container';
 
