@@ -3,7 +3,7 @@ import * as uuid from 'node-uuid';
 import {EventReceivedCallback, IEventAggregator} from '@essential-projects/event_aggregator_contracts';
 import {IIdentity} from '@essential-projects/iam_contracts';
 
-import {FlowNodeInstance, IFlowNodeInstanceService} from '@process-engine/flow_node_instance.contracts';
+import {FlowNodeInstance, IFlowNodeInstanceService} from '@process-engine/persistence_api.contracts';
 import {DataModels} from '@process-engine/management_api_contracts';
 
 import {TestFixtureProvider} from './test_fixture_provider';
