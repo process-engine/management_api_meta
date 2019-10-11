@@ -3,7 +3,7 @@ const uuid = require('node-uuid');
 
 const {TestFixtureProvider, ProcessInstanceHandler} = require('../../dist/commonjs');
 
-describe('Management API: GetSuspendedTasksForProcessModel', () => {
+describe('ManagementAPI: GetSuspendedTasksForProcessModel', () => {
 
   let eventAggregator;
   let processInstanceHandler;
@@ -52,7 +52,7 @@ describe('Management API: GetSuspendedTasksForProcessModel', () => {
       await testFixtureProvider.importProcessFiles(processModelsToImport);
     });
 
-    it('should return a ProcessModel\'s Tasks by its ProcessModelId through the Management API', async () => {
+    it('should return a ProcessModel\'s Tasks by its ProcessModelId through the ManagementAPI', async () => {
 
       const taskList = await testFixtureProvider
         .managementApiClient

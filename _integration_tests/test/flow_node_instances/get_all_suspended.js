@@ -3,7 +3,7 @@ const uuid = require('node-uuid');
 
 const {TestFixtureProvider, ProcessInstanceHandler} = require('../../dist/commonjs');
 
-describe('Management API: GetAllSuspendedTasks', () => {
+describe('ManagementAPI: GetAllSuspendedTasks', () => {
 
   let processInstanceHandler;
   let testFixtureProvider;

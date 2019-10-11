@@ -4,7 +4,7 @@ const should = require('should');
 
 const {TestFixtureProvider} = require('../../dist/commonjs');
 
-describe('Management API: GetProcessModelLgos', () => {
+describe('ManagementAPI: GetProcessModelLgos', () => {
 
   let testFixtureProvider;
 

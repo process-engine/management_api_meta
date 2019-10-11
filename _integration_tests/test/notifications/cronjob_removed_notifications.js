@@ -4,7 +4,7 @@ const should = require('should');
 
 const {ProcessInstanceHandler, TestFixtureProvider} = require('../../dist/commonjs');
 
-describe('Management API:   Receive CronjobRemoved Notification', () => {
+describe('ManagementAPI:   Receive CronjobRemoved Notification', () => {
 
   let eventAggregator;
   let processInstanceHandler;
