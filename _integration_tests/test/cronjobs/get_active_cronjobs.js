@@ -4,7 +4,7 @@ const should = require('should');
 
 const {TestFixtureProvider} = require('../../dist/commonjs/');
 
-describe('Management API: GetAllActiveCronjobs', () => {
+describe('ManagementAPI: GetAllActiveCronjobs', () => {
 
   let cronjobService;
   let testFixtureProvider;

@@ -5,7 +5,7 @@ const uuid = require('node-uuid');
 
 const {ProcessInstanceHandler, TestFixtureProvider} = require('../../dist/commonjs');
 
-describe('Management API:   Receive ProcessTerminated Notification', () => {
+describe('ManagementAPI:   Receive ProcessTerminated Notification', () => {
 
   let eventAggregator;
   let processInstanceHandler;

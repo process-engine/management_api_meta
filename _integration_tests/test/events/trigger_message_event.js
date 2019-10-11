@@ -4,7 +4,7 @@ const should = require('should');
 
 const {TestFixtureProvider, ProcessInstanceHandler} = require('../../dist/commonjs');
 
-describe('Management API: TriggerMessageEvent', () => {
+describe('ManagementAPI: POST  ->  /messages/:message_name/trigger', () => {
 
   let processInstanceHandler;
   let testFixtureProvider;

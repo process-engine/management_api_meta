@@ -5,7 +5,7 @@ const should = require('should');
 
 const {TestFixtureProvider} = require('../../dist/commonjs/');
 
-describe('Management API: GetCronjobExecutionHistoryForProcessModel', () => {
+describe('ManagementAPI: GetCronjobExecutionHistoryForProcessModel', () => {
 
   let cronjobHistoryRepository;
   let testFixtureProvider;

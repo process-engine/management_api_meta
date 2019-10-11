@@ -8,7 +8,7 @@ const CorrelationState = require('@process-engine/management_api_contracts').Dat
 
 const {ProcessInstanceHandler, TestFixtureProvider} = require('../../dist/commonjs/');
 
-describe('Management API: GetProcessInstancesByState', () => {
+describe('ManagementAPI: GetProcessInstancesByState', () => {
 
   let processInstanceHandler;
   let testFixtureProvider;

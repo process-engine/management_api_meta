@@ -3,7 +3,7 @@
 const should = require('should');
 const TestFixtureProvider = require('../../dist/commonjs').TestFixtureProvider;
 
-describe('Management API: GetRuntimeInformationForProcessModel ', () => {
+describe('ManagementAPI: GetRuntimeInformationForProcessModel ', () => {
 
   let testFixtureProvider;
 
