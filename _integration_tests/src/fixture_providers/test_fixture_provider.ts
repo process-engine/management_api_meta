@@ -18,6 +18,8 @@ import {initializeBootstrapper} from './setup_ioc_container';
 
 const logger: Logger = Logger.createLogger('test:bootstrapper');
 
+process.on('unhandledRejection', (err: Error): void => logger.error('Unhandled Rejection Error: ', err));
+
 export type IdentityCollection = {[userName: string]: IIdentity};
 
 export class TestFixtureProvider {
