@@ -39,7 +39,7 @@ jobs:
 
   test_sqlite:
     name: "Test with SQLite"
-    needs: prepare_version
+    needs: prepare
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@master
@@ -77,7 +77,7 @@ jobs:
 
   test_postgres:
     name: "Test with Postgres"
-    needs: prepare_version
+    needs: prepare
     runs-on: ubuntu-18.04
 
     services:
@@ -127,7 +127,7 @@ jobs:
 
   test_mysql:
     name: "Test with MySQL"
-    needs: prepare_version
+    needs: prepare
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@master
