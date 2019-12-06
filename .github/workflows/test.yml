@@ -21,7 +21,7 @@ jobs:
         node-version: 12.x
 
     - name: Install Dependencies
-      woking-directory: ./_integration_tests
+      working-directory: ./_integration_tests
       run: |
         npm i
 
@@ -35,7 +35,7 @@ jobs:
       uses: actions/upload-artifact@master
       with:
         name: package-lock_json
-        path: package-lock.json
+        path: _integration_tests/package-lock.json
 
   test_sqlite:
     name: "Test with SQLite"
@@ -53,13 +53,15 @@ jobs:
     - name: Get node_modules from Cache
       uses: actions/cache@v1
       with:
-        path: node_modules
+        path: _integration_tests/node_modules
         key: npm-${{ hashFiles('_integration_tests/package-lock.json') }}
 
     - name: Build
+      working-directory: ./_integration_tests
       run: npm run build
 
     - name: Run Tests
+      working-directory: ./_integration_tests
       run: npm run test-sqlite
 
     - name: Slack Notification
@@ -101,13 +103,15 @@ jobs:
     - name: Get node_modules from Cache
       uses: actions/cache@v1
       with:
-        path: node_modules
+        path: _integration_tests/node_modules
         key: npm-${{ hashFiles('_integration_tests/package-lock.json') }}
 
     - name: Build
+      working-directory: ./_integration_tests
       run: npm run build
 
     - name: Run Tests
+      working-directory: ./_integration_tests
       run: npm run test-postgres
 
     - name: Slack Notification
@@ -137,17 +141,20 @@ jobs:
     - name: Get node_modules from Cache
       uses: actions/cache@v1
       with:
-        path: node_modules
+        path: _integration_tests/node_modules
         key: npm-${{ hashFiles('_integration_tests/package-lock.json') }}
 
     - name: Build
+      working-directory: ./_integration_tests
       run: npm run build
 
     - run: mv config/test-mysql/.my.cnf ~/.my.cnf
+      working-directory: ./_integration_tests
 
     - run: echo "create database processengine" | mysql
 
     - name: Run Tests
+      working-directory: ./_integration_tests
       run: npm run test-mysql
 
     - name: Slack Notification
