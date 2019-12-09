@@ -7,54 +7,17 @@ on:
       - "*/*"
 
 jobs:
-  prepare:
-    name: Install Dependencies
-    runs-on: ubuntu-18.04
+  test_sqlite:
+    name: "Test with SQLite"
     if: "!(contains(github.actor, 'process-engine-ci') || contains(github.actor, 'admin'))"
-
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@master
-
-    - name: Use Node.js 12.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
 
     - name: Install Dependencies
       working-directory: ./_integration_tests
       run: |
         npm i
-
-    - name: Cache node modules
-      uses: actions/cache@v1
-      with:
-        path: _integration_tests/node_modules
-        key: npm-${{ hashFiles('_integration_tests/package-lock.json') }}
-
-    - name: Stash package-lock.json
-      uses: actions/upload-artifact@master
-      with:
-        name: package-lock_json
-        path: _integration_tests/package-lock.json
-
-  test_sqlite:
-    name: "Test with SQLite"
-    needs: prepare
-    runs-on: ubuntu-18.04
-    steps:
-    - uses: actions/checkout@master
-
-    - name: Unstash package-lock.json
-      uses: actions/download-artifact@master
-      with:
-        name: package-lock_json
-        path: "./_integration_tests"
-
-    - name: Get node_modules from Cache
-      uses: actions/cache@v1
-      with:
-        path: _integration_tests/node_modules
-        key: npm-${{ hashFiles('_integration_tests/package-lock.json') }}
 
     - name: Build
       working-directory: ./_integration_tests
@@ -77,7 +40,7 @@ jobs:
 
   test_postgres:
     name: "Test with Postgres"
-    needs: prepare
+    if: "!(contains(github.actor, 'process-engine-ci') || contains(github.actor, 'admin'))"
     runs-on: ubuntu-18.04
 
     services:
@@ -94,17 +57,10 @@ jobs:
     steps:
     - uses: actions/checkout@master
 
-    - name: Unstash package-lock.json
-      uses: actions/download-artifact@master
-      with:
-        name: package-lock_json
-        path: "./_integration_tests"
-
-    - name: Get node_modules from Cache
-      uses: actions/cache@v1
-      with:
-        path: _integration_tests/node_modules
-        key: npm-${{ hashFiles('_integration_tests/package-lock.json') }}
+    - name: Install Dependencies
+      working-directory: ./_integration_tests
+      run: |
+        npm i
 
     - name: Build
       working-directory: ./_integration_tests
@@ -127,22 +83,15 @@ jobs:
 
   test_mysql:
     name: "Test with MySQL"
-    needs: prepare
+    if: "!(contains(github.actor, 'process-engine-ci') || contains(github.actor, 'admin'))"
     runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@master
 
-    - name: Unstash package-lock.json
-      uses: actions/download-artifact@master
-      with:
-        name: package-lock_json
-        path: "./_integration_tests"
-
-    - name: Get node_modules from Cache
-      uses: actions/cache@v1
-      with:
-        path: _integration_tests/node_modules
-        key: npm-${{ hashFiles('_integration_tests/package-lock.json') }}
+    - name: Install Dependencies
+      working-directory: ./_integration_tests
+      run: |
+        npm i
 
     - name: Build
       working-directory: ./_integration_tests
@@ -167,4 +116,3 @@ jobs:
         url: ${{ secrets.SLACK_WEBHOOK }}
         commit: true
         token: ${{ secrets.GH_TOKEN }}
-
